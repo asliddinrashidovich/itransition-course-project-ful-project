@@ -134,7 +134,7 @@ function CreateNewForm() {
                 </div>
                 <hr />
             </div>
-            <AllQuestions/>
+            <AllQuestions setStatusFormName={setStatusFormName}/>
         </div>}
         {formPage == "responses" && <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px]">
             <div className="w-full bg-[#fff]  rounded-[10px] py-[20px] px-[20px]">
