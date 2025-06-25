@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+.nonauth_about {
+  background: url(/hero.jpg) no-repeat center center / cover;
+  background-attachment: fixed;
+}
+
+.nonauth_about::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); 
+  z-index: 1;
+}

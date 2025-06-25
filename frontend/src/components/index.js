@@ -1,0 +1,8 @@
+export {default as Header} from "./home/header"
+export {default as RegisterForm} from "./auth/register-form"
+export {default as LoginForm} from "./auth/login-form"
+export {default as StartNewForm} from "./home/start-new-form"
+export {default as ResentTempletes} from "./home/resent-templetes"
+export {default as CreateNewForm} from "./create-template/create-new-form"
+export {default as ProfileDetails} from "./profile/profile-details"
+export {default as NonAuthHero} from "./home/non-auth-hero"

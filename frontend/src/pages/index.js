@@ -1,0 +1,6 @@
+export {default as HomePage} from "./home-page"
+export {default as NotFoundPage} from "./not-found-page"
+export {default as RegisterPage} from "./register"
+export {default as LoginPage} from "./login"
+export {default as CreateTemplatePage} from "./create-template-page"
+export {default as ProfilePage} from "./profile-page"
