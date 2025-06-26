@@ -11,7 +11,6 @@ import debounce from "lodash.debounce";
 const API = import.meta.env.VITE_API
 
 function AllQuestions({setStatusFormName}) {
-    const [queastionLoading, setQuestionLoading] = useState("")
     const [refreshQuestions, setRefreshQuestions] = useState(false)
     const {id} = useParams()
     const token = localStorage.getItem('token')
@@ -43,7 +42,7 @@ function AllQuestions({setStatusFormName}) {
         return res.data
     };
     const { data: LatestTemplate} = useQuery({
-        queryKey: ["latest-templatee", refreshQuestions],
+        queryKey: ["latest-templatee1", refreshQuestions],
         queryFn: fetchLatestTemplete,
     });
 
@@ -71,21 +70,19 @@ function AllQuestions({setStatusFormName}) {
     const [questionTitles, setQuestionTitles] = useState({});
 
     console.log(questionTitles)
+    
     const saveQuestionTitle = debounce(async (questionId, title) => {
         try {
-            await axios.put(`${API}/api/templates/questions/${questionId}/title`, { title }, {headers: { Authorization: `Bearer ${token}` }});
-            setStatusFormName('Saved')
+            await axios.put(`${API}/api/templates/questions/${questionId}/title`, { title }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setStatusFormName("Saved");
         } catch (err) {
             toast.error(err.response?.data?.message || "Title save failed");
-            setStatusFormName('Error')
+            setStatusFormName("Error");
         }
-    }, 800);
+    }, 1000);
 
-    useEffect(() => {
-        if (!queastionLoading) return
-        setStatusFormName('Saving...')
-        saveQuestionTitle()
-    }, [queastionLoading])
 
     useEffect(() => {
         if (LatestTemplate?.questions) {
@@ -97,11 +94,12 @@ function AllQuestions({setStatusFormName}) {
         }
     }, [LatestTemplate]);
 
-    const handleTitleChange = (val, id) => {
-        setQuestionTitles((prev) => ({ ...prev, [id]: val }));
-        saveQuestionTitle(id, val);
-        setQuestionLoading(val)
+    const handleTitleChange = (val, idTitle) => {
+        setQuestionTitles((prev) => ({ ...prev, [idTitle]: val }));
+        setStatusFormName("Saving...");  
+        saveQuestionTitle(idTitle, val);  
     };
+
 
     const titleInputRefs = useRef({});
     const titleSpanRefs = useRef({});
