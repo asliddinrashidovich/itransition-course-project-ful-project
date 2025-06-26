@@ -26,3 +26,20 @@ exports.submitAnswers = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// GET /api/answers/template/:templateId
+exports.getAnswersByTemplateId = async (req, res) => {
+  try {
+    const templateId = req.params.templateId;
+
+    const answers = await Answer.findAll({
+      where: { templateId },
+      order: [['createdAt', 'ASC']],
+    });
+
+    res.json(answers);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
