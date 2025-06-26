@@ -39,6 +39,10 @@ const Template = sequelize.define('Template', {
     type: DataTypes.ARRAY(DataTypes.STRING),
     defaultValue: [],
   },
+  isPublished: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  }
 });
 
 Template.belongsTo(User, { foreignKey: 'authorId' });

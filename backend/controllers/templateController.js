@@ -68,7 +68,7 @@ exports.getPublicTemplates = async (req, res) => {
 exports.getTemplateById = async (req, res) => {
   try {
     const template = await Template.findByPk(req.params.id, {
-      include: [{ model: Question, as: 'questions' }]
+      include: [{ model: Question, as: 'questions', separate: true, order: [['createdAt', 'ASC']], }]
     })
 
     if (!template) return res.status(404).json({ message: 'Not found' })
@@ -117,6 +117,25 @@ exports.updateTemplate = async (req, res) => {
     await template.update({ title, formTitle, description }) 
 
     res.json({ message: 'Updated successfully' })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// PATCH /api/templates/:id/publish
+exports.publishTemplate = async (req, res) => {
+  try {
+    const template = await Template.findByPk(req.params.id)
+
+    if (!template) return res.status(404).json({ message: 'Not found' })
+
+    if (template.authorId !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ message: 'Not allowed' })
+    }
+
+    await template.update({ isPublished: true })
+
+    res.json({ message: 'Form published successfully' })
   } catch (err) {
     res.status(500).json({ message: 'Server error' })
   }
