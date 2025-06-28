@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import HeaderSidebar from "./header-sidebar";
 import LanguageChanger from "./language-changer";
 import { IoSearch } from "react-icons/io5";
-import { MdClear, MdEdit } from "react-icons/md";
+import { MdClear } from "react-icons/md";
 import AuthComponent from "./auth-component";
 import { IoIosLogOut } from "react-icons/io";
+import { FaUser } from "react-icons/fa6";
 
 function Header() {
     const token = localStorage.getItem('token')
@@ -27,7 +28,7 @@ function Header() {
       window.location.reload()
     }
   return (
-    <header className={`${skrolledCase ? "bg-[#e1e1e1] shadow-xl" : "bg-[#fff]"} px-5 md:px-10 py-[10px] fixed w-full z-99`}>
+    <header className={`${skrolledCase ? "bg-[#e1e1e1] shadow-xl" : "bg-[#fff]"} px-5 md:px-10 py-[10px] fixed w-full z-299`}>
       <div className="flex items-center justify-between gap-[20px]">
         <Link to={'/'} className={`max-w-[60px] `}>
           <img src="https://easi.its.utoronto.ca/wp-content/uploads/2019/12/1024px-Microsoft_Forms_2019-present.svg-e1576870389646.png" alt="logo" />
@@ -53,10 +54,10 @@ function Header() {
               </div>
             </div>
 
-            <div className="group-hover:flex right-[0px] hidden w-[120px] absolute  p-[5px] bg-[#fff] rounded-[5px] flex-col">
+            <div className="group-hover:flex right-[0px] hidden w-[120px] absolute p-[5px] bg-[#fff] rounded-[5px] flex-col z-999">
                 <button onClick={() => navigate("/profile")} className="rounded-[7px] p-[5px] cursor-pointer hover:bg-[#461773] flex items-center gap-[7px] hover:text-[#fff] transition-all duration-200 mb-[5px]">
-                  <MdEdit />
-                  <p>Edit</p>
+                  <FaUser />
+                  <p>My Profile</p>
                 </button>
                 <button onClick={handleLogout} className="rounded-[7px] p-[5px] cursor-pointer hover:bg-[#461773] flex items-center gap-[7px]">
                   <IoIosLogOut className="text-[red]"/>

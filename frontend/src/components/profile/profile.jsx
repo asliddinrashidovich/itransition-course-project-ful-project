@@ -27,8 +27,8 @@ function ProfileSection() {
         navigate(`${path == 'Account Details' ? '' : path.split('').map(item => item.replace(' ', '-')).join('').toLowerCase()}`)
     }
   return (
-    <div className="max-w-[1200px] mx-auto flex pt-[100px] pb-[40px] gap-[30px] px-[20px]">
-        <div className="md:block hidden w-[25%] p-[18px]">
+    <div className="max-w-[1400px] mx-auto flex pt-[100px] pb-[40px] gap-[30px] px-[20px]">
+        <div className="md:block hidden w-[20%] p-[18px]">
             <h2 className="font-[700] text-[18px] leading-[16px] mb-[17px]">My Account</h2>
             <div>
                 <div onClick={() => handleTab('Account Details')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer  ${activeFilter == 'account-details' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
@@ -37,11 +37,11 @@ function ProfileSection() {
                 </div>
                 <div onClick={() => handleTab('My products')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'my-products' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
                     <IoBagHandleOutline />
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'my-products' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>My products</p>
+                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'my-products' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>My Templates</p>
                 </div>
-                <div onClick={() => handleTab('Address')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'address' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
+                <div onClick={() => handleTab('All Users')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-users' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
                     <IoLocationOutline />
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'address' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Address</p>
+                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-users' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Users</p>
                 </div>
             </div>
             <hr className="border-[0.5px] border-[#134e9b] my-[30px]"/>
