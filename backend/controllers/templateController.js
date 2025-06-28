@@ -1,6 +1,4 @@
-const Template = require('../models/template.model')
-const Question = require('../models/question.model')
-const User = require('../models/user.model')
+const { User, Question, Template } = require('../models')
 
 // Create template with default question
 exports.createTemplate = async (req, res) => {
@@ -56,14 +54,20 @@ exports.getPublicTemplates = async (req, res) => {
   try {
     const templates = await Template.findAll({
       where: { access: 'public' },
-      include: { model: User, attributes: ['id', 'name'] },
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id', 'name']
+      }],
       order: [['createdAt', 'DESC']],
-    })
-    res.json(templates)
+    });
+
+    res.json(templates);
   } catch (err) {
-    res.status(500).json({ message: 'Server error' })
+    console.error('getPublicTemplates error:', err.message, err.stack);
+    res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 exports.getTemplateById = async (req, res) => {
   try {

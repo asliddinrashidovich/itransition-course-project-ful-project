@@ -1,6 +1,8 @@
-const Question = require("../models/question.model");
-const Template = require("../models/template.model");
+// const Question = require("../models/question.model");
+// const Template = require("../models/template.model");
 // const { Template, Question } = require('../models/template.model');
+
+const { Template, Question } = require("../models");
 
 
 // Savol qo‘shish

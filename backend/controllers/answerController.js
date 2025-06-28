@@ -1,5 +1,6 @@
 // controllers/answerController.js
-const Answer = require('../models/answer.model');
+// const Answer = require('../models/answer.model');
+const { Answer } = require("../models");
 
 exports.submitAnswers = async (req, res) => {
   try {

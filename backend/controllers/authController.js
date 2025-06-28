@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const User = require('../models/user.model')
+const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 require('dotenv').config()
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
