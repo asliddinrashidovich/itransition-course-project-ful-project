@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user.model')
 require('dotenv').config()
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 // JWT generatsiya qilish
 const generateToken = (user) => {
@@ -14,21 +15,31 @@ const generateToken = (user) => {
 
 // Ro‘yxatdan o‘tish
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body
+  const { name, email, password } = req.body;
   try {
-    const existing = await User.findOne({ where: { email } })
-    if (existing) return res.status(400).json({ message: 'Email already exists' })
+    const existing = await User.findOne({ where: { email } });
+    if (existing) return res.status(400).json({ message: 'Email already exists' });
 
-    const hashed = await bcrypt.hash(password, 10)
-    const user = await User.create({ name, email, password: hashed })
+    const hashed = await bcrypt.hash(password, 10);
 
-    const token = generateToken(user)
-    res.status(201).json({ user, token })
+    // Faqat shu email admin bo‘ladi
+    const isAdmin = email === ADMIN_EMAIL;
+
+    const user = await User.create({ 
+      name, 
+      email, 
+      password: hashed, 
+      isAdmin 
+    });
+
+    const token = generateToken(user);
+    res.status(201).json({ user, token });
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Server error' })
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
   }
-}
+};
+
 
 // Tizimga kirish
 exports.login = async (req, res) => {

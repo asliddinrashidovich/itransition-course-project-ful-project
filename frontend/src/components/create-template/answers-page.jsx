@@ -77,9 +77,9 @@ function AnswersPage() {
                 </div>
             ))}
         </div>}
-        {!loading1 && Array.isArray(TemplateAnswers) && !TemplateAnswers?.length &&  !loading2 && Array.isArray(FormTemplateQuestions) && !FormTemplateQuestions?.length && (
-            <div>
-                no data
+        {!loading1 && Array.isArray(TemplateAnswers) && !TemplateAnswers?.length &&   (
+            <div className="w-full bg-[#fff] rounded-[10px] py-[20px] px-[20px] text-center">
+                No responses. Publish your form to start accepting responses.
             </div>
         )}
         {loading1 && loading2 && ( 

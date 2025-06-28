@@ -2,7 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import MainLayout from "./layout/main-layout"
 import { CreateTemplatePage, FormPreview, HomePage, LoginPage, NotFoundPage, ProfilePage, RegisterPage } from "./pages"
 import FormLayout from "./layout/form-layout"
-import { AccountDetails, Address, MyProducts } from "./components"
+import { AccountDetails, MyProducts, UsersManagment } from "./components"
 
 function App() {
     const routes = createBrowserRouter(
@@ -17,7 +17,7 @@ function App() {
           <Route path="profile/" element={<ProfilePage/>}>
             <Route index element={<AccountDetails/>}/>
             <Route path="my-products" element={<MyProducts/>}/>
-            <Route path="address" element={<Address/>}/>
+            <Route path="all-users" element={<UsersManagment/>}/>
           </Route>
         </Route>
 
