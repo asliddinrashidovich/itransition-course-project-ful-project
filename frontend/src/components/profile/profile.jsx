@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { IoMdSpeedometer } from "react-icons/io";
 import { Modal } from "antd";
 import { FaRegUser } from "react-icons/fa6";
 import { IoBagHandleOutline, IoLocationOutline, IoLogOutOutline } from "react-icons/io5";
@@ -12,10 +11,10 @@ function ProfileSection() {
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
-        setIsModalOpen(true);
+        setIsModalOpen(true)
     };
     const handleOk = () => {
-        setIsModalOpen(false);
+        setIsModalOpen(false)
         localStorage.removeItem('user')
         localStorage.removeItem('token')
         navigate('/')
