@@ -19,13 +19,17 @@ const Answer = sequelize.define('Answer', {
     allowNull: false,
   },
   value: {
-    type: DataTypes.TEXT, // checkboxda array bo‘lsa, JSON formatda kiritish mumkin
+    type: DataTypes.TEXT,
+    allowNull: false,
   },
   responderEmail: {
-    type: DataTypes.STRING, // optional: foydalanuvchi kim ekanligini bilish uchun
-  }
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+}, {
+  tableName: 'answers',
+  timestamps: true,
 });
-
 Answer.belongsTo(Template, { foreignKey: 'templateId' });
 Answer.belongsTo(Question, { foreignKey: 'questionId' });
 

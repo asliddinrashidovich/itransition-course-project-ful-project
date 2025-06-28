@@ -1,12 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useState } from "react";
+import { FaTableCellsLarge, FaTableList } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
+import AnswersTableView from "./answers-table-view";
+import AnswerCardsSkeleton from "../skeleton/answer-cards-skeleton";
 
 const API = import.meta.env.VITE_API
 
 function AnswersPage() {
     const {id} = useParams()
     const token = localStorage.getItem('token')
+    const [cardsView, setCardsView] = useState(false)
+
+
+    // get questions
+    const fetchFormTemplete = async () => {
+        const res = await axios.get(`${API}/api/templates/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data.questions
+    };
+    const { data: FormTemplateQuestions, isLoading: loading1} = useQuery({
+        queryKey: ["latest-templates-for-find"],
+        queryFn: fetchFormTemplete,
+    });
+
+    console.log(FormTemplateQuestions)
+
 
     // get template answers
     const fetchAnswersTemplete = async () => {
@@ -17,22 +40,54 @@ function AnswersPage() {
         });
         return res.data
     };
-    const { data: TemplateAnswers} = useQuery({
+    const { data: TemplateAnswers, isLoading: loading2} = useQuery({
         queryKey: ["answers-template"],
         queryFn: fetchAnswersTemplete,
     });
 
     console.log(TemplateAnswers)
-  return (
-    <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px]">
-        <div className="w-full bg-[#fff]  rounded-[10px] py-[20px] px-[20px]">
-            <h2 className="text-[35px] font-[600] py-[10px]">0 responses</h2>
-        </div>
-        <div className="w-full bg-[#fff] border-l-[7px] border-[#0048ff] rounded-[10px] py-[30px] px-[20px]">
-            <h2 className="text-[18px] font-[600] py-[10px] border-b-[1px] w-full border-[#999]">Question</h2>
-            <p className="pt-[20px] text-[#999] pb-[10px] border-b-[1px] w-full border-[#999]">Form description</p>
-        </div>
 
+    // handle change answer type
+    function handleChangeButtonType(caseView) {
+        setCardsView(caseView)
+    }
+  return (
+    <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px] pb-[100px]">
+        <div className="w-full bg-[#fff] border-t-[10px] border-[#7248b9] flex items-center justify-between  rounded-[10px] py-[20px] px-[20px]">
+            <h2 className="text-[35px] font-[600] py-[10px]">{TemplateAnswers?.length} responses</h2>
+            <div>
+                {!cardsView && <button onClick={() => handleChangeButtonType(true)} className="cursor-pointer"><FaTableList  className="text-[20px]"/></button>}
+                {cardsView && <button onClick={() => handleChangeButtonType(false)} className="cursor-pointer"><FaTableCellsLarge className="text-[20px]"/></button>}
+            </div>
+        </div>
+        {!cardsView && <div className="flex flex-col gap-[20px]">    
+            {TemplateAnswers?.map(item => (
+                <div className="w-full bg-[#fff] rounded-[10px] py-[20px] px-[20px]">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-[22px] font-[600]">Responder Email: <span className="text-[18px] font-[300] ml-[10px]">{item.responderEmail}</span></h2>
+                        <p className="text-[12px] mb-[10px]">{item.answers.length} responses</p>
+                    </div>
+                    <hr className="mb-[20px] border-[#999]"/>
+                    {item.answers.map(itemAnswer => (
+                        <div key={itemAnswer.questionId}>
+                            <h3 className="text-[18px] font-[700] py-[10px]   w-full border-[#999]">{FormTemplateQuestions?.filter(questionTitle => questionTitle.id == itemAnswer.questionId)[0]?.title} ?</h3>
+                            <div className="bg-[#e6f2ff] cursor-pointer hover:bg-[#4c6279] hover:text-[#fff] transition-all duration-200 rounded-[10px] p-[10px] mb-[6px] w-full ">{itemAnswer?.value}</div>
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>}
+        {!loading1 && Array.isArray(TemplateAnswers) && !TemplateAnswers?.length &&  !loading2 && Array.isArray(FormTemplateQuestions) && !FormTemplateQuestions?.length && (
+            <div>
+                no data
+            </div>
+        )}
+        {loading1 && loading2 && ( 
+            <div>
+                <AnswerCardsSkeleton/>
+            </div>
+        )}
+        {cardsView &&  <AnswersTableView TemplateAnswers={TemplateAnswers} FormTemplateQuestions={FormTemplateQuestions}/>}
     </div>
   )
 }
