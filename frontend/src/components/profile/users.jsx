@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import HeaderToolbar from './toolbar';
 import { useNavigate } from 'react-router-dom';
 import ModalCompopnent from './modal';
+import UsersSkeleton from '../skeleton/users-skeleton';
 
 const API = import.meta.env.VITE_API;
 
@@ -50,8 +51,8 @@ function UsersManagment() {
         } 
         catch(err) {console.log(err)}
     }
-    const { data: AllUsers } = useQuery({
-      queryKey: ["users-all"],
+    const { data: AllUsers, isLoading: loading } = useQuery({
+      queryKey: ["users"],
       queryFn: getAllUsers,
     });
 
@@ -86,23 +87,29 @@ function UsersManagment() {
                                 <Checkbox onChange={(e) => handleSelectUser(item.id, e.target.checked)} checked={selectedUsers.includes(item.id)}></Checkbox>
                             </td>
                             <td className="py-[10px] ">
-                                <p className={`text-[15px] font-[400]  ${item.status == 'active' ? 'text-[#000]' : 'text-[#999] line-through'}`}>{item.name}</p>
+                                <p className={`text-[15px] font-[400]  ${!item.isBlocked ? 'text-[#000]' : 'text-[#999] line-through'}`}>{item.name}</p>
                             </td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] ${item.status == 'active' ? 'text-[#000]' : 'text-[#999]'}`}>{item.email}</td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] ${item.status == 'active' ? 'text-[#000]' : 'text-[#999]'}`}>active</td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] ${item.status == 'active' ? 'text-[#000]' : 'text-[#999]'}`}>{item.isAdmin ? "admin" : "user"}</td>
-                            <td className={`text-[15px]  font-[400]  py-[10px] ${item.status == 'active' ? 'text-[#000]' : 'text-[#999]'} `}>
+                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'}`}>{item.email}</td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'}`}>active</td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'}`}>{item.isAdmin ? "admin" : "user"}</td>
+                            <td className={`text-[15px]  font-[400]  py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'} `}>
                                 <Tooltip placement="bottom" className='cursor-pointer' title={moment(item.createdAt).format('MMMM D, YYYY HH:mm:ss')}  >
                                     {moment(item.createdAt).format('DD/MM/YYYY')}
                                 </Tooltip>
                             </td>
                         </tr>
                     ))}
-                    {!AllUsers?.length && (
+                    {!loading && Array.isArray(AllUsers) && !AllUsers.length &&  (
                         <tr>
-                            <td colSpan={4} className="text-center">
-                                <img src="/no_data.svg" alt="not found" className="mx-auto max-w-[310px] mt-[20px]"/>
-                                <h2 className="mt-[20px] text-[17px] font-[600]">No AllUsers</h2>
+                            <td colSpan={6} className="text-center">
+                                <h2 className="mt-[20px] text-[17px] font-[600]">No users</h2>
+                            </td>
+                        </tr>
+                    )}
+                    {loading && (
+                        <tr>
+                            <td colSpan={6}>
+                                <UsersSkeleton/>
                             </td>
                         </tr>
                     )}
