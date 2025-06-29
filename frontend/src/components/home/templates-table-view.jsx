@@ -1,0 +1,126 @@
+import { Checkbox, Tooltip } from 'antd';
+import axios from "axios";
+import {  useState } from "react";
+import moment from 'moment';
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from 'react-router-dom';
+import ModalForTemplates from './modal-for-templates';
+import TableHeaderToolbar from './table-header-toolbar';
+
+const API = import.meta.env.VITE_API;
+
+function TemplatesTableView({LatestTemplates}) {
+    console.log(LatestTemplates)
+    const [selectAll, setSelectAll] = useState(false)
+    const [selectedTemplates, setSelectedTemplates] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [methodMyself, setMethodMyself] = useState('block')
+
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate()
+    
+    // Modal to block or delete myself
+    const showModal = (method) => {
+        setIsModalOpen(true);
+        setMethodMyself(method)
+    };
+
+    // select all users
+    const handleSelectAll = (e) => {
+        const isChecked = e.target.checked
+        setSelectAll(isChecked)
+        if (isChecked) {
+            const allTemplatesIds = LatestTemplates.map(user => user.id)
+            setSelectedTemplates(allTemplatesIds)
+        } else  setSelectedTemplates([])
+    }
+
+    // Selected users
+    const handleSelectUser = (userId, isChecked) => {
+        if (isChecked) setSelectedTemplates([...selectedTemplates, userId])
+        else  setSelectedTemplates(selectedTemplates.filter(id => id !== userId)) 
+    }
+
+    //===================== get All users =========================
+    async function getAllUsers() {
+        try {
+            const res = await axios.get(`${API}/api/users/all`, {
+                headers: {Authorization: `Bearer ${token}`}
+            });
+            return res.data
+        } 
+        catch(err) {console.log(err)}
+    }
+
+    const { data: AllUsers, isLoading: loading } = useQuery({
+      queryKey: ["users"],
+      queryFn: getAllUsers,
+    });
+
+    function handleLogout() {
+        localStorage.clear()
+        navigate('/')
+    }
+    
+  return (
+    <div className="px-[20px]">
+        <TableHeaderToolbar showModal={showModal} selectedUsers={selectedTemplates}/>
+        <div className='overflow-x-auto min-h-[62vh]'>
+            <table className="w-full">
+                <thead>
+                    <tr className="border-b-[1px] border-[#c1c1c1] ">
+                        <td className="w-[50px] min-w-[49px] text-center ">
+                            <Checkbox  onChange={handleSelectAll} checked={selectAll} value={true}></Checkbox>
+                        </td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px]">Title</td>
+                        <td className="flex gap-[7px] items-center min-w-[250px]  py-[10px]">
+                            <span className="text-[15px]  font-[700]">Author</span>
+                        </td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px]">Access</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px]">Is Published</td>
+                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px]">Updated at</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {LatestTemplates && LatestTemplates?.map((item) => (
+                        <tr key={item.id} className="border-b-[1px] border-[#c1c1c1] ">
+                            <td className="w-[50px] text-center ">
+                                <Checkbox onChange={(e) => handleSelectUser(item.id, e.target.checked)} checked={selectedTemplates.includes(item.id)}></Checkbox>
+                            </td>
+                            <td className="py-[10px] ">
+                                <p className={`text-[15px] font-[400] text-[#000]`}>{item.title}</p>
+                            </td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] text-[#000]`}>{item.author.name}</td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] text-[#000]`}>{item.access}</td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] text-[#000]`}>{item.isPublished ? "Published" : "Not Published"}</td>
+                            <td className={`text-[15px]  font-[400]  py-[10px] text-[#000] `}>
+                                <Tooltip placement="bottom" className='cursor-pointer' title={moment(item.updatedAt).format('MMMM D, YYYY HH:mm:ss')}  >
+                                    {moment(item.updatedAt).format('DD/MM/YYYY')}
+                                </Tooltip>
+                            </td>
+                        </tr>
+                    ))}
+                    {!loading && Array.isArray(AllUsers) && !AllUsers.length &&  (
+                        <tr>
+                            <td colSpan={6} className="text-center">
+                                <h2 className="mt-[20px] text-[17px] font-[600]">No users</h2>
+                            </td>
+                        </tr>
+                    )}
+                    {loading && (
+                        <tr>
+                            <td colSpan={6}>
+                                {/* <UsersSkeleton/> */}
+                                фывфыв
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+        <ModalForTemplates isModalOpen={isModalOpen} handleLogout={handleLogout} selectedUsers={selectedTemplates} setIsModalOpen={setIsModalOpen} methodMyself={methodMyself}/>
+    </div>
+  )
+}
+
+export default TemplatesTableView

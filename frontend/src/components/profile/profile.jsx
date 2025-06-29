@@ -57,10 +57,10 @@ function ProfileSection() {
                     <FaRegUser />
                     <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'account-details' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Account Details</p>
                 </div>
-                {myData?.isAdmin && <div onClick={() => handleTab('My products')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'my-products' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
+                <div onClick={() => handleTab('My products')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'my-products' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
                     <SiGoogleforms />
                     <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'my-products' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>My Templates</p>
-                </div>}
+                </div>
                 {myData?.isAdmin && <div onClick={() => handleTab('All Users')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-users' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
                     <FaUsers />
                     <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-users' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Users</p>

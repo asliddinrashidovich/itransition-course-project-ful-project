@@ -9,15 +9,15 @@ ModalCompopnent.propTypes  = {
   setIsModalOpen: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired
 }
+const API = import.meta.env.VITE_API;
 
 function ModalCompopnent({isModalOpen, selectedUsers, methodMyself, setIsModalOpen, handleLogout}) {
-    const API = import.meta.env.VITE_API_URL;
-    
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token')    
+
     const handleOk = async () => {
         setIsModalOpen(false);
-        await axios.post(`${API}/api/users/update`, { ids: selectedUsers, action: methodMyself}, {
-            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'}
+        await axios.patch(`${API}/api/users/role`, { userIds: selectedUsers, role: methodMyself}, {
+            headers: {Authorization: `Bearer ${token}`},
         }).then(() => {
             handleLogout()
         })
