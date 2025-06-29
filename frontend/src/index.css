@@ -17,3 +17,7 @@
   width: 100% !important;
   height: 150px !important;
 }
+
+.MuiSelect-select {
+  padding: 5px 30px 5px 10px !important;
+}

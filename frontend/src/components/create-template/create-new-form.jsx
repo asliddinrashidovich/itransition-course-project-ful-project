@@ -11,7 +11,7 @@ const API = import.meta.env.VITE_API
 
 function CreateNewForm() {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [formName, setFormName] = useState("Untitled form")
+    const [title, setTitle] = useState("Untitled Form")
     const [formTitle, setFormTitle] = useState("Untitled form")
     const [formDec, setFormDec] = useState("")
     const formPage = searchParams.get("form-page") || ""
@@ -21,7 +21,7 @@ function CreateNewForm() {
 
     const spanRefFormName = useRef(null);
     const inputRefFormName = useRef(null);
-    const displayValue = formName.length > 0 ? formName : "Untitled Form"
+    const displayValue = title.length > 0 ? title : "Untitled Form"
 
     const spanRefFormTitle = useRef(null);
     const inputRefFormTitle = useRef(null);
@@ -31,35 +31,17 @@ function CreateNewForm() {
     const inputRefFormDec = useRef(null);
     const displayValueDec = formDec.length > 0 ? formDec : "Form description"
 
-    // get template details
-    const fetchLatestTemplete = async () => {
-        const res = await axios.get(`${API}/api/templates/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        setFormName(res?.data?.title)
-        setFormTitle(res?.data?.formTitle)
-        setFormDec(res?.data?.description)
-        return res.data
-    };
-    const { data: LatestTemplate} = useQuery({
-        queryKey: ["latest-template"],
-        queryFn: fetchLatestTemplete,
-    });
-
-    console.log(LatestTemplate)
 
     // auto save title 
     useEffect(() => {
         if (!statusFormName) return
         setStatusFormName('Saving...')
         debouncedSave()
-    }, [formName, formTitle, formDec])
+    }, [title, formTitle, formDec])
 
     const saveChanges = async () => {
         try {
-            await axios.put(`${API}/api/templates/${id}`, { title: formName, formTitle, description: formDec}, {
+            await axios.put(`${API}/api/templates/${id}`, { title, formTitle, description: formDec}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -85,10 +67,10 @@ function CreateNewForm() {
             const width = spanRefFormDec.current.offsetWidth;
             inputRefFormDec.current.style.width = `${width + 3}px`;
         } 
-    }, [formName, formTitle, formDec]);
+    }, [title, formTitle, formDec]);
 
     function handleChangeFormName(val) {
-        setFormName(val)
+        setTitle(val)
     }
     function handleChangeFormTitle(val) {
         setFormTitle(val)
@@ -102,6 +84,25 @@ function CreateNewForm() {
         searchParams.set("form-page", path)
         setSearchParams(searchParams)
     }
+
+    // get template details
+    const fetchLatestTemplete = async () => {
+        const res = await axios.get(`${API}/api/templates/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        setTitle(res?.data?.title || "Untitled Form")
+        setFormTitle(res?.data?.formTitle)
+        setFormDec(res?.data?.description)
+        return res.data
+    };
+    const { data: LatestTemplate} = useQuery({
+        queryKey: ["latest-template"],
+        queryFn: fetchLatestTemplete,
+    });
+
+    console.log(LatestTemplate)
 
     // get template answers
     const fetchAnswersTemplete = async () => {
@@ -124,7 +125,7 @@ function CreateNewForm() {
         <div className="w-full py-[10px] px-5 md:px-10 bg-[#e1e1e1] flex fixed z-100 items-center gap-[50px]">
             <div className="relative inline-block">
                 <span ref={spanRefFormName} className="absolute top-0 left-0 text-[20px] font-[600] invisible whitespace-pre px-1 border-none">
-                    {displayValue || " "}
+                    {displayValue || ""}
                 </span>
                 <input ref={inputRefFormName} type="text" value={displayValue} onChange={(e) => handleChangeFormName(e.target.value)} className="outline-none text-[20px] font-[600] "/>
             </div>
@@ -140,7 +141,7 @@ function CreateNewForm() {
             <div className="w-full bg-[#fff] border-t-[10px] border-[#7248b9] rounded-[10px] py-[30px] px-[20px]">
                 <div className="relative inline-block">
                     <span ref={spanRefFormTitle} className="absolute top-0 left-0 text-[35px] font-[600] invisible whitespace-pre px-1 border-none">
-                        {displayValueTitle || " "}
+                        {displayValueTitle || ""}
                     </span>
                     <input ref={inputRefFormTitle} type="text" value={displayValueTitle} onChange={(e) => handleChangeFormTitle(e.target.value)} className="outline-none text-[35px] font-[600] "/>
                 </div>

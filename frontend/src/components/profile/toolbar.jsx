@@ -63,10 +63,10 @@ function HeaderToolbar({selectedUsers, showModal}) {
         onSuccess: () => {queryClient.invalidateQueries(["users"])},
     });
 
-    // ==================== ADD TO ADMINS =====================
+    // ==================== REMOVE FROM ADMINS =====================
     const removeFromAdmins = useMutation({
         mutationFn: async () => {
-            if (selectedUsers.includes(user.id)) {showModal('removeAdmin')} 
+            if (selectedUsers.includes(user.id)) {showModal('user')} 
             else {await axios.patch(`${API}/api/users/role`, {userIds: selectedUsers, role: 'user',}, {
                 headers: {Authorization: `Bearer ${token}`},
             })}
