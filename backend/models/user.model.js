@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('User', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -27,4 +27,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     },
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.Template, {
+      foreignKey: 'authorId',
+      as: 'templates',
+    });
+  };
+
+  return User;
 };

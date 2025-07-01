@@ -15,11 +15,11 @@ import TemplatesTableView from "./templates-table-view";
 const API = import.meta.env.VITE_API
 
 function ResentTempletes() {
+    const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     const [authorValue, setAuthorValue] = useState('anyone');
-    const [cardsView, setCardsView] = useState(false)
+    const cardsView = searchParams.get("template-view") || "card"
     const token = localStorage.getItem('token')
-    const [searchParams, setSearchParams] = useSearchParams()
 
     // get my data
     const fetchMyData = async () => {
@@ -58,7 +58,7 @@ function ResentTempletes() {
         }
     };
     const { data: LatestTemplates, isLoading: loading} = useQuery({
-        queryKey: ["latest-templates", sortByCreators],
+        queryKey: ["latest-templates", sortByCreators, cardsView],
         queryFn: fetchLatestTempletes,
     });
     console.log(LatestTemplates)
@@ -68,7 +68,8 @@ function ResentTempletes() {
     }
 
     function handleChangeButtonType(caseView) {
-        setCardsView(caseView)
+        searchParams.set("template-view", caseView)
+        setSearchParams(searchParams)
     }
   return (
     <section className="py-[30px] bg-[#fff] px-5 md:px-10 ">
@@ -91,15 +92,15 @@ function ResentTempletes() {
                             </Select>
                         </FormControl>
                     </div>}
-                    {!cardsView && <Tooltip title="Table view">
-                        <button onClick={() => handleChangeButtonType(true)} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444]"/></button>
+                    {cardsView == "card" && <Tooltip title="Table view">
+                        <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444]"/></button>
                     </Tooltip>}
-                    {cardsView && <Tooltip title="Card view">
-                        <button onClick={() => handleChangeButtonType(false)} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444]"/></button>
+                    {cardsView == "table" && <Tooltip title="Card view">
+                        <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444]"/></button>
                     </Tooltip>}
                 </div>
             </div>
-            {!cardsView && <div className="max-w-[1200px] mx-auto grid-cols-1 sm:grid-cols-3 md:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
+            {cardsView == "card" && <div className="max-w-[1200px] mx-auto grid-cols-1 sm:grid-cols-3 md:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
                 {LatestTemplates?.map(item => (
                     <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden w-[180px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
                         <div className="w-full h-[150px]">
@@ -108,7 +109,7 @@ function ResentTempletes() {
                         <div className="flex items-center justify-between px-[5px]">
                             <div className="flex items-center">
                                 {item.isPublished && <Tooltip title="published">
-                                    <TbLivePhotoFilled className="text-[#2dee20]"/>
+                                    <TbLivePhotoFilled className="text-[#2dee20] shrink-0"/>
                                 </Tooltip>}
                                 <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1">{item.title}</h4>
                             </div>
@@ -130,7 +131,7 @@ function ResentTempletes() {
                     </div>
                 )}
             </div>}
-            {cardsView && <TemplatesTableView LatestTemplates={LatestTemplates}/>}
+            {cardsView == "table" && <TemplatesTableView loading={loading} LatestTemplates={LatestTemplates}/>}
         </div>
     </section>
   )

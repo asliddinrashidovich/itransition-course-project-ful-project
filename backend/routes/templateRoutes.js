@@ -6,6 +6,8 @@ const {
   deleteTemplate,
   updateTemplate,
   publishTemplate,
+  deleteTemplates,
+  updateTemplateAccess,
 } = require('../controllers/templateController')
 const { protect } = require('../middlewares/authMiddleware')
 const {
@@ -20,12 +22,14 @@ const router = express.Router()
 router.get('/', getPublicTemplates)
 router.get('/:id', protect, getTemplateById)
 router.post('/', protect, createTemplate)
+router.delete('/bulk', protect, deleteTemplates);
 router.delete('/:id', protect, deleteTemplate)
 router.put('/:id', protect, updateTemplate)
+router.patch('/:id/access', protect, updateTemplateAccess);
 router.patch('/:id/publish', protect, publishTemplate)  
 router.post('/:id/questions', protect, addQuestionToTemplate)
 router.put('/questions/:questionId', protect, updateQuestion)
-router.patch('/questions/:questionId/type', protect, updateQuestionType)
 router.put('/questions/:id/title', protect, updateQuestionTitle)
+router.patch('/questions/:questionId/type', protect, updateQuestionType)
 
 module.exports = router

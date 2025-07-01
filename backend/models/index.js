@@ -21,14 +21,11 @@ db.Template = require('./template.model')(sequelize, DataTypes);
 db.Question = require('./question.model')(sequelize, DataTypes);
 db.Answer = require('./answer.model')(sequelize, DataTypes);
 
-// 💡 Assotsiatsiyalar
-db.Template.belongsTo(db.User, { foreignKey: 'authorId', as: 'author' });
-db.User.hasMany(db.Template, { foreignKey: 'authorId', as: 'templates' });
+// ✅ Assotsiatsiyalarni chaqirish
+if (db.Answer.associate) db.Answer.associate(db);
+if (db.Question.associate) db.Question.associate(db);
+if (db.Template.associate) db.Template.associate(db);
+if (db.User.associate) db.User.associate(db);
 
-db.Question.belongsTo(db.Template, { foreignKey: 'templateId' });
-db.Template.hasMany(db.Question, { foreignKey: 'templateId', as: 'questions' });
-
-db.Answer.belongsTo(db.Template, { foreignKey: 'templateId' });
-db.Answer.belongsTo(db.Question, { foreignKey: 'questionId' });
 
 module.exports = db;

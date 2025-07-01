@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import AllQuestions from "./questions";
 import PublishForm from "./publish-form";
 import AnswersPage from "./answers-page";
+import ShareTemplate from "./share-template";
 
 const API = import.meta.env.VITE_API
 
@@ -18,6 +19,7 @@ function CreateNewForm() {
     const [statusFormName, setStatusFormName] = useState('Saved')  
     const {id} = useParams()
     const token = localStorage.getItem('token')
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const spanRefFormName = useRef(null);
     const inputRefFormName = useRef(null);
@@ -135,7 +137,10 @@ function CreateNewForm() {
                 <li onClick={() => handleTabPage("settings")} className={`cursor-pointer border-b-[3px] ${formPage == "settings"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>Settings</li>
             </ul>
             <div className="text-xs text-gray-500 italic mt-1">{statusFormName === 'Saving...' ? 'Saving changes…' : statusFormName === 'Saved' ? 'All changes saved' : 'Error while saving'}</div>
-            <PublishForm LatestTemplate={LatestTemplate}/>
+            <div className="flex items-center gap-[20px] ml-auto">
+                <ShareTemplate isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <PublishForm LatestTemplate={LatestTemplate} setIsModalOpen={setIsModalOpen}/>
+            </div>
         </div>
         {(formPage == "questions" || formPage == "") && <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px]">
             <div className="w-full bg-[#fff] border-t-[10px] border-[#7248b9] rounded-[10px] py-[30px] px-[20px]">

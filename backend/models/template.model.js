@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Template', {
+  const Template = sequelize.define('Template', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -37,4 +37,30 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     },
   });
+
+  Template.associate = (models) => {
+    // Author (User) bilan bog‘lanish
+    Template.belongsTo(models.User, {
+      foreignKey: 'authorId',
+      as: 'author',
+      onDelete: 'SET NULL',
+    });
+
+    // Question bilan bog‘lanish
+    Template.hasMany(models.Question, {
+      as: 'questions',
+      foreignKey: 'templateId',
+      onDelete: 'CASCADE',
+      hooks: true,
+    });
+
+    // Answer bilan bog‘lanish (agar kerak bo‘lsa)
+    Template.hasMany(models.Answer, {
+      foreignKey: 'templateId',
+      onDelete: 'CASCADE',
+      hooks: true,
+    });
+  };
+
+  return Template;
 };

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Question', {
+  const Question = sequelize.define('Question', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -20,5 +20,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    templateId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Templates',
+        key: 'id',
+      },
+      onDelete: 'CASCADE', // 🔥 muhim
+    },
   });
+
+  // Association (bog‘lanish)
+  Question.associate = (models) => {
+    Question.belongsTo(models.Template, {
+      foreignKey: 'templateId',
+    });
+  };
+
+  return Question;
 };

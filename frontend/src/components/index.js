@@ -9,4 +9,4 @@ export {default as FormPreviewSection} from "./form-preview/form-preview-section
 export {default as ProfileDetails} from "./profile/profile"
 export {default as AccountDetails} from "./profile/account-details"
 export {default as UsersManagment} from "./profile/users"
-export {default as MyProducts} from "./profile/my-products"
+export {default as AllTemplates} from "./profile/all-products"

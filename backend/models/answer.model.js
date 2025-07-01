@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Answer', {
+  const Answer = sequelize.define('Answer', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -25,4 +25,19 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'answers',
     timestamps: true,
   });
+
+  // ✅ Bu juda muhim!
+  Answer.associate = (models) => {
+    Answer.belongsTo(models.Template, {
+      foreignKey: 'templateId',
+      onDelete: 'CASCADE',
+    });
+
+    Answer.belongsTo(models.Question, {
+      foreignKey: 'questionId',
+      onDelete: 'CASCADE',
+    });
+  };
+
+  return Answer;
 };

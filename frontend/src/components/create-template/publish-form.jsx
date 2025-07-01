@@ -4,11 +4,11 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { LuSlidersHorizontal } from "react-icons/lu";
-import { MdOutlineEditNote } from "react-icons/md";
+import { MdOutlineEditNote, MdPersonAddAlt1 } from "react-icons/md";
 
 const API = import.meta.env.VITE_API
 
-function PublishForm({LatestTemplate}) {
+function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenOptions, setIsModalOpenOptions] = useState(false);
     const {id} = useParams()
@@ -59,9 +59,13 @@ function PublishForm({LatestTemplate}) {
     }
     console.log(LatestTemplate)
 
+    function handleManagePublic() {
+        setIsModalOpen(false);
+        setIsModalOpenPublic(true)
+    }
 
   return (
-    <div className="ml-auto">
+    <div>
         {!LatestTemplate?.isPublished && <button onClick={showModal} className="bg-[#7248b9] text-[#fff] px-[15px] cursor-pointer py-[5px] rounded-[6px]">
             Publish
         </button>}
@@ -77,6 +81,20 @@ function PublishForm({LatestTemplate}) {
             okText={"Publish"}
             onCancel={handleCancel}
         >
+            <hr className="border-[#999] my-[20px]"/>
+            <div className="flex items-center justify-between">
+                <div className="flex items-start gap-[20px]">
+                    <MdPersonAddAlt1  className="text-[30px] text-[#777]"/>
+                    <div>
+                        <p className="text-[17px] font-[600] mb-[10px]">Responders</p>
+                        <div className="flex items-center gap-[10px]">
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">Public</p>
+                            <span>Anyone with the link</span>
+                        </div>
+                    </div>
+                </div>
+                <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">Manage</p>
+            </div>
             <hr className="border-[#999] my-[20px]"/>
             <p>Do you want to publish this form?</p>
         </Modal>

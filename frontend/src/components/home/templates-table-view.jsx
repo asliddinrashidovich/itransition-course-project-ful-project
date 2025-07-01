@@ -1,29 +1,14 @@
 import { Checkbox, Tooltip } from 'antd';
-import axios from "axios";
 import {  useState } from "react";
 import moment from 'moment';
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from 'react-router-dom';
-import ModalForTemplates from './modal-for-templates';
 import TableHeaderToolbar from './table-header-toolbar';
+import { useNavigate } from 'react-router-dom';
+import UsersSkeleton from '../skeleton/users-skeleton';
 
-const API = import.meta.env.VITE_API;
-
-function TemplatesTableView({LatestTemplates}) {
-    console.log(LatestTemplates)
+function TemplatesTableView({LatestTemplates, loading}) {
     const [selectAll, setSelectAll] = useState(false)
     const [selectedTemplates, setSelectedTemplates] = useState([])
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [methodMyself, setMethodMyself] = useState('block')
-
-    const token = localStorage.getItem('token')
     const navigate = useNavigate()
-    
-    // Modal to block or delete myself
-    const showModal = (method) => {
-        setIsModalOpen(true);
-        setMethodMyself(method)
-    };
 
     // select all users
     const handleSelectAll = (e) => {
@@ -35,36 +20,19 @@ function TemplatesTableView({LatestTemplates}) {
         } else  setSelectedTemplates([])
     }
 
-    // Selected users
-    const handleSelectUser = (userId, isChecked) => {
-        if (isChecked) setSelectedTemplates([...selectedTemplates, userId])
-        else  setSelectedTemplates(selectedTemplates.filter(id => id !== userId)) 
+    // Selected templates
+    const handleSelectTemplate = (templateId, isChecked) => {
+        if (isChecked) setSelectedTemplates([...selectedTemplates, templateId])
+        else  setSelectedTemplates(selectedTemplates.filter(id => id !== templateId)) 
     }
 
-    //===================== get All users =========================
-    async function getAllUsers() {
-        try {
-            const res = await axios.get(`${API}/api/users/all`, {
-                headers: {Authorization: `Bearer ${token}`}
-            });
-            return res.data
-        } 
-        catch(err) {console.log(err)}
+    function handleClick(id) {
+        navigate(`/templates/${id}`)
     }
 
-    const { data: AllUsers, isLoading: loading } = useQuery({
-      queryKey: ["users"],
-      queryFn: getAllUsers,
-    });
-
-    function handleLogout() {
-        localStorage.clear()
-        navigate('/')
-    }
-    
   return (
     <div className="px-[20px]">
-        <TableHeaderToolbar showModal={showModal} selectedUsers={selectedTemplates}/>
+        <TableHeaderToolbar   selectedTemplates={selectedTemplates}/>
         <div className='overflow-x-auto min-h-[62vh]'>
             <table className="w-full">
                 <thead>
@@ -85,40 +53,38 @@ function TemplatesTableView({LatestTemplates}) {
                     {LatestTemplates && LatestTemplates?.map((item) => (
                         <tr key={item.id} className="border-b-[1px] border-[#c1c1c1] ">
                             <td className="w-[50px] text-center ">
-                                <Checkbox onChange={(e) => handleSelectUser(item.id, e.target.checked)} checked={selectedTemplates.includes(item.id)}></Checkbox>
+                                <Checkbox onChange={(e) => handleSelectTemplate(item.id, e.target.checked)} checked={selectedTemplates.includes(item.id)}></Checkbox>
                             </td>
-                            <td className="py-[10px] ">
-                                <p className={`text-[15px] font-[400] text-[#000]`}>{item.title}</p>
+                            <td onClick={() => handleClick(item.id)} className="py-[10px] ">
+                                <p className={`text-[15px] font-[400] text-[#000] cursor-pointer`}>{item.title}</p>
                             </td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] text-[#000]`}>{item.author.name}</td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] text-[#000]`}>{item.access}</td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] text-[#000]`}>{item.isPublished ? "Published" : "Not Published"}</td>
-                            <td className={`text-[15px]  font-[400]  py-[10px] text-[#000] `}>
+                            <td onClick={() => handleClick(item.id)} className={`text-[15px]  cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item.author.name}</td>
+                            <td onClick={() => handleClick(item.id)} className={`text-[15px]  cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item.access}</td>
+                            <td onClick={() => handleClick(item.id)} className={`text-[15px]  cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item.isPublished ? "Published" : "Not Published"}</td>
+                            <td onClick={() => handleClick(item.id)} className={`text-[15px]  font-[400]  py-[10px] text-[#000] `}>
                                 <Tooltip placement="bottom" className='cursor-pointer' title={moment(item.updatedAt).format('MMMM D, YYYY HH:mm:ss')}  >
                                     {moment(item.updatedAt).format('DD/MM/YYYY')}
                                 </Tooltip>
                             </td>
                         </tr>
                     ))}
-                    {!loading && Array.isArray(AllUsers) && !AllUsers.length &&  (
+                    {!loading && Array.isArray(LatestTemplates) && !LatestTemplates.length &&  (
                         <tr>
                             <td colSpan={6} className="text-center">
-                                <h2 className="mt-[20px] text-[17px] font-[600]">No users</h2>
+                                <h2 className="mt-[20px] text-[17px] font-[600]">No Templates</h2>
                             </td>
                         </tr>
                     )}
                     {loading && (
                         <tr>
                             <td colSpan={6}>
-                                {/* <UsersSkeleton/> */}
-                                фывфыв
+                                <UsersSkeleton/>
                             </td>
                         </tr>
                     )}
                 </tbody>
             </table>
         </div>
-        <ModalForTemplates isModalOpen={isModalOpen} handleLogout={handleLogout} selectedUsers={selectedTemplates} setIsModalOpen={setIsModalOpen} methodMyself={methodMyself}/>
     </div>
   )
 }
