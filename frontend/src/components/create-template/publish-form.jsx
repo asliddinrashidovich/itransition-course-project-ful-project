@@ -5,10 +5,11 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { LuSlidersHorizontal } from "react-icons/lu";
 import { MdOutlineEditNote, MdPersonAddAlt1 } from "react-icons/md";
+import { FaUser } from "react-icons/fa6";
 
 const API = import.meta.env.VITE_API
 
-function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic}) {
+function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setRefreshTemplate}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenOptions, setIsModalOpenOptions] = useState(false);
     const {id} = useParams()
@@ -25,6 +26,7 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic}) {
                 Authorization: `Bearer ${token}`
             }
         }).then((res) => {
+            setRefreshTemplate(prev => !prev)
             toast.success(res.response?.data?.message || "Successfully Published");
         }).catch((err) => {
             toast.error(err.response?.data?.message || "Something went wrong");
@@ -45,10 +47,6 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic}) {
         setIsModalOpenOptions(false);
     };
 
-    const onChangeAccess = checked => {
-        console.log(`switch to ${checked}`);
-    };
-    
     function handleCopy(link) {
         navigator.clipboard.writeText(link).then(() => {
             toast.success('Link copied');
@@ -87,10 +85,14 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic}) {
                     <MdPersonAddAlt1  className="text-[30px] text-[#777]"/>
                     <div>
                         <p className="text-[17px] font-[600] mb-[10px]">Responders</p>
-                        <div className="flex items-center gap-[10px]">
+                        {LatestTemplate?.access == "public" &&  <div className="flex items-center gap-[10px]">
                             <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">Public</p>
                             <span>Anyone with the link</span>
-                        </div>
+                        </div>}
+                        {LatestTemplate?.access == "restricted" &&  <div className="flex items-center gap-[10px]">
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#ffe481]">Restricted</p>
+                            <span>Specific people</span>
+                        </div>}
                     </div>
                 </div>
                 <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">Manage</p>
@@ -107,12 +109,30 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic}) {
             onCancel={handleCancelOptions}
         >
             <hr className="border-[#999] my-[20px]"/>
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-[10px]">
-                    <MdOutlineEditNote  className="text-[30px] text-[#777]"/>
-                    <p className="text-[17px] font-[600]">Accepting responses</p>
+           <div className="flex items-center justify-between">
+                <div className="flex items-start gap-[20px]">
+                    <MdPersonAddAlt1  className="text-[30px] text-[#777]"/>
+                    <div>
+                        <p className="text-[17px] font-[600] mb-[10px]">Responders</p>
+                        {LatestTemplate?.access == "public" &&  <div className="flex items-center gap-[10px]">
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">Public</p>
+                            <span>Anyone with the link</span>
+                        </div>}
+                        {LatestTemplate?.access == "restricted" &&  <div className="flex items-center gap-[10px]">
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#ffe481]">Restricted</p>
+                            <span>Specific people</span>
+                        </div>}
+                    </div>
                 </div>
-                <Switch defaultChecked onChange={onChangeAccess} />
+                <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">Manage</p>
+            </div>
+            <div className="flex  flex-col justify-between gap-[5px] mt-[30px]">
+                {LatestTemplate?.allowedUsers?.map((item, i) => (
+                    <div key={i} className="flex items-center gap-[10px] rounded-[5px] py-[4px] px-[10px] bg-[#e6e6e6] ">
+                        <FaUser  className="text-[13px] text-[#777]"/>
+                        <p className="text-[17px] font-[400]">{item}</p>
+                    </div>
+                ))}
             </div>
             <hr className="border-[#999] my-[20px]"/>
             <div className="flex items-center justify-between">

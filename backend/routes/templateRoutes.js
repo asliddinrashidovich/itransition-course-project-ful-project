@@ -14,7 +14,11 @@ const {
   addQuestionToTemplate,
   updateQuestion,
   updateQuestionType,
-  updateQuestionTitle
+  updateQuestionTitle,
+  deleteQuestion,
+  addOptionToQuestion,
+  deleteOptionFromQuestion,
+  updateOptionTitle
 } = require('../controllers/questionController')
 
 const router = express.Router()
@@ -29,7 +33,11 @@ router.patch('/:id/access', protect, updateTemplateAccess);
 router.patch('/:id/publish', protect, publishTemplate)  
 router.post('/:id/questions', protect, addQuestionToTemplate)
 router.put('/questions/:questionId', protect, updateQuestion)
+router.delete('/questions/:questionId', protect, deleteQuestion);
 router.put('/questions/:id/title', protect, updateQuestionTitle)
 router.patch('/questions/:questionId/type', protect, updateQuestionType)
+router.patch('/questions/:id/options',protect,  addOptionToQuestion);
+router.patch('/questions/:id/options/delete', protect, deleteOptionFromQuestion);
+router.patch('/questions/:id/options/update',protect, updateOptionTitle);
 
 module.exports = router

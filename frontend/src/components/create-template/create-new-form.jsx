@@ -20,6 +20,7 @@ function CreateNewForm() {
     const {id} = useParams()
     const token = localStorage.getItem('token')
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [refreshTemplate, setRefreshTemplate] = useState(false);
 
     const spanRefFormName = useRef(null);
     const inputRefFormName = useRef(null);
@@ -100,7 +101,7 @@ function CreateNewForm() {
         return res.data
     };
     const { data: LatestTemplate} = useQuery({
-        queryKey: ["latest-template"],
+        queryKey: ["latest-template", refreshTemplate],
         queryFn: fetchLatestTemplete,
     });
 
@@ -138,8 +139,8 @@ function CreateNewForm() {
             </ul>
             <div className="text-xs text-gray-500 italic mt-1">{statusFormName === 'Saving...' ? 'Saving changes…' : statusFormName === 'Saved' ? 'All changes saved' : 'Error while saving'}</div>
             <div className="flex items-center gap-[20px] ml-auto">
-                <ShareTemplate isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
-                <PublishForm LatestTemplate={LatestTemplate} setIsModalOpen={setIsModalOpen}/>
+                <ShareTemplate setRefreshTemplate={setRefreshTemplate} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <PublishForm setRefreshTemplate={setRefreshTemplate} LatestTemplate={LatestTemplate} setIsModalOpen={setIsModalOpen}/>
             </div>
         </div>
         {(formPage == "questions" || formPage == "") && <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px]">

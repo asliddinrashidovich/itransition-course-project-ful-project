@@ -20,6 +20,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    options: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    defaultValue: [],
+    get() {
+      const raw = this.getDataValue('options');
+      const type = this.getDataValue('type');
+
+      if (type === 'checkbox' && (!raw || raw.length === 0)) {
+        return ['Option 1'];
+      }
+        return raw;
+      },
+    },
+
     templateId: {
       type: DataTypes.UUID,
       allowNull: false,

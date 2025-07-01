@@ -8,49 +8,179 @@ const { Template, Question } = require("../models");
 // Savol qo‘shish
 exports.addQuestionToTemplate = async (req, res) => {
   try {
-    const { id } = req.params; // template ID
-    const { title = 'Untitled question', description = '', type = 'short_text', showInResults = false } = req.body;
+    const { id } = req.params; // Template ID
+    const {
+      title = 'Untitled question',
+      description = '',
+      type = 'short_text',
+      showInResults = false,
+      options = [],
+    } = req.body;
 
     const template = await Template.findByPk(id);
     if (!template) return res.status(404).json({ message: 'Template not found' });
+
+    // Agar type checkbox bo‘lsa, kamida bitta option bo‘lishi kerak
+    let finalOptions = [];
+    if (type === 'checkbox') {
+      finalOptions = options.length > 0 ? options : ['Option 1'];
+    }
 
     const question = await Question.create({
       title,
       description,
       type,
       showInResults,
-      templateId: id
+      templateId: id,
+      options: finalOptions,
     });
 
     res.status(201).json(question);
   } catch (err) {
-    console.error(err);
+    console.error('addQuestionToTemplate error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
+
 exports.updateQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const { title, description, type, showInResults } = req.body;
+    const { title, description, type, showInResults, options } = req.body;
 
     const question = await Question.findByPk(questionId);
     if (!question) return res.status(404).json({ message: 'Question not found' });
 
-    // Faqat mavjud (undefined bo'lmagan) qiymatlarni yangilaymiz
     if (title !== undefined) question.title = title;
     if (description !== undefined) question.description = description;
     if (type !== undefined) question.type = type;
     if (showInResults !== undefined) question.showInResults = showInResults;
 
+    if (type === 'checkbox') {
+      // checkbox bo‘lsa, kamida bitta option bo‘lishi shart
+      question.options = Array.isArray(options) && options.length > 0 ? options : ['Option 1'];
+    } else {
+      // boshqa turlarda options bo‘sh bo‘lishi kerak
+      question.options = [];
+    }
+
     await question.save();
 
     res.json({ message: 'Question updated', question });
   } catch (err) {
-    console.error(err);
+    console.error('updateQuestion error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// PATCH /api/templates/questions/:id/options
+exports.addOptionToQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { newOption } = req.body;
+
+    // 1. Questionni topamiz
+    const question = await Question.findByPk(id);
+    if (!question) return res.status(404).json({ message: 'Question not found' });
+
+    // 2. Faqat checkbox bo‘lsa ruxsat
+    if (question.type !== 'checkbox') {
+      return res.status(400).json({ message: 'Only checkbox-type supports options' });
+    }
+
+    // 3. Mavjud optionsga yangi optionni qo‘shamiz
+    const currentOptions = question.options || [];
+    const updatedOptions = [...currentOptions, newOption || `Option ${currentOptions.length + 1}`];
+
+    // 4. Saqlaymiz
+    question.options = updatedOptions;
+    await question.save();
+
+    res.json({ message: 'Option added', options: updatedOptions });
+  } catch (err) {
+    console.error('addOptionToQuestion error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// PATCH /api/templates/questions/:id/options/update
+exports.updateOptionTitle = async (req, res) => {
+  try {
+    const { id } = req.params; // questionId
+    const { oldOption, newOption } = req.body;
+
+    if (!oldOption || !newOption) {
+      return res.status(400).json({ message: 'Both oldOption and newOption are required' });
+    }
+
+    const question = await Question.findByPk(id);
+    if (!question) return res.status(404).json({ message: 'Question not found' });
+
+    if (question.type !== 'checkbox') {
+      return res.status(400).json({ message: 'Only checkbox-type supports options' });
+    }
+
+    const currentOptions = question.options || [];
+
+    // oldOption mavjudligini tekshiramiz
+    if (!currentOptions.includes(oldOption)) {
+      return res.status(400).json({ message: 'Option not found in this question' });
+    }
+
+    // Titleni almashtiramiz
+    const updatedOptions = currentOptions.map(opt => opt === oldOption ? newOption : opt);
+
+    question.options = updatedOptions;
+    await question.save();
+
+    res.json({ message: 'Option title updated', options: updatedOptions });
+  } catch (err) {
+    console.error('updateOptionTitle error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+// PATCH /api/templates/questions/:id/options/delete
+exports.deleteOptionFromQuestion = async (req, res) => {
+  try {
+    const { id } = req.params; // questionId
+    const { option } = req.body; // option text to remove
+
+    const question = await Question.findByPk(id);
+    if (!question) {
+      return res.status(404).json({ message: 'Question not found' });
+    }
+
+    if (question.type !== 'checkbox') {
+      return res.status(400).json({ message: 'Only checkbox-type supports options' });
+    }
+
+    const currentOptions = question.options || [];
+
+    // Agar option mavjud bo'lmasa, error beramiz
+    if (!currentOptions.includes(option)) {
+      return res.status(400).json({ message: 'Option not found in this question' });
+    }
+
+    // Optionni filter qilib o'chiramiz
+    const updatedOptions = currentOptions.filter(opt => opt !== option);
+
+    // Kamida 1 ta option qolishi shart
+    if (updatedOptions.length === 0) {
+      return res.status(400).json({ message: 'At least one option is required' });
+    }
+
+    question.options = updatedOptions;
+    await question.save();
+
+    res.json({ message: 'Option deleted', options: updatedOptions });
+  } catch (err) {
+    console.error('deleteOptionFromQuestion error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 exports.updateQuestionType = async (req, res) => {
   try {
@@ -92,6 +222,24 @@ exports.updateQuestionTitle = async (req, res) => {
     res.json({ message: 'Question title updated', question });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.deleteQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+
+    const question = await Question.findByPk(questionId);
+    if (!question) {
+      return res.status(404).json({ message: 'Question not found' });
+    }
+
+    await question.destroy();
+
+    res.json({ message: 'Question deleted successfully' });
+  } catch (err) {
+    console.error('❌ deleteQuestion error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };

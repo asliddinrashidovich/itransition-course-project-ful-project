@@ -3,17 +3,18 @@ import { Modal, Select, Switch, Tooltip } from "antd"
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { FaLock, FaUserPlus } from "react-icons/fa6"
-import { IoLinkOutline } from "react-icons/io5"
+import { FaLock, FaUser, FaUserPlus } from "react-icons/fa6"
 import { useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const API = import.meta.env.VITE_API
 
-function ShareTemplate({setIsModalOpen, isModalOpen}) {
+function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
     const token = localStorage.getItem('token')
     const [accessType, setAccessType] = useState("public")
     const {id} = useParams()
     const [selectedItems, setSelectedItems] = useState([]);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
     
     const showModal = () => {
         setIsModalOpen(true);
@@ -44,23 +45,39 @@ function ShareTemplate({setIsModalOpen, isModalOpen}) {
     };
     const filteredOptions = AllUsers?.filter(o => !selectedItems.includes(o.name));
 
+    // get template details
+    const fetchLatestTemplete = async () => {
+        const res = await axios.get(`${API}/api/templates/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        setAccessType(res?.data?.access)
+        setSelectedItems(res?.data?.allowedUsers)
+        return res.data
+    };
+    const { data: LatestTemplate} = useQuery({
+        queryKey: ["latest-template"],
+        queryFn: fetchLatestTemplete,
+    });
+
+    console.log(LatestTemplate)
+
     
     // change public or restricted
     const handleOk = async () => {
+        setLoadingSubmit(true)
         try {
             await axios.patch(`${API}/api/templates/${id}/access`, { allowedUsers: selectedItems, access: accessType}, {
                 headers: { Authorization: `Bearer ${token}`}
             })
             setIsModalOpen(false)
+            setRefreshTemplate(prev => !prev)
+            setLoadingSubmit(false)
         } catch (err) {
             toast.error(err.response?.data?.message || "Something went wrong");
         }
     };
   return (
     <div className="flex items-center gap-[20px]"> 
-        <Tooltip title="copy link">
-            <IoLinkOutline className="text-[#555] text-[22px] cursor-pointer"/>
-        </Tooltip>
         <Tooltip title="share">
             <FaUserPlus onClick={showModal} className="text-[#555] text-[22px] cursor-pointer"/>
         </Tooltip>
@@ -90,15 +107,26 @@ function ShareTemplate({setIsModalOpen, isModalOpen}) {
                     <FaLock  className="text-[15px] text-[#777]"/>
                     <p className="text-[17px] font-[600]">Anyone with the link</p>
                 </div>
-                <Switch defaultChecked onChange={onChangeAccess} />
+                <Switch checked={accessType == "public"} onChange={onChangeAccess} />
             </div>
             <hr className="border-[#999] my-[20px]"/>
-            <p className="mt-[20px]">Only users you select can fill out this form.</p>
+            <div className="flex  flex-col justify-between gap-[5px]">
+                {LatestTemplate?.allowedUsers?.map((item, i) => (
+                    <div key={i} className="flex items-center gap-[10px] rounded-[5px] py-[4px] px-[10px] bg-[#e6e6e6] ">
+                        <FaUser  className="text-[13px] text-[#777]"/>
+                        <p className="text-[17px] font-[400]">{item}</p>
+                    </div>
+                ))}
+            </div>
+            {LatestTemplate?.allowedUsers.length > 0 && <hr className="border-[#999] my-[20px]"/>}
             <div className="flex items-center justify-between mt-[20px]">
                 <div></div>
                 <div className="flex items-center">
                     <button onClick={handleCancel} className="py-[5px] px-[15px] rounded-[20px] text-[#7248b9] cursor-pointer">Cancel</button>
-                    <button disabled={selectedItems?.length == 0} onClick={handleOk} className={` py-[5px] px-[15px] rounded-[20px] ${selectedItems?.length == 0 ? "bg-[#a076e7] cursor-not-allowed" : "bg-[#482585] cursor-pointer"}  text-[#fff] `}>Share</button>
+                    {!loadingSubmit && <button onClick={handleOk} className={`py-[5px] px-[15px] rounded-[20px] bg-[#482585] cursor-pointer  text-[#fff] `}>Share</button>}
+                    {loadingSubmit && <button  className="py-[5px] px-[15px] rounded-[20px] bg-[#482585] cursor-pointer  text-[#fff]  w-[65px] ">
+                        <ClipLoader size={20} color="#fff" className="text-[#fff]" />
+                    </button>}
                 </div>
             </div>
         </Modal>
