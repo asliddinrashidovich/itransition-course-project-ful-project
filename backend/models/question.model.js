@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 module.exports = (sequelize, DataTypes) => {
   const Question = sequelize.define('Question', {
     id: {
@@ -21,19 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     },
     options: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-    defaultValue: [],
-    get() {
-      const raw = this.getDataValue('options');
-      const type = this.getDataValue('type');
-
-      if (type === 'checkbox' && (!raw || raw.length === 0)) {
-        return ['Option 1'];
-      }
-        return raw;
-      },
+      type: DataTypes.JSONB,
+      allowNull: false,
+      defaultValue: [],
     },
-
     templateId: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -41,11 +34,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Templates',
         key: 'id',
       },
-      onDelete: 'CASCADE', // 🔥 muhim
+      onDelete: 'CASCADE',
     },
   });
 
-  // Association (bog‘lanish)
   Question.associate = (models) => {
     Question.belongsTo(models.Template, {
       foreignKey: 'templateId',

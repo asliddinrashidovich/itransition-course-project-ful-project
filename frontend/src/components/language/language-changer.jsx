@@ -1,8 +1,12 @@
+import { useDispatch } from 'react-redux';
+import { setLanguage } from '../../reducers/languageSlice';
 import { Select } from 'antd';
 
 function LanguageChanger() {
+  const dispatch = useDispatch();
+
   const handleLanguageChange = (e) => {
-    console.log(e)
+    dispatch(setLanguage(e));
   };
 
   return (
@@ -13,13 +17,12 @@ function LanguageChanger() {
                 boxShadow: 'none',
                 borderRadius: 0,
             }}
-            defaultValue="uz"
+            defaultValue="en"
             style={{ width: 60 }}
             onChange={handleLanguageChange}
             options={[
-                { value: 'uz', label: 'uz' },
                 { value: 'en', label: 'en' },
-                { value: 'ru', label: 'ru' },
+                { value: 'uz', label: 'uz' },
             ]}
         />
     </div>

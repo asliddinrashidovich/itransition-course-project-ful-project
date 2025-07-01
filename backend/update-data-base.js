@@ -1,9 +1,8 @@
-// scripts/update-constraints.js
-require("dotenv").config();
-const { Sequelize } = require("sequelize");
+require('dotenv').config();
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "postgres",
+  dialect: 'postgres',
   dialectOptions: {
     ssl: {
       require: true,
@@ -12,34 +11,33 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   },
 });
 
-const run = async () => {
+async function fixOptionsColumn() {
   try {
     await sequelize.authenticate();
-    console.log("Database connected.");
+    console.log('✅ Database connected');
 
-    // 1. Eski constraint'ni olib tashlash
-    await sequelize.query(`ALTER TABLE "answers" DROP CONSTRAINT IF EXISTS "Answers_templateId_fkey";`);
-    
-    // 2. Yangi constraint qo‘shish: ON DELETE CASCADE
+    // 1. NULL qiymatlarni tozalaymiz
+    console.log('🔄 Updating NULL options to []...');
     await sequelize.query(`
-      ALTER TABLE "answers"
-      ADD CONSTRAINT "Answers_templateId_fkey"
-      FOREIGN KEY ("templateId") REFERENCES "Templates"("id") ON DELETE CASCADE;
+      UPDATE "Questions"
+      SET "options" = '[]'::jsonb
+      WHERE "options" IS NULL;
     `);
 
-    // optional: questionId constraint ham yangilash
-    await sequelize.query(`ALTER TABLE "answers" DROP CONSTRAINT IF EXISTS "answers_questionId_fkey";`);
+    // 2. Ustunni JSONB, NOT NULL va DEFAULT bilan yangilaymiz
+    console.log('⚙️  Altering column "options"...');
     await sequelize.query(`
-      ALTER TABLE "answers"
-      ADD CONSTRAINT "answers_questionId_fkey"
-      FOREIGN KEY ("questionId") REFERENCES "Questions"("id") ON DELETE CASCADE;
+      ALTER TABLE "Questions"
+        ALTER COLUMN "options" TYPE JSONB USING "options"::jsonb,
+        ALTER COLUMN "options" SET NOT NULL,
+        ALTER COLUMN "options" SET DEFAULT '[]'::jsonb;
     `);
 
-    console.log("Foreign key constraints updated with ON DELETE CASCADE.");
+    console.log('✅ Column fixed successfully!');
     await sequelize.close();
-  } catch (err) {
-    console.error("Error updating constraints:", err);
+  } catch (error) {
+    console.error('❌ Error during migration:', error);
   }
-};
+}
 
-run();
+fixOptionsColumn();

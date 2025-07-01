@@ -1,16 +1,18 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import HeaderSidebar from "./header-sidebar";
-import LanguageChanger from "./language-changer";
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
 import AuthComponent from "./auth-component";
 import { IoIosLogOut } from "react-icons/io";
 import { FaUser } from "react-icons/fa6";
+import LanguageChanger from "../language/language-changer";
+import { useTranslation } from "react-i18next";
 
 function Header() {
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
+    const {t} = useTranslation()
 
     const url = useLocation()
     const [scrolled, setScrolled] = useState(false);
@@ -37,7 +39,7 @@ function Header() {
             <button className="w-[50px] h-[50px] cursor-pointer transition-all duration-200 hover:bg-[#d5d8dc] rounded-[50%]  flex items-center justify-center">
                 <IoSearch className="text-[25px] "/>
             </button>
-            <input type="text" className="w-full md:w-[230px] lg:w-[450px]  outline-none h-[40px]" placeholder="Search"/>
+            <input type="text" className="w-full md:w-[230px] lg:w-[450px]  outline-none h-[40px]" placeholder={t('search')}/>
             <button className="w-[50px] h-[50px] cursor-pointer transition-all duration-200 hover:bg-[#d5d8dc] rounded-[50%]  flex items-center justify-center">
                 <MdClear className="text-[25px]"/>
             </button>

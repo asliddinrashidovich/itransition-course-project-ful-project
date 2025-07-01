@@ -76,11 +76,9 @@ function AllQuestions({setStatusFormName}) {
     const saveOptionTitle = debounce(async (questionId, oldOption, newOption) => {
         try {
             await axios.patch(`${API}/api/templates/questions/${questionId}/options/update`, {
-            oldOption,
-            newOption,
-            }, {
-            headers: { Authorization: `Bearer ${token}` }
-            });
+                oldOption,
+                newOption,
+            }, { headers: { Authorization: `Bearer ${token}` }});
             setStatusFormName("Saved");
         } catch (err) {
             toast.error(err.response?.data?.message || "Option title update failed");
@@ -103,12 +101,6 @@ function AllQuestions({setStatusFormName}) {
             setOptionValues(optionMap);
         }
     }, [LatestTemplate]);
-
-
-
-
-
-
 
 
     // question type changer
@@ -195,8 +187,8 @@ function AllQuestions({setStatusFormName}) {
             const input = titleInputRefs.current[q.id];
             const span = titleSpanRefs.current[q.id];
             if (input && span) {
-            span.textContent = questionTitles[q.id] || "Untitled Question";
-            input.style.width = span.offsetWidth + 5 + "px";
+                span.textContent = questionTitles[q.id] || "Untitled Question";
+                input.style.width = span.offsetWidth + 5 + "px";
             }
         });
     }, [questionTitles, LatestTemplate]);
@@ -231,7 +223,6 @@ function AllQuestions({setStatusFormName}) {
                                 <option value="checkbox">Checkboxes</option>
                             </select>
                         </div>
-                        
                     </div>
                     {item.type == 'short_text' && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] pb-[10px] border-b-[1px]  w-[50%]`}>Short answer text</p>}
                     {item.type == "paragraph" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] pb-[10px] border-b-[1px]   w-[65%]`}>Long answer text</p>}
@@ -241,7 +232,7 @@ function AllQuestions({setStatusFormName}) {
                             <div key={index} className="flex items-center justify-between w-full    ">
                                 <div className="flex items-center gap-[10px]">
                                     <div className="w-[15px] h-[15px] border-[1px] border-[#888] rounded-[3px]"></div>
-                                    {/* <p className="text-[#000]">{opt}  </p> */}
+                                    {/* <p className="text-[#000]">{opt} </p> */}
                                     <div className="relative inline-block">
                                         <span
                                         ref={(el) => {if (!optionSpanRefs.current[item.id]) optionSpanRefs.current[item.id] = {};
@@ -260,16 +251,20 @@ function AllQuestions({setStatusFormName}) {
                                         }}
                                         onChange={(e) => {
                                             const val = e.target.value;
+                                            const oldVal = optionValues[item.id]?.[index] || opt;
+
                                             setOptionValues(prev => ({
-                                            ...prev,
-                                            [item.id]: {
-                                                ...prev[item.id],
-                                                [index]: val
-                                            }
+                                                ...prev,
+                                                [item.id]: {
+                                                    ...prev[item.id],
+                                                    [index]: val
+                                                }
                                             }));
+
                                             setStatusFormName("Saving...");
-                                            saveOptionTitle(item.id, opt, val);
+                                            saveOptionTitle(item.id, oldVal, val);
                                         }}
+
                                         className="outline-none text-[16px] font-medium border-b border-[#aaa]"
                                         style={{
                                             width: optionSpanRefs.current?.[item.id]?.[index]?.offsetWidth + 5 || 'auto'
