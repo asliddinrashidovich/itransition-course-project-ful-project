@@ -4,7 +4,10 @@ function HomePage() {
   const token = localStorage.getItem('token')
   return (
     <>
-      {!token && <NonAuthHero/>}
+      {!token && <div>
+        <NonAuthHero/>
+        <ResentTempletes/>
+      </div>}
       {token && <div>
         <StartNewForm/>
         <ResentTempletes/>

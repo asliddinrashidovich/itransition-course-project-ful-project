@@ -17,7 +17,9 @@ function ResentTempletes() {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     const [authorValue, setAuthorValue] = useState('anyone');
+
     const cardsView = searchParams.get("template-view") || "card"
+    const search = searchParams.get("search") || ""
     const token = localStorage.getItem('token')
 
     // get my data
@@ -46,7 +48,14 @@ function ResentTempletes() {
     // get templates 
     const fetchLatestTempletes = async () => {
         const res = await axios.get(`${API}/api/templates`);
-        const allTemplates = res.data
+        const allItems = res.data    
+        const allTemplates = allItems.filter(templateItem => {
+            const titleMatch = templateItem.title.toLowerCase().includes(search.toLowerCase());
+            const authorMatch = templateItem.author.name.toLowerCase().includes(search.toLowerCase());
+            const formTitleMatch = templateItem.formTitle.toLowerCase().includes(search.toLowerCase());
+            const descriptionMatch = templateItem.description.toLowerCase().includes(search.toLowerCase());
+            return titleMatch || authorMatch || formTitleMatch || descriptionMatch
+        });
         if(sortByCreators == "anyone" && myData?.isAdmin) return allTemplates
         else if(sortByCreators == "not-me" && myData?.isAdmin) {
             const filtered = allTemplates.filter(temp => temp.author.id != myData.id)
@@ -57,7 +66,7 @@ function ResentTempletes() {
         }
     };
     const { data: LatestTemplates, isLoading: loading} = useQuery({
-        queryKey: ["latest-templates", sortByCreators, cardsView],
+        queryKey: ["latest-templates", sortByCreators, cardsView, search],
         queryFn: fetchLatestTempletes,
     });
     console.log(LatestTemplates)
@@ -103,7 +112,7 @@ function ResentTempletes() {
                 {LatestTemplates?.map(item => (
                     <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden w-[180px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
                         <div className="w-full h-[150px]">
-                            <img src="https://lagunatravelandtourism.com/wp-content/uploads/2025/03/IMG-Worlds-of-Adventure-dubai.jpg" alt="add button" className="w-full h-full object-cover"/>
+                            <img src="https://images.ctfassets.net/lzny33ho1g45/4ODoWVyzgicvbcb6J9ZZZ5/c0333ef44af8588fee18c1e6ed403fc7/Group_12549.jpg?w=1520&fm=jpg&q=31&fit=thumb&h=760" alt="add button" className="w-full h-full object-cover"/>
                         </div>
                         <div className="flex items-center justify-between px-[5px]">
                             <div className="flex items-center">
@@ -120,7 +129,7 @@ function ResentTempletes() {
                 ))}
                 {!loading && Array.isArray(LatestTemplates) && !LatestTemplates.length && (
                     <div className="col-span-1 md:col-span-3 lg:col-span-5 ">
-                        <NoData>You have not templates</NoData>
+                        <NoData>No templates</NoData>
                     </div>
                 )}
                 {loading && ( 

@@ -1,13 +1,13 @@
 const express = require('express')
 const {
   createTemplate,
-  getPublicTemplates,
   getTemplateById,
   deleteTemplate,
   updateTemplate,
   publishTemplate,
   deleteTemplates,
   updateTemplateAccess,
+  getTemplates,
 } = require('../controllers/templateController')
 const { protect } = require('../middlewares/authMiddleware')
 const {
@@ -24,7 +24,7 @@ const { getCommentsForTemplate, addComment, deleteComment } = require('../contro
 
 const router = express.Router()
 
-router.get('/', getPublicTemplates)
+router.get('/', getTemplates)
 router.get('/:id', protect, getTemplateById)
 router.post('/', protect, createTemplate)
 router.delete('/bulk', protect, deleteTemplates);

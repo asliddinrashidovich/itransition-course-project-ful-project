@@ -8,7 +8,6 @@ function LanguageChanger() {
   const handleLanguageChange = (e) => {
     dispatch(setLanguage(e));
   };
-
   return (
     <div>
         <Select

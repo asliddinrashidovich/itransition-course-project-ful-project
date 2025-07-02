@@ -4,7 +4,7 @@ import {  useState } from "react";
 import moment from 'moment';
 import { useQuery } from "@tanstack/react-query";
 import HeaderToolbar from './toolbar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ModalCompopnent from './modal';
 import UsersSkeleton from '../skeleton/users-skeleton';
 
@@ -13,11 +13,14 @@ const API = import.meta.env.VITE_API;
 function UsersManagment() {
     const [selectAll, setSelectAll] = useState(false)
     const [selectedUsers, setSelectedUsers] = useState([])
+    const [searchParams] = useSearchParams()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [methodMyself, setMethodMyself] = useState('block')
 
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
+    
+    const search = searchParams.get("search") || ""
     
     // Modal to block or delete myself
     const showModal = (method) => {
@@ -47,12 +50,18 @@ function UsersManagment() {
             const res = await axios.get(`${API}/api/users/all`, {
                 headers: {Authorization: `Bearer ${token}`}
             });
-            return res.data
+            const allUsers = res.data    
+            const filterd = allUsers.filter(userItem => {
+                const nameMatch = userItem.name.toLowerCase().includes(search.toLowerCase());
+                const emailMatch = userItem.email.toLowerCase().includes(search.toLowerCase());
+                return nameMatch || emailMatch
+            });
+            return filterd
         } 
         catch(err) {console.log(err)}
     }
     const { data: AllUsers, isLoading: loading } = useQuery({
-      queryKey: ["users"],
+      queryKey: ["users", search],
       queryFn: getAllUsers,
     });
 

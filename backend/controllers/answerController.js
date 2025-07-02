@@ -1,6 +1,6 @@
-// controllers/answerController.js
-// const Answer = require('../models/answer.model');
-const { Answer } = require("../models");
+const { Answer, Template, User } = require("../models");
+
+
 
 exports.submitAnswers = async (req, res) => {
   try {
@@ -10,6 +10,32 @@ exports.submitAnswers = async (req, res) => {
       return res.status(400).json({ message: 'Invalid answers array' });
     }
 
+    const template = await Template.findByPk(templateId);
+
+    if (!template) {
+      return res.status(404).json({ message: "Template not found" });
+    }
+
+    // ✅ 1. responder foydalanuvchini topamiz
+    const user = responderEmail
+      ? await User.findOne({ where: { email: responderEmail } })
+      : null;
+
+    const isOwner = user && user.id === template.authorId;
+    const isAllowed = template.allowedUsers.includes(responderEmail);
+    const isAdmin = user && user.role === 'admin';
+
+    // ✅ 2. Restricted bo‘lsa va user ruxsatga ega bo‘lmasa — taqiqlanadi
+    if (template.access === 'restricted' && !(isOwner || isAllowed || isAdmin)) {
+      return res.status(403).json({ message: "Access denied: You are not allowed to fill out this form" });
+    }
+
+    // ✅ 3. Egasi bo‘lsa — to‘ldirishiga ruxsat berilmaydi
+    if (isOwner) {
+      return res.status(403).json({ message: "Form creators cannot fill their own forms" });
+    }
+
+    // ✅ 4. Allaqachon to‘ldirganmi?
     const existing = await Answer.findOne({
       where: {
         templateId,
@@ -18,9 +44,10 @@ exports.submitAnswers = async (req, res) => {
     });
 
     if (existing) {
-      return res.status(400).json({ message: "You have already submitted this form, try with another email" });
+      return res.status(400).json({ message: "You have already submitted this form" });
     }
 
+    // ✅ 5. Saqlash
     const createdAnswers = await Promise.all(
       answers.map((answer) =>
         Answer.create({

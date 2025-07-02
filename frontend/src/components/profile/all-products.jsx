@@ -26,6 +26,7 @@ function AllTemplates() {
 
       // sort by sort
     const sortByCreators  = searchParams.get('sort-creatort') || 'anyone'
+    const search  = searchParams.get('search') || ''
     
     const updateSortBy = (sort) => {
         setAuthorValue(sort);
@@ -36,7 +37,14 @@ function AllTemplates() {
     // get templates 
     const fetchLatestTempletes = async () => {
         const res = await axios.get(`${API}/api/templates`);
-        const allTemplates = res.data
+        const allItems = res.data    
+        const allTemplates = allItems.filter(templateItem => {
+            const titleMatch = templateItem.title.toLowerCase().includes(search.toLowerCase());
+            const authorMatch = templateItem.author.name.toLowerCase().includes(search.toLowerCase());
+            const formTitleMatch = templateItem.formTitle.toLowerCase().includes(search.toLowerCase());
+            const descriptionMatch = templateItem.description.toLowerCase().includes(search.toLowerCase());
+            return titleMatch || authorMatch || formTitleMatch || descriptionMatch
+        });
         if(sortByCreators == "anyone" && myData?.isAdmin) return allTemplates
         else if(sortByCreators == "not-me" && myData?.isAdmin) {
             const filtered = allTemplates.filter(temp => temp.author.id != myData.id)
@@ -47,7 +55,7 @@ function AllTemplates() {
         }
     };
     const { data: LatestTemplates, isLoading: loading} = useQuery({
-        queryKey: ["latest-templates", sortByCreators],
+        queryKey: ["latest-templates", sortByCreators, search],
         queryFn: fetchLatestTempletes,
     });
 

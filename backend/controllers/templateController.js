@@ -50,24 +50,38 @@ exports.createTemplate = async (req, res) => {
 
 
 // Get all public templates
-exports.getPublicTemplates = async (req, res) => {
+exports.getTemplates = async (req, res) => {
   try {
+    const currentUser = req.user || null;
+
     const templates = await Template.findAll({
-      where: { access: 'public' },
       include: [{
         model: User,
         as: 'author',
-        attributes: ['id', 'name']
+        attributes: ['id', 'name', 'email']
       }],
       order: [['createdAt', 'DESC']],
     });
 
-    res.json(templates);
+    const visibleTemplates = templates.filter(template => {
+      if (template.access === 'public') return true;
+
+      if (!currentUser) return false;
+
+      const isOwner = template.authorId === currentUser.id;
+      const isAllowed = template.allowedUsers.includes(currentUser.email);
+      const isAdmin = currentUser.role === 'admin';
+
+      return isOwner || isAllowed || isAdmin;
+    });
+
+    res.status(200).json(visibleTemplates);
   } catch (err) {
-    console.error('getPublicTemplates error:', err.message, err.stack);
+    console.error('getTemplates error:', err.message, err.stack);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 exports.getTemplateById = async (req, res) => {
   try {
