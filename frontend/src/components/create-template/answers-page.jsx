@@ -28,9 +28,6 @@ function AnswersPage() {
         queryFn: fetchFormTemplete,
     });
 
-    console.log(FormTemplateQuestions)
-
-
     // get template answers
     const fetchAnswersTemplete = async () => {
         const res = await axios.get(`${API}/api/answers/template/${id}`, {
@@ -62,7 +59,7 @@ function AnswersPage() {
         </div>
         {!cardsView && <div className="flex flex-col gap-[20px]">    
             {TemplateAnswers?.map(item => (
-                <div className="w-full bg-[#fff] rounded-[10px] py-[20px] px-[20px]">
+                <div key={item.responderEmail} className="w-full bg-[#fff] rounded-[10px] py-[20px] px-[20px]">
                     <div className="flex items-center justify-between">
                         <h2 className="text-[22px] font-[600]">Responder Email: <span className="text-[18px] font-[300] ml-[10px]">{item.responderEmail}</span></h2>
                         <p className="text-[12px] mb-[10px]">{item.answers.length} responses</p>
@@ -71,7 +68,14 @@ function AnswersPage() {
                     {item.answers.map(itemAnswer => (
                         <div key={itemAnswer.questionId}>
                             <h3 className="text-[18px] font-[700] py-[10px]   w-full border-[#999]">{FormTemplateQuestions?.filter(questionTitle => questionTitle.id == itemAnswer.questionId)[0]?.title} ?</h3>
-                            <div className="bg-[#e6f2ff] cursor-pointer hover:bg-[#4c6279] hover:text-[#fff] transition-all duration-200 rounded-[10px] p-[10px] mb-[6px] w-full ">{itemAnswer?.value}</div>
+                            <div className="bg-[#e6f2ff] cursor-pointer hover:bg-[#4c6279] hover:text-[#fff] transition-all duration-200 rounded-[10px] p-[10px] mb-[6px] w-full ">
+                                {Array.isArray(itemAnswer.value)
+                                    ? itemAnswer.value.map((opt, idx) => (
+                                        <div key={idx}>{opt}</div>  
+                                    ))
+                                    : itemAnswer.value
+                                }
+                            </div>
                         </div>
                     ))}
                 </div>

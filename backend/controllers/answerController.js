@@ -10,7 +10,6 @@ exports.submitAnswers = async (req, res) => {
       return res.status(400).json({ message: 'Invalid answers array' });
     }
 
-    // ✅ 1. Tekshir: bu user shu formani to'ldirganmi?
     const existing = await Answer.findOne({
       where: {
         templateId,
@@ -19,16 +18,17 @@ exports.submitAnswers = async (req, res) => {
     });
 
     if (existing) {
-      return res.status(400).json({ message: "You have already submit this form, try with another email" });
+      return res.status(400).json({ message: "You have already submitted this form, try with another email" });
     }
 
-    // ✅ 2. Javoblarni saqlash
     const createdAnswers = await Promise.all(
       answers.map((answer) =>
         Answer.create({
           templateId,
           questionId: answer.questionId,
-          value: answer.value,
+          value: Array.isArray(answer.value)
+            ? JSON.stringify(answer.value)
+            : answer.value,
           responderEmail: responderEmail || null,
         })
       )
@@ -42,6 +42,7 @@ exports.submitAnswers = async (req, res) => {
 };
 
 
+
 exports.getAnswersByTemplateId = async (req, res) => {
   try {
     const { templateId } = req.params;
@@ -51,7 +52,6 @@ exports.getAnswersByTemplateId = async (req, res) => {
       order: [['createdAt', 'ASC']],
     });
 
-    // Group answers by responderEmail
     const grouped = {};
 
     for (const ans of allAnswers) {
@@ -63,11 +63,10 @@ exports.getAnswersByTemplateId = async (req, res) => {
 
       grouped[email].push({
         questionId: ans.questionId,
-        value: ans.value
+        value: tryParseJson(ans.value)
       });
     }
 
-    // Convert grouped object to array
     const result = Object.entries(grouped).map(([email, answers]) => ({
       responderEmail: email,
       answers
@@ -79,4 +78,14 @@ exports.getAnswersByTemplateId = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Yordamchi funksiya
+function tryParseJson(value) {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return value;
+  }
+}
+
 

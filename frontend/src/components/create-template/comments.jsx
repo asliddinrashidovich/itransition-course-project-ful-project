@@ -79,7 +79,7 @@ function Comments() {
                             {user.name == item.author.name && <button className="cursor-pointer" onClick={() => handleDelete(item.id)}><MdDeleteForever className="text-[#ff6363]"/></button>}
                         </div>
                     ))}
-                     {!loading && Array.isArray(comments) && !comments.length && (
+                    {!loading && Array.isArray(comments) && !comments.length && (
                         <div className="col-span-1 md:col-span-3 lg:col-span-5 ">
                             No Comments
                         </div>

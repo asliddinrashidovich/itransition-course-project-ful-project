@@ -19,11 +19,17 @@ function AnswersTableView({TemplateAnswers, FormTemplateQuestions}) {
                             {item.responderEmail}
                         </td>
                         {FormTemplateQuestions?.map(ItemQuestion => (
-                            <td key={ItemQuestion.questionId} className="py-[10px] ">
-                                {item.answers.filter(answerItem => answerItem.questionId == ItemQuestion.id).length  
-                                    ?  <p className="text-[15px]   font-[300]">{item.answers?.filter(itemAnswers => itemAnswers.questionId == ItemQuestion.id)[0]?.value}</p>  
-                                    :  <p>-</p>}
-                                <p className={`text-[15px]  font-[300]  `}></p>
+                            <td key={ItemQuestion.questionId} className="py-[10px]">
+                                {item.answers.filter(answerItem => answerItem.questionId === ItemQuestion.id).length  
+                                    ? (() => {
+                                        const answerVal = item.answers.find(a => a.questionId === ItemQuestion.id)?.value;
+                                        return (
+                                        <p className="text-[15px] font-[300]">
+                                            {Array.isArray(answerVal) ? answerVal.join(', ') : answerVal}
+                                        </p>
+                                        );
+                                    })()
+                                    : <p>-</p>}
                             </td>
                         ))}
                     </tr>
