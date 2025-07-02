@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import debounce from "lodash.debounce";
 import QuestionCardSkeleton from "../skeleton/question-card-skeleton";
 import { IoMdClose } from "react-icons/io";
+import { ClipLoader } from "react-spinners";
 
 
 const API = import.meta.env.VITE_API
@@ -18,6 +19,7 @@ function AllQuestions({setStatusFormName}) {
     const {id} = useParams()
     const token = localStorage.getItem('token')
     const [focusQuestion, setFocusQuestion] = useState("");
+    const [loadingAdd, setLoadingAdd] = useState(false)
 
 
     // get template details
@@ -33,6 +35,7 @@ function AllQuestions({setStatusFormName}) {
         queryKey: ["latest-templatee1", refreshQuestions],
         queryFn: fetchLatestTemplete,
     });
+
     // handle Add option
     const addOption = async (quesId) => {
         const nextNumber = (LatestTemplate?.questions?.find(q => q.id === quesId)?.options?.length || 0) + 1;
@@ -51,10 +54,10 @@ function AllQuestions({setStatusFormName}) {
     };
 
     // delete options
-    const handleDeleteOption = async (questionId, optionText) => {
+    const handleDeleteOption = async (questionId, optionId) => {
         try {
             await axios.patch(`${API}/api/templates/questions/${questionId}/options/delete`, {
-                option: optionText
+                optionId, // faqat id yuboramiz
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -67,18 +70,22 @@ function AllQuestions({setStatusFormName}) {
     };
 
 
+
     // edit question options title
     const [optionValues, setOptionValues] = useState({});   // { [questionId]: { [index]: "text" } }
     const optionInputRefs = useRef({});
     const optionSpanRefs = useRef({});
 
-    
-    const saveOptionTitle = debounce(async (questionId, oldOption, newOption) => {
+
+        
+   const saveOptionTitle = debounce(async (questionId, optionId, newText) => {
+        if (!newText?.trim()) return;
         try {
             await axios.patch(`${API}/api/templates/questions/${questionId}/options/update`, {
-                oldOption,
-                newOption,
-            }, { headers: { Authorization: `Bearer ${token}` }});
+            optionId,
+            newText,
+            }, { headers: { Authorization: `Bearer ${token}` } });
+
             setStatusFormName("Saved");
         } catch (err) {
             toast.error(err.response?.data?.message || "Option title update failed");
@@ -91,16 +98,17 @@ function AllQuestions({setStatusFormName}) {
         if (LatestTemplate?.questions) {
             const optionMap = {};
             LatestTemplate.questions.forEach((q) => {
-            if (q.type === "checkbox") {
-                optionMap[q.id] = {};
-                q.options.forEach((opt, idx) => {
-                optionMap[q.id][idx] = opt;
-                });
-            }
+                if (q.type === "checkbox") {
+                    optionMap[q.id] = {};
+                    q.options.forEach((opt, idx) => {
+                        optionMap[q.id][idx] = typeof opt === "object" ? opt.text : opt;
+                    });
+                }
             });
             setOptionValues(optionMap);
         }
     }, [LatestTemplate]);
+
 
 
     // question type changer
@@ -121,11 +129,13 @@ function AllQuestions({setStatusFormName}) {
 
     // add qaestion
     async function handleAddQuestion() {
-         await axios.post(`${API}/api/templates/${id}/questions`, {}, {
+        setLoadingAdd(true)
+        await axios.post(`${API}/api/templates/${id}/questions`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(() => {
+            setLoadingAdd(false)
             setRefreshQuestions(prev => prev ? false : true)
         }).catch((err) => {
             toast.error(err.response?.data?.message || "Something went wrong");
@@ -209,7 +219,7 @@ function AllQuestions({setStatusFormName}) {
                             <input
                                 ref={(el) => (titleInputRefs.current[item.id] = el)}
                                 type="text"
-                                value={questionTitles[item.id] || "Untitled Question"}
+                                value={questionTitles[item.id] || ""}
                                 onChange={(e) => handleTitleChange(e.target.value, item.id)}
                                 className={`outline-none text-[18px] font-[600] ${focusQuestion == item.id ? "border-[#999]" : "border-transparent"} border-b-[1px] border-[#999] w-full`}
                             />
@@ -231,48 +241,48 @@ function AllQuestions({setStatusFormName}) {
                         {item.options.map((opt, index) => (
                             <div key={index} className="flex items-center justify-between w-full    ">
                                 <div className="flex items-center gap-[10px]">
-                                    <div className="w-[15px] h-[15px] border-[1px] border-[#888] rounded-[3px]"></div>
-                                    {/* <p className="text-[#000]">{opt} </p> */}
-                                    <div className="relative inline-block">
+                                    <div className="shrink-0 w-[15px] h-[15px] border-[1px] border-[#888] rounded-[3px]"></div>
+                                    <div className="relative inline-block w-full">
                                         <span
-                                        ref={(el) => {if (!optionSpanRefs.current[item.id]) optionSpanRefs.current[item.id] = {};
+                                            ref={(el) => {
+                                            if (!optionSpanRefs.current[item.id]) optionSpanRefs.current[item.id] = {};
                                             optionSpanRefs.current[item.id][index] = el;
-                                        }}
-                                        className="absolute top-0 left-0 text-[16px] invisible whitespace-pre font-medium"
+                                            }}
+                                            className="absolute w-full top-0 left-0 text-[16px] invisible whitespace-pre font-medium"
                                         >
-                                        {optionValues[item.id]?.[index] || opt}
+                                            {optionValues[item.id]?.[index] ?? opt.text}
                                         </span>
+
                                         <input
-                                        type="text"
-                                        value={optionValues[item.id]?.[index] || opt}
-                                        ref={(el) => {
+                                            type="text"
+                                            value={optionValues[item.id]?.[index] ?? opt.text}
+                                            ref={(el) => {
                                             if (!optionInputRefs.current[item.id]) optionInputRefs.current[item.id] = {};
                                             optionInputRefs.current[item.id][index] = el;
-                                        }}
-                                        onChange={(e) => {
+                                            }}
+                                            onChange={(e) => {
                                             const val = e.target.value;
-                                            const oldVal = optionValues[item.id]?.[index] || opt;
 
-                                            setOptionValues(prev => ({
+                                            // Frontendni yangilash
+                                            setOptionValues((prev) => ({
                                                 ...prev,
                                                 [item.id]: {
-                                                    ...prev[item.id],
-                                                    [index]: val
-                                                }
+                                                ...prev[item.id],
+                                                [index]: val,
+                                                },
                                             }));
 
                                             setStatusFormName("Saving...");
-                                            saveOptionTitle(item.id, oldVal, val);
-                                        }}
 
-                                        className="outline-none text-[16px] font-medium border-b border-[#aaa]"
-                                        style={{
-                                            width: optionSpanRefs.current?.[item.id]?.[index]?.offsetWidth + 5 || 'auto'
-                                        }}
+                                            // ✅ id va yangi text bilan yuboramiz
+                                            saveOptionTitle(item.id, opt.id, val);
+                                            }}
+                                            className="outline-none text-[16px] w-[400px] font-medium border-b border-[#aaa]"
                                         />
-                                    </div>
+                                        </div>
+
                                 </div>
-                                <button onClick={() => handleDeleteOption(item.id, opt)} className="cursor-pointer">
+                                <button onClick={() => handleDeleteOption(item.id, opt.id)} className="cursor-pointer">
                                     <IoMdClose  className="text-[20px]"/>
                                 </button>
                             </div>
@@ -296,9 +306,12 @@ function AllQuestions({setStatusFormName}) {
             )}
         </div>
         <div className="w-full">
-            <button onClick={handleAddQuestion} className="w-[100%] mb-[20px] h-[50px] flex items-center justify-center rounded-[10px] cursor-pointer bg-[#fff] hover:bg-[#f6daff] transition-all duration-200">
+            {!loadingAdd && <button onClick={handleAddQuestion} className="w-[100%] mb-[20px] h-[50px] flex items-center justify-center rounded-[10px] cursor-pointer bg-[#fff] hover:bg-[#f6daff] transition-all duration-200">
                 <IoAddSharp className="text-[25px]"/>
-            </button>
+            </button>}
+            {loadingAdd && <button  className="w-[100%] mb-[20px] h-[50px] flex items-center justify-center rounded-[10px] cursor-pointer bg-[#fff] hover:bg-[#f6daff] transition-all duration-200">
+                <ClipLoader size={20} />
+            </button>}
         </div>
     </div>
   )

@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaTableList } from "react-icons/fa6";
 import { FaTableCellsLarge } from "react-icons/fa6";
-import { HiDotsVertical } from "react-icons/hi";
 import { TbLivePhotoFilled } from "react-icons/tb";
 import { Tooltip } from "antd";
 import NoData from "../no-data/no-data";
@@ -113,7 +112,6 @@ function ResentTempletes() {
                                 </Tooltip>}
                                 <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1">{item.title}</h4>
                             </div>
-                            <button className="cursor-pointer"><HiDotsVertical /></button>
                         </div>
                         <div className="mx-[10px] mb-[10px]">
                             <p className="text-[14px]">Creator: <span className="italic">{item.author.name}</span></p>

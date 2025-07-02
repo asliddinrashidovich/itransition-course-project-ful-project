@@ -8,13 +8,21 @@ const API = import.meta.env.VITE_API
 
 function LoginForm() {
   const navigate = useNavigate()
+  const isFromUserId = localStorage.getItem('isFromUserId')
+
+  // login
   const postLogin = async (values) => {
     const {email, password} = values
     await axios.post(`${API}/api/auth/login`, {password, email}).then((res) => {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('user', JSON.stringify(res.data.user))
-        navigate("/")
-        window.location.reload()
+        if(isFromUserId) {
+          navigate(`/form/${isFromUserId}`)
+          localStorage.removeItem('isFromUserId')
+        } else {
+          navigate("/")
+          window.location.reload()
+        }
       }).catch((err) => {
         toast.error(err.response?.data?.message || "Something went wrong");
       })

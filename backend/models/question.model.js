@@ -44,5 +44,28 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  // 💡 Hook: type checkbox bo‘lsa, options default Option 1
+  Question.beforeCreate((question, options) => {
+    if (question.type === 'checkbox' && (!question.options || question.options.length === 0)) {
+      question.options = [
+        {
+          id: uuidv4(),
+          text: 'Option 1',
+        }
+      ];
+    }
+  });
+
+  Question.beforeUpdate((question, options) => {
+    if (question.type === 'checkbox' && (!question.options || question.options.length === 0)) {
+      question.options = [
+        {
+          id: uuidv4(),
+          text: 'Option 1',
+        }
+      ];
+    }
+  });
+
   return Question;
 };

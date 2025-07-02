@@ -8,22 +8,27 @@ const API = import.meta.env.VITE_API
 
 function RegisterForm() {
     const navigate = useNavigate()
+    const isFromUserId = localStorage.getItem('isFromUserId')
+      
     const postRegister = async (values) => {  
       const {name, email, password} = values
-       
+      
       await axios.post(`${API}/api/auth/register`, {name, password, email}).then((res) => {
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('user', JSON.stringify(res.data.user))
-          navigate("/")
-          window.location.reload()
+          if(isFromUserId) {
+            navigate(`/form/${isFromUserId}`)
+            localStorage.removeItem('isFromUserId')
+          } else {
+            navigate("/")
+            window.location.reload()
+          }
         }).catch((err) => {
           toast.error(err.response?.data?.message || "Something went wrong");
         })
-    };
+      };
 
-    const handleSignupGoogle = async () => {
-
-    }
+      const handleSignupGoogle = async () => {}
   return  (
   <Form
     name="basic"

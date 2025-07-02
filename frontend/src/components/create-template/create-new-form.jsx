@@ -7,6 +7,7 @@ import AllQuestions from "./questions";
 import PublishForm from "./publish-form";
 import AnswersPage from "./answers-page";
 import ShareTemplate from "./share-template";
+import Comments from "./comments";
 
 const API = import.meta.env.VITE_API
 
@@ -24,15 +25,15 @@ function CreateNewForm() {
 
     const spanRefFormName = useRef(null);
     const inputRefFormName = useRef(null);
-    const displayValue = title.length > 0 ? title : "Untitled Form"
+    const displayValue = title.length > 0 ? title : ""
 
     const spanRefFormTitle = useRef(null);
     const inputRefFormTitle = useRef(null);
-    const displayValueTitle = formTitle.length > 0 ? formTitle : "Untitled Form"
+    const displayValueTitle = formTitle.length > 0 ? formTitle : ""
 
     const spanRefFormDec = useRef(null);
     const inputRefFormDec = useRef(null);
-    const displayValueDec = formDec.length > 0 ? formDec : "Form description"
+    const displayValueDec = formDec.length > 0 ? formDec : ""
 
 
     // auto save title 
@@ -124,7 +125,10 @@ function CreateNewForm() {
 
 
   return (
-    <section className=" pt-[80px] bg-[#f0ebf8] min-h-[100vh]">
+    <section className="pt-[80px] bg-[#f0ebf8] min-h-[100vh] relative">
+        <div className="fixed bottom-[30px] left-[30px] z-[101]">
+            <Comments/>
+        </div>
         <div className="w-full py-[10px] px-5 md:px-10 bg-[#e1e1e1] flex fixed z-100 items-center gap-[50px]">
             <div className="relative inline-block">
                 <span ref={spanRefFormName} className="absolute top-0 left-0 text-[20px] font-[600] invisible whitespace-pre px-1 border-none">
@@ -135,7 +139,6 @@ function CreateNewForm() {
             <ul className="flex items-center gap-[20px]">
                 <li onClick={() => handleTabPage("questions")} className={`cursor-pointer border-b-[3px] ${(formPage == "questions" || formPage == "") ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>Questions</li>
                 <li onClick={() => handleTabPage("responses")} className={`cursor-pointer border-b-[3px] ${formPage == "responses"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>Responses {TemplateAnswers?.length}</li>
-                <li onClick={() => handleTabPage("settings")} className={`cursor-pointer border-b-[3px] ${formPage == "settings"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>Settings</li>
             </ul>
             <div className="text-xs text-gray-500 italic mt-1">{statusFormName === 'Saving...' ? 'Saving changes…' : statusFormName === 'Saved' ? 'All changes saved' : 'Error while saving'}</div>
             <div className="flex items-center gap-[20px] ml-auto">
@@ -152,21 +155,16 @@ function CreateNewForm() {
                     <input ref={inputRefFormTitle} type="text" value={displayValueTitle} onChange={(e) => handleChangeFormTitle(e.target.value)} className="outline-none text-[35px] font-[600] "/>
                 </div>
                 <div className="relative inline-block w-full">
-                    <span ref={spanRefFormDec} className="absolute top-0 left-0 text-[20px] font-[600] invisible whitespace-pre px-1 border-none">
+                    <span ref={spanRefFormDec} className="absolute top-0 left-0 w-full text-[20px] font-[600] invisible whitespace-pre px-1 border-none">
                         {displayValueDec || ""}
                     </span>
-                    <input ref={inputRefFormDec} type="text" value={displayValueDec} onChange={(e) => handleChangeFormDec(e.target.value)} className="outline-none text-[17px] mt-[20px]  mb-[10px]  text-[#999]" placeholder="Form description"/>
+                    <input ref={inputRefFormDec} type="text" value={displayValueDec} onChange={(e) => handleChangeFormDec(e.target.value)} className="outline-none text-[17px] mt-[20px]  mb-[10px] w-[600px] text-[#999]" placeholder="Form description"/>
                 </div>
                 <hr />
             </div>
             <AllQuestions setStatusFormName={setStatusFormName}/>
         </div>}
         {formPage == "responses" && <AnswersPage/>}
-        {formPage == "settings" && <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px]">
-            <div className="w-full bg-[#fff]  rounded-[10px] py-[20px] px-[20px]">
-                <h2 className="text-[35px] font-[600] py-[10px]">settings</h2>
-            </div>
-        </div>}
     </section>
   )
 }

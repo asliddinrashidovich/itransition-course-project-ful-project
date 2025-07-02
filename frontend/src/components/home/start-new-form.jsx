@@ -9,7 +9,7 @@ function StartNewForm() {
     const token = localStorage.getItem('token')
 
     async function handleCreateNew(path) {
-        await axios.post(`${API}/api/templates`, { title: "Untitled Form", description: "", topic: "Other", isPublic: true}, {
+        await axios.post(`${API}/api/templates`, { title: "Untitled Form", description: "From Description", topic: "Other", isPublic: true}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

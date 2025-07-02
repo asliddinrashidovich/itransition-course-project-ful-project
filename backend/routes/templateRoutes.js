@@ -20,6 +20,7 @@ const {
   deleteOptionFromQuestion,
   updateOptionTitle
 } = require('../controllers/questionController')
+const { getCommentsForTemplate, addComment, deleteComment } = require('../controllers/commentController')
 
 const router = express.Router()
 
@@ -39,5 +40,8 @@ router.patch('/questions/:questionId/type', protect, updateQuestionType)
 router.patch('/questions/:id/options',protect,  addOptionToQuestion);
 router.patch('/questions/:id/options/delete', protect, deleteOptionFromQuestion);
 router.patch('/questions/:id/options/update',protect, updateOptionTitle);
+router.get('/:id/comments', getCommentsForTemplate);
+router.post('/:id/comments', protect, addComment);
+router.delete('/comments/:commentId', protect, deleteComment);
 
 module.exports = router
