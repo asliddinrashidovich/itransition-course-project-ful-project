@@ -1,50 +1,23 @@
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { FaTableList } from "react-icons/fa6";
 import { FaTableCellsLarge } from "react-icons/fa6";
 import { TbLivePhotoFilled } from "react-icons/tb";
 import { Tooltip } from "antd";
 import NoData from "../no-data/no-data";
 import TemplatesCardsSskeleton from "../skeleton/templates-cards-skeleton";
-import { useState } from "react";
-import { FormControl, MenuItem, Select } from "@mui/material"
 import TemplatesTableView from "./templates-table-view";
+import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API
 
-function ResentTempletes() {
+function PublicTemplates() {
     const [searchParams, setSearchParams] = useSearchParams()
-    const navigate = useNavigate()
-    const [authorValue, setAuthorValue] = useState('anyone');
 
     const cardsView = searchParams.get("template-view") || "card"
     const search = searchParams.get("search") || ""
-    const token = localStorage.getItem('token')
 
-    // get my data
-    const fetchMyData = async () => {
-        const res = await axios.get(`${API}/api/users/me`, {
-            headers: {Authorization: `Bearer ${token}`}
-        });
-        return res.data
-    };
-    const { data: myData} = useQuery({
-        queryKey: ["my-data-3"],
-        queryFn: fetchMyData,
-    });
-
-      // sort by sort
-    const sortByCreators  = searchParams.get('sort-creatort') || 'anyone'
-    
-    const updateSortBy = (sort) => {
-        setAuthorValue(sort);
-        searchParams.set('sort-creatort', sort)
-        setSearchParams(searchParams)
-    }
-
-    console.log(myData)
-    
     // get templates 
     const fetchLatestTempletes = async () => {
         const res = await axios.get(`${API}/api/templates`);
@@ -56,23 +29,15 @@ function ResentTempletes() {
             const descriptionMatch = templateItem.description.toLowerCase().includes(search.toLowerCase());
             return titleMatch || authorMatch || formTitleMatch || descriptionMatch
         });
-        if(sortByCreators == "anyone") return allTemplates
-        else if(sortByCreators == "not-me") {
-            const filtered = allTemplates.filter(temp => temp.author.id != myData.id)
-            return filtered
-        } else {
-            const filtered = allTemplates.filter(temp => temp.author.id == myData.id)
-            return filtered
-        }
+        return allTemplates
     };
     const { data: LatestTemplates, isLoading: loading} = useQuery({
-        queryKey: ["latest-templates", sortByCreators, cardsView, search],
+        queryKey: ["latest-templates", cardsView, search],
         queryFn: fetchLatestTempletes,
     });
-    console.log(LatestTemplates)
 
-    function handleClick(id) {
-        navigate(`/templates/${id}`)
+    function handleClick() {
+        toast.error("PLease Login,")
     }
 
     function handleChangeButtonType(caseView) {
@@ -83,23 +48,8 @@ function ResentTempletes() {
     <section className="py-[30px] bg-[#fff] px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400]">Recent forms</h5>
+                <h5 className="text-[#000] text-[18px] font-[400]">Public forms</h5>
                 <div className="flex items-center gap-[30px]">
-                    {token &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2>Sort by:</h2>
-                        <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
-                            <Select
-                                value={authorValue}
-                                onChange={(e) => updateSortBy(e.target.value)}
-                                displayEmpty
-                                inputProps={{ 'aria-label': 'Without label' }}
-                            >
-                                <MenuItem value={'anyone'}>Owned by anyone</MenuItem>
-                                <MenuItem value={"me"}>Owned by me</MenuItem>
-                                <MenuItem value={"not-me"}>Not owned by me</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>}
                     {cardsView == "card" && <Tooltip title="Table view">
                         <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444]"/></button>
                     </Tooltip>}
@@ -144,4 +94,4 @@ function ResentTempletes() {
   )
 }
 
-export default ResentTempletes
+export default PublicTemplates

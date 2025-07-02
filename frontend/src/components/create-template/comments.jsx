@@ -72,7 +72,7 @@ function Comments() {
                                     <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" alt="author img" />
                                 </div>
                                 <div>
-                                    <h4 className="text-[14px] font-[400] italic">{item.author.name} <span>({user.name == item.author.name && "you" })</span></h4>
+                                    <h4 className="text-[14px] font-[400] italic">{item.author.name} <span>{user.name == item.author.name && "(you)" }</span></h4>
                                     <p className="text-[14px] font-[600]">{item.text}</p>
                                 </div>
                             </div>

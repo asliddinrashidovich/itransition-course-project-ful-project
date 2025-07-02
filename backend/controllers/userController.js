@@ -1,12 +1,8 @@
 const { User } = require("../models");
 
-// [GET] /api/users/all – faqat admin ko‘radi
+// [GET] /api/users/all – barcha ro‘yxat ko‘rishi mumkin
 exports.getAllUsers = async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Access denied' });
-    }
-
     const users = await User.findAll({
       attributes: ['id', 'name', 'email', 'isAdmin', 'isBlocked', 'createdAt'],
       order: [['createdAt', 'DESC']],

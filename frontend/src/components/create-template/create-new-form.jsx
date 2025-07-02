@@ -8,6 +8,8 @@ import PublishForm from "./publish-form";
 import AnswersPage from "./answers-page";
 import ShareTemplate from "./share-template";
 import Comments from "./comments";
+import toast from "react-hot-toast";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const API = import.meta.env.VITE_API
 
@@ -21,6 +23,7 @@ function CreateNewForm() {
     const {id} = useParams()
     const token = localStorage.getItem('token')
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [refreshLiked, setRefreshLikes] = useState(false);
     const [refreshTemplate, setRefreshTemplate] = useState(false);
 
     const spanRefFormName = useRef(null);
@@ -52,7 +55,7 @@ function CreateNewForm() {
             })
             setStatusFormName('Saved')
         } catch (err) {
-            console.log(err)
+            toast.error(err.response?.data?.message || "Something went wrong");
             setStatusFormName('Error')
         }
     }
@@ -111,9 +114,7 @@ function CreateNewForm() {
     // get template answers
     const fetchAnswersTemplete = async () => {
         const res = await axios.get(`${API}/api/answers/template/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            headers: {Authorization: `Bearer ${token}`}
         });
         return res.data
     };
@@ -122,6 +123,39 @@ function CreateNewForm() {
         queryFn: fetchAnswersTemplete,
     });
 
+    // know template is liked
+    const fetchLikedTemplate = async () => {
+        const res = await axios.get(`${API}/api/templates/${id}/is-liked`, {
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        return res.data
+    };
+    const { data: isLiked} = useQuery({
+        queryKey: ["is-liked", refreshLiked],
+        queryFn: fetchLikedTemplate,
+    });
+
+    // handleLike 
+    async function handleLike() {
+        await axios.patch(`${API}/api/templates/${id}/like`, {}, {
+            headers: { Authorization: `Bearer ${token}`}
+        }).then(() => {
+            setRefreshLikes(prev => !prev)
+        }).catch((err) => {
+            toast.error(err.response?.data?.message || "Something went wrong");
+        })
+    }
+
+    // handle unLike 
+    async function handleUnLike() {
+        await axios.patch(`${API}/api/templates/${id}/unlike`, {}, {
+            headers: { Authorization: `Bearer ${token}`}
+        }).then(() => {
+            setRefreshLikes(prev => !prev)
+        }).catch((err) => {
+            toast.error(err.response?.data?.message || "Something went wrong");
+        })
+    }
 
 
   return (
@@ -141,6 +175,10 @@ function CreateNewForm() {
                 <li onClick={() => handleTabPage("responses")} className={`cursor-pointer border-b-[3px] ${formPage == "responses"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>Responses {TemplateAnswers?.length}</li>
             </ul>
             <div className="text-xs text-gray-500 italic mt-1">{statusFormName === 'Saving...' ? 'Saving changes…' : statusFormName === 'Saved' ? 'All changes saved' : 'Error while saving'}</div>
+            <div>
+                {!isLiked?.isLiked && <button className="cursor-pointer" onClick={() => handleLike()}><FaRegHeart className="text-[20px] text-[#ff5959]"/></button>}
+                {isLiked?.isLiked && <button className="cursor-pointer" onClick={() => handleUnLike()}><FaHeart className="text-[20px] text-[#ff5959]"/></button>}
+            </div>
             <div className="flex items-center gap-[20px] ml-auto">
                 <ShareTemplate setRefreshTemplate={setRefreshTemplate} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
                 <PublishForm setRefreshTemplate={setRefreshTemplate} LatestTemplate={LatestTemplate} setIsModalOpen={setIsModalOpen}/>

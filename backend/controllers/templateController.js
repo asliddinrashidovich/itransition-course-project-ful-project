@@ -1,4 +1,4 @@
-const { User, Question, Template, Answer } = require('../models')
+const { User, Question, Template, Answer, TemplateLike } = require('../models')
 
 // Create template with default question
 exports.createTemplate = async (req, res) => {
@@ -106,7 +106,6 @@ exports.getTemplateById = async (req, res) => {
   }
 }
 
-
 // Delete template
 exports.deleteTemplate = async (req, res) => {
   try {
@@ -173,6 +172,95 @@ exports.updateTemplateAccess = async (req, res) => {
 };
 
 
+// GET /api/templates/:id/is-liked
+exports.isTemplateLiked = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const likeRecord = await TemplateLike.findOne({
+      where: { userId, templateId: id },
+    });
+
+    const isLiked = !!likeRecord;
+
+    res.json({ isLiked });
+  } catch (err) {
+    console.error('❌ isTemplateLiked error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// PATCH /api/templates/:id/like
+exports.likeTemplate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const template = await Template.findByPk(id);
+    if (!template) {
+      return res.status(404).json({ message: 'Template not found' });
+    }
+
+    // Avval like bosganmi — tekshiramiz
+    const alreadyLiked = await TemplateLike.findOne({
+      where: { userId, templateId: id },
+    });
+
+    if (alreadyLiked) {
+      return res.status(400).json({ message: 'You already liked this template' });
+    }
+
+    // Like bosiladi
+    await TemplateLike.create({ userId, templateId: id });
+    template.likes += 1;
+    await template.save();
+
+    res.json({ message: 'Template liked', likes: template.likes });
+  } catch (err) {
+    console.error('❌ likeTemplate error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// PATCH /api/templates/:id/unlike
+exports.unlikeTemplate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const template = await Template.findByPk(id);
+    if (!template) {
+      return res.status(404).json({ message: 'Template not found' });
+    }
+
+    // Avval like yozuvini tekshiramiz
+    const existingLike = await TemplateLike.findOne({
+      where: { userId, templateId: id },
+    });
+
+    if (!existingLike) {
+      return res.status(400).json({ message: 'You have not liked this template' });
+    }
+
+    // Like'ni o‘chiramiz
+    await existingLike.destroy();
+
+    // Like sonini kamaytiramiz
+    if (template.likes > 0) {
+      template.likes -= 1;
+      await template.save();
+    }
+
+    res.json({ message: 'Template unliked', likes: template.likes });
+  } catch (err) {
+    console.error('❌ unlikeTemplate error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
 
 // PATCH /api/templates/:id/publish
 exports.publishTemplate = async (req, res) => {
@@ -195,7 +283,6 @@ exports.publishTemplate = async (req, res) => {
 
 
 // controllers/templateController.js
-
 exports.deleteTemplates = async (req, res) => {
   const { templateIds } = req.body;
 
@@ -246,4 +333,3 @@ exports.deleteTemplates = async (req, res) => {
     return res.status(500).json({ message: 'Server error while deleting templates' });
   }
 };
-

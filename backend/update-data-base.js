@@ -11,33 +11,33 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   },
 });
 
-async function fixOptionsColumn() {
+async function addLikesColumnToTemplates() {
   try {
     await sequelize.authenticate();
-    console.log('✅ Database connected');
+    console.log('✅ Connected to database');
 
-    // 1. NULL qiymatlarni tozalaymiz
-    console.log('🔄 Updating NULL options to []...');
-    await sequelize.query(`
-      UPDATE "Questions"
-      SET "options" = '[]'::jsonb
-      WHERE "options" IS NULL;
+    // likes ustuni mavjudligini tekshiramiz
+    const [results] = await sequelize.query(`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'Templates' AND column_name = 'likes';
     `);
 
-    // 2. Ustunni JSONB, NOT NULL va DEFAULT bilan yangilaymiz
-    console.log('⚙️  Altering column "options"...');
-    await sequelize.query(`
-      ALTER TABLE "Questions"
-        ALTER COLUMN "options" TYPE JSONB USING "options"::jsonb,
-        ALTER COLUMN "options" SET NOT NULL,
-        ALTER COLUMN "options" SET DEFAULT '[]'::jsonb;
-    `);
+    if (results.length === 0) {
+      console.log('➕ Adding "likes" column to Templates...');
+      await sequelize.query(`
+        ALTER TABLE "Templates"
+        ADD COLUMN "likes" INTEGER NOT NULL DEFAULT 0;
+      `);
+      console.log('✅ "likes" column added to Templates successfully!');
+    } else {
+      console.log('ℹ️ "likes" column already exists in Templates. Nothing to change.');
+    }
 
-    console.log('✅ Column fixed successfully!');
     await sequelize.close();
-  } catch (error) {
-    console.error('❌ Error during migration:', error);
+  } catch (err) {
+    console.error('❌ Error while updating DB:', err.message);
   }
 }
 
-fixOptionsColumn();
+addLikesColumnToTemplates();

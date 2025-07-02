@@ -1,4 +1,4 @@
-import { Header, NonAuthHero, ResentTempletes, StartNewForm } from "../components"
+import { NonAuthHero, PublicTemplates, ResentTempletes, StartNewForm } from "../components"
 
 function HomePage() {
   const token = localStorage.getItem('token')
@@ -6,7 +6,7 @@ function HomePage() {
     <>
       {!token && <div>
         <NonAuthHero/>
-        <ResentTempletes/>
+        <PublicTemplates/>
       </div>}
       {token && <div>
         <StartNewForm/>

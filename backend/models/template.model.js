@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'Untitled form',
     },
+    likes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     description: DataTypes.TEXT,
     topic: {
       type: DataTypes.STRING,

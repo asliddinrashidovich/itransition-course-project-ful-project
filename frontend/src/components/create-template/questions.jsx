@@ -25,9 +25,7 @@ function AllQuestions({setStatusFormName}) {
     // get template details
     const fetchLatestTemplete = async () => {
         const res = await axios.get(`${API}/api/templates/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            headers: {  Authorization: `Bearer ${token}`}
         });
         return res.data
     };
@@ -56,9 +54,7 @@ function AllQuestions({setStatusFormName}) {
     // delete options
     const handleDeleteOption = async (questionId, optionId) => {
         try {
-            await axios.patch(`${API}/api/templates/questions/${questionId}/options/delete`, {
-                optionId, // faqat id yuboramiz
-            }, {
+            await axios.patch(`${API}/api/templates/questions/${questionId}/options/delete`, {optionId}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setStatusFormName("Saved");
@@ -68,8 +64,6 @@ function AllQuestions({setStatusFormName}) {
             setStatusFormName("Error");
         }
     };
-
-
 
     // edit question options title
     const [optionValues, setOptionValues] = useState({});   // { [questionId]: { [index]: "text" } }
@@ -153,9 +147,6 @@ function AllQuestions({setStatusFormName}) {
         })
     }
 
-
-    console.log(LatestTemplate)
-
     // handlechange title
     const [questionTitles, setQuestionTitles] = useState({});
 
@@ -170,7 +161,6 @@ function AllQuestions({setStatusFormName}) {
             setStatusFormName("Error");
         }
     }, 1000);
-
 
     useEffect(() => {
         if (LatestTemplate?.questions) {
