@@ -224,7 +224,7 @@ function AllQuestions({setStatusFormName}) {
                                     {(provided) => (
                                         <div ref={provided.innerRef}
                                         {...provided.draggableProps}
-                                        {...provided.dragHandleProps} onClick={() => setFocusQuestion(item.id)} className={`w-full bg-[#fff] border-l-[7px]  ${focusQuestion == item.id ? "border-[#7248b9] py-[30px] px-[20px]" : "border-[#fff] p-[20px]"} rounded-[10px]  mb-[20px]`}>
+                                        {...provided.dragHandleProps} onClick={() => setFocusQuestion(item.id)} className={`w-full bg-[#fff] dark:bg-gray-700 border-l-[7px]  ${focusQuestion == item.id ? "border-[#7248b9] py-[30px] px-[20px]" : "border-transparent p-[20px]"} rounded-[10px]  mb-[20px]`}>
                                             <div className="flex items-center justify-between">
                                                 <div className="relative inline-block">
                                                     <span
@@ -236,7 +236,7 @@ function AllQuestions({setStatusFormName}) {
                                                         type="text"
                                                         value={questionTitles[item.id] || ""}
                                                         onChange={(e) => handleTitleChange(e.target.value, item.id)}
-                                                        className={`outline-none text-[18px] font-[600] ${focusQuestion == item.id ? "border-[#999]" : "border-transparent"} border-b-[1px] border-[#999] w-full`}
+                                                        className={`outline-none text-[18px] font-[600] ${focusQuestion == item.id ? "border-[#999]" : "border-transparent"} bg-transparent dark:text-[#fff] border-b-[1px] border-[#999] w-full`}
                                                     />
                                                 </div>
                                                 <div className={`${focusQuestion == item.id ? "flex" : "hidden"} items-center gap-[20px]`}>
@@ -249,10 +249,10 @@ function AllQuestions({setStatusFormName}) {
                                                     </select>
                                                 </div>
                                             </div>
-                                            {item.type == 'short_text' && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] pb-[10px] border-b-[1px]  w-[50%]`}>Short answer text</p>}
-                                            {item.type == "paragraph" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] pb-[10px] border-b-[1px]   w-[65%]`}>Long answer text</p>}
-                                            {item.type == "number" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] pb-[10px] border-b-[1px]   w-[25%]`}>Number answer</p>}
-                                            {item.type == "checkbox" && <div className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] pb-[10px] border-b-[1px] flex flex-col gap-[15px] w-full`}>
+                                            {item.type == 'short_text' && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]  w-[50%]`}>Short answer text</p>}
+                                            {item.type == "paragraph" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]   w-[65%]`}>Long answer text</p>}
+                                            {item.type == "number" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]   w-[25%]`}>Number answer</p>}
+                                            {item.type == "checkbox" && <div className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px] flex flex-col gap-[15px] w-full`}>
                                                 {item.options.map((opt, index) => (
                                                     <div key={index} className="flex items-center justify-between w-full    ">
                                                         <div className="flex items-center gap-[10px]">
@@ -263,7 +263,7 @@ function AllQuestions({setStatusFormName}) {
                                                                     if (!optionSpanRefs.current[item.id]) optionSpanRefs.current[item.id] = {};
                                                                     optionSpanRefs.current[item.id][index] = el;
                                                                     }}
-                                                                    className="absolute w-full top-0 left-0 text-[16px] invisible whitespace-pre font-medium"
+                                                                    className="absolute w-full top-0 left-0 text-[16px] invisible whitespace-pre font-medium "
                                                                 >
                                                                     {optionValues[item.id]?.[index] ?? opt.text}
                                                                 </span>
@@ -292,7 +292,7 @@ function AllQuestions({setStatusFormName}) {
                                                                     // ✅ id va yangi text bilan yuboramiz
                                                                     saveOptionTitle(item.id, opt.id, val);
                                                                     }}
-                                                                    className="outline-none text-[16px] w-[400px] font-medium border-b border-[#aaa]"
+                                                                    className="outline-none text-[16px] w-[400px] font-medium border-b border-[#aaa] bg-transparent"
                                                                 />
                                                                 </div>
 
@@ -330,8 +330,8 @@ function AllQuestions({setStatusFormName}) {
             )}
         </div>
         <div className="w-full">
-            {!loadingAdd && <button onClick={handleAddQuestion} className="w-[100%] mb-[20px] h-[50px] flex items-center justify-center rounded-[10px] cursor-pointer bg-[#fff] hover:bg-[#f6daff] transition-all duration-200">
-                <IoAddSharp className="text-[25px]"/>
+            {!loadingAdd && <button onClick={handleAddQuestion} className="w-[100%] mb-[20px] h-[50px] flex items-center justify-center rounded-[10px] cursor-pointer bg-[#fff] dark:bg-gray-700 hover:bg-[#f6daff] transition-all duration-200">
+                <IoAddSharp className="text-[25px] dark:text-[#fff]"/>
             </button>}
             {loadingAdd && <button  className="w-[100%] mb-[20px] h-[50px] flex items-center justify-center rounded-[10px] cursor-pointer bg-[#fff] hover:bg-[#f6daff] transition-all duration-200">
                 <ClipLoader size={20} />

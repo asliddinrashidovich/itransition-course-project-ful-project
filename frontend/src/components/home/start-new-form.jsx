@@ -38,17 +38,17 @@ function StartNewForm() {
             navigate(`/templates/${id}`)
         }
   return (
-    <section className="pb-[30px] bg-[#f1f3f4] px-5 md:px-10 pt-[80px]">
+    <section className="pb-[30px] bg-[#f1f3f4] dark:bg-gray-900 px-5 md:px-10 pt-[80px]">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400]">Start a new form</h5>
+                <h5 className="text-[#000] dark:text-[#fff] text-[18px] font-[400]">Start a new form</h5>
             </div>
             <div className="max-w-[1200px] mx-auto justify-between grid-cols-1 sm:grid-cols-3 md:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
                 <div className="w-[180px]" onClick={() => handleCreateNew("/templates")}>
-                    <div className="w-full h-[150px] bg-[#fff] rounded-[5px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer flex items-center justify-center">
+                    <div className="w-full h-[150px] bg-[#fff] dark:bg-gray-200  rounded-[5px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer flex items-center justify-center">
                         <img src="/add-symbol.svg" alt="add button" className="w-[60px]"/>
                     </div>
-                    <h3 className="py-[10px] font-[600]">Blank form</h3>
+                    <h3 className="py-[10px] font-[600] dark:text-[#fff]">Blank form</h3>
                 </div>
                 {PupularTemplates?.map(item => (
                     <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden w-[180px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
@@ -60,7 +60,7 @@ function StartNewForm() {
                                 {item.isPublished && <Tooltip title="published">
                                     <TbLivePhotoFilled className="text-[#2dee20] shrink-0"/>
                                 </Tooltip>}
-                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1">{item.title}</h4>
+                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1 dark:text-[#fff] ">{item.title}</h4>
                             </div>
                         </div>
                     </div>

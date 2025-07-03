@@ -49,21 +49,21 @@ function ProfileSection() {
   return (
     <div className="max-w-[1400px] mx-auto flex pt-[100px] pb-[40px] gap-[30px] px-[20px]">
         <div className="md:block hidden w-[20%] p-[18px]">
-            <h2 className="font-[700] text-[18px] leading-[16px] mb-[17px]">My Account <span className="font-[300] ml-[10px]">|</span> {myData?.isAdmin 
+            <h2 className="font-[700] text-[18px] leading-[16px] mb-[17px] dark:text-[#fff]">My Account <span className="font-[300] ml-[10px]">|</span> {myData?.isAdmin 
                 ? <span className="text-[12px] ml-[10px] font-[500] text-[green]">Admin</span> 
                 : <span className="text-[12px] ml-[10px] font-[500] text-[blue]">User</span>}</h2>
             <div>
-                <div onClick={() => handleTab('Account Details')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer  ${activeFilter == 'account-details' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
-                    <FaRegUser />
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'account-details' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Account Details</p>
+                <div onClick={() => handleTab('Account Details')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer  ${activeFilter == 'account-details' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
+                    <FaRegUser className="dark:text-[#fff]"/>
+                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'account-details' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>Account Details</p>
                 </div>
-                <div onClick={() => handleTab('All Templates')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-templates' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
-                    <SiGoogleforms />
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-templates' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Templates</p>
+                <div onClick={() => handleTab('All Templates')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-templates' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
+                    <SiGoogleforms className="dark:text-[#fff]"/>
+                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-templates' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>Templates</p>
                 </div>
-                {myData?.isAdmin && <div onClick={() => handleTab('All Users')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-users' ? 'border-[#134e9b]' : 'border-[#fff]'}`}> 
-                    <FaUsers />
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-users' ? 'text-[#134e9b]' : 'text-[#727272]'}`}>Users</p>
+                {myData?.isAdmin && <div onClick={() => handleTab('All Users')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-users' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
+                    <FaUsers className="dark:text-[#fff]"/>
+                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-users' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>Users</p>
                 </div>}
             </div>
             <hr className="border-[0.5px] border-[#134e9b] my-[30px]"/>

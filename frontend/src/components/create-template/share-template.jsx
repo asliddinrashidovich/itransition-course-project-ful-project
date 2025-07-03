@@ -79,7 +79,7 @@ function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
   return (
     <div className="flex items-center gap-[20px]"> 
         <Tooltip title="share">
-            <FaUserPlus onClick={showModal} className="text-[#555] text-[22px] cursor-pointer"/>
+            <FaUserPlus onClick={showModal} className="text-[#555] dark:text-[#fff] text-[22px] cursor-pointer"/>
         </Tooltip>
         <Modal
             title="Share Template"

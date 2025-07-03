@@ -77,25 +77,25 @@ function HeaderToolbar({selectedUsers, showModal}) {
   return (
     <div className="flex flex-col md:flex-row gap-[20px] justify-between items-center mb-[30px] p-[15px]">
         <div className="flex gap-[7px] ">
-            <button onClick={() => blockUsers.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] cursor-pointer rounded-[6px] py-[5px] px-[10px]"> 
-                <FaLock className="text-[#461773]"/>
-                <span className="text-[#461773] text-[15px] font-[600]">Block</span>
+            <button onClick={() => blockUsers.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773]    dark:border-[#fff] cursor-pointer rounded-[6px] py-[5px] px-[10px]"> 
+                <FaLock className="text-[#461773] dark:text-[#fff]"/>
+                <span className="text-[#461773] dark:text-[#fff] text-[15px] font-[600]">Block</span>
             </button>
-            <button onClick={() => unBlockUsers.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] cursor-pointer rounded-[6px] px-[10px]"> 
-                <FaLockOpen className="text-[#461773]"/>
-                <span className="text-[#461773] text-[15px] font-[600]">Unblock</span>
+            <button onClick={() => unBlockUsers.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] dark:border-[#fff]  cursor-pointer rounded-[6px] px-[10px]"> 
+                <FaLockOpen className="text-[#461773] dark:text-[#fff]"/>
+                <span className="text-[#461773] dark:text-[#fff] text-[15px] font-[600]">Unblock</span>
             </button>
             <button onClick={() => deleteUsers.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#ba5364] cursor-pointer rounded-[6px] px-[10px]"> 
                 <FaRegTrashCan className="text-[#ba5364]"/>
                 <span className="text-[#ba5364] text-[15px] font-[600]">Delete</span>
             </button>
-            <button onClick={() => addToAdmins.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] cursor-pointer rounded-[6px] px-[10px]"> 
-                <MdOutlineAdminPanelSettings className="text-[#461773]"/>
-                <span className="text-[#461773] text-[15px] font-[600]">Add To Admins</span>
+            <button onClick={() => addToAdmins.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] dark:border-[#fff]  cursor-pointer rounded-[6px] px-[10px]"> 
+                <MdOutlineAdminPanelSettings className="text-[#461773] dark:text-[#fff]"/>
+                <span className="text-[#461773] dark:text-[#fff] text-[15px] font-[600]">Add To Admins</span>
             </button>
-            <button onClick={() => removeFromAdmins.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] cursor-pointer rounded-[6px] px-[10px]"> 
-                <MdRemoveModerator className="text-[#461773]"/>
-                <span className="text-[#461773] text-[15px] font-[600]">Remove From Admins</span>
+            <button onClick={() => removeFromAdmins.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#461773] dark:border-[#fff]  cursor-pointer rounded-[6px] px-[10px]"> 
+                <MdRemoveModerator className="text-[#461773] dark:text-[#fff]"/>
+                <span className="text-[#461773] dark:text-[#fff] text-[15px] font-[600]">Remove From Admins</span>
             </button>
         </div>
     </div>

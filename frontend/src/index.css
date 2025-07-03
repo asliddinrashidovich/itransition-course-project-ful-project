@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .nonauth_about {
   background: url(/hero.jpg) no-repeat center center / cover;
@@ -20,4 +22,11 @@
 
 .MuiSelect-select {
   padding: 5px 30px 5px 10px !important;
+}
+
+.z-up {
+  z-index: auto !important;
+}
+.ant-checkbox-wrapper {
+  z-index: 10 !important;
 }

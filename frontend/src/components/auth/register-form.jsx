@@ -64,7 +64,7 @@ function RegisterForm() {
     onFinish={postRegister}
     autoComplete="off"
   >
-    <h2 className='text-[25px] text-center leading-[16px] font-[600] mb-[19px]'>Login</h2>
+    <h2 className='text-[25px] text-center leading-[16px] font-[600] mb-[19px] dark:text-[#fff]'>Login</h2>
 
     <Form.Item
       name="name"
@@ -104,15 +104,11 @@ function RegisterForm() {
         Register
       </Button>
     </Form.Item>
-    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] mb-[27px]'>Already have an account, <Link to={"/login"} className='text-[#6b6bff] cursor-pointer'>login</Link></h2>
-    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] mb-[27px]'>Or register with</h2>
+    <h2 className='text-center text-[#3D3D3D] dark:text-[#fff] text-[13px] font-[400] leading-[16px] mb-[27px]'>Already have an account, <Link to={"/login"} className='text-[#6b6bff] cursor-pointer'>login</Link></h2>
+    <h2 className='text-center text-[#3D3D3D] dark:text-[#fff] text-[13px] font-[400] leading-[16px] mb-[27px]'>Or register with</h2>
     <Button onClick={handleSignupGoogle} className='mb-[20px] flex gap-[10px] items-center border-[#EAEAEA] border-[1px] rounded-[5px] w-full py-[10px] justify-center cursor-pointer'>
       <FaGoogle />
       <span>Continue with Google</span>
-    </Button>
-    <Button className='mb-[20px] flex gap-[10px] items-center border-[#EAEAEA] border-[1px] rounded-[5px] w-full py-[10px] justify-center cursor-pointer'>
-      <FaFacebook />
-      <span>Continue with Facebook</span>
     </Button>
   </Form>
 )};

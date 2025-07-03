@@ -22,10 +22,10 @@ function AccountDetails() {
   return (
     <div className="px-5 md:px-10 py-[20px]">
       <div className="">
-        <h2 className="text-[30px] font-[600] mb-[20px]">My account</h2>
+        <h2 className="text-[30px] font-[600] mb-[20px] dark:text-[#fff]">My account</h2>
         <hr />
-        <h4 className="text-[20px] font-[500] mt-[10px]">Email: <span className="font-[300] ml-[20px]">{myData?.email}</span></h4>
-        <h4 className="text-[20px] font-[500]">User Role: <span className="font-[300] ml-[20px]">{myData?.isAdmin ? "admin" : "user"}</span></h4>
+        <h4 className="text-[20px] font-[500] mt-[10px] dark:text-[#fff]">Email: <span className="font-[300] ml-[20px]">{myData?.email}</span></h4>
+        <h4 className="text-[20px] font-[500] dark:text-[#fff]">User Role: <span className="font-[300] ml-[20px]">{myData?.isAdmin ? "admin" : "user"}</span></h4>
       </div>
     </div>
   )

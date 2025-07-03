@@ -1,13 +1,14 @@
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import HeaderSidebar from "./header-sidebar";
-import { IoSearch } from "react-icons/io5";
+import { IoMoon, IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
 import AuthComponent from "./auth-component";
 import { IoIosLogOut } from "react-icons/io";
 import { FaUser } from "react-icons/fa6";
 import LanguageChanger from "../language/language-changer";
 import { useTranslation } from "react-i18next";
+import { LuSunMedium } from "react-icons/lu";
 
 function Header() {
     const token = localStorage.getItem('token')
@@ -15,6 +16,29 @@ function Header() {
     const navigate = useNavigate()
     const url = useLocation()
     const {t} = useTranslation()
+    const [theme, setTheme] = useState('light');
+
+    // LocalStorage'dan theme-ni o'qish
+    useEffect(() => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    }, []);
+
+    
+    // Dark rejimni yoqish
+    const handleDarkMode = () => {
+      document.documentElement.classList.add('dark');
+      setTheme('dark');
+      localStorage.setItem('theme', 'dark');
+    };
+
+    // Light rejimni yoqish
+    const handleLightMode = () => {
+      document.documentElement.classList.remove('dark');
+      setTheme('light');
+      localStorage.setItem('theme', 'light');
+    };
 
     function handleSearch(value) {
       searchParams.set("search", value)
@@ -36,19 +60,32 @@ function Header() {
       localStorage.clear()
       window.location.reload()
     }
+    
   return (
-    <header className={`${skrolledCase ? "bg-[#e1e1e1] shadow-xl" : "bg-[#fff]"} px-5 md:px-10 py-[10px] fixed w-full z-299`}>
+    <header className={`${skrolledCase ? "bg-[#e1e1e1] dark:bg-gray-900 shadow-xl" : "bg-[#fff] dark:bg-[#000]"}  px-5 md:px-10 py-[10px] fixed w-full z-[299]`}>
       <div className="flex items-center justify-between gap-[20px]">
         <Link to={'/'} className={`max-w-[60px] `}>
           <img src="https://easi.its.utoronto.ca/wp-content/uploads/2019/12/1024px-Microsoft_Forms_2019-present.svg-e1576870389646.png" alt="logo" />
         </Link>
-        {isSearch && <form className="px-[5px] py-[5px] bg-[#f0f4f9] flex items-center rounded-[30px]">
+        {isSearch && <form className="px-[5px] py-[5px] bg-[#f0f4f9] dark:bg-gray-500 flex items-center rounded-[30px]">
             <button className="w-[50px] h-[50px] cursor-pointer transition-all duration-200 hover:bg-[#d5d8dc] rounded-[50%]  flex items-center justify-center">
-                <IoSearch className="text-[25px] "/>
+                <IoSearch className="text-[25px] dark:text-[#fff] "/>
             </button>
-            <input onChange={(e) => handleSearch(e.target.value)} type="text" className="w-full md:w-[230px] lg:w-[450px]  outline-none h-[40px]" placeholder={t('search')}/>
+            <input onChange={(e) => handleSearch(e.target.value)} type="text" className="w-full md:w-[230px] bg-transparent lg:w-[450px]  outline-none h-[40px]" placeholder={t('search')}/>
         </form>}
         <div className="flex gap-[10px] items-center">
+          <div className="mr-[10px]">
+            {theme == 'light' && (
+              <button onClick={handleDarkMode} title="Enable dark mode">
+                <IoMoon className="text-[22px]" />
+              </button>
+            )}
+            {theme == 'dark' && (
+              <button onClick={handleLightMode} title="Enable light mode">
+                <LuSunMedium className="text-[22px] text-[#fff]" />
+              </button>
+            )}
+          </div>
           <div className="hidden md:flex">
             <LanguageChanger/>
           </div>

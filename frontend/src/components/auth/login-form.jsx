@@ -60,7 +60,7 @@ function LoginForm() {
         password: ""
     }}
   >
-    <h2 className='text-[25px] text-center leading-[16px] font-[600] mb-[19px]'>Login</h2>
+    <h2 className='text-[25px] text-center leading-[16px] font-[600] mb-[19px] dark:text-[#fff]'>Login</h2>
 
     <Form.Item
       name="email"
@@ -94,15 +94,11 @@ function LoginForm() {
       </Button>
     </Form.Item>
 
-    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] mb-[27px]'>Don't have an account, <Link to={"/register"} className='text-[#6b6bff] cursor-pointer'>register</Link></h2>
-    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] mb-[27px]'>Or login with</h2>
+    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] dark:text-[#fff] mb-[27px]'>Don't have an account, <Link to={"/register"} className='text-[#6b6bff] cursor-pointer'>register</Link></h2>
+    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] dark:text-[#fff] mb-[27px]'>Or login with</h2>
     <Button onClick={handleLoginGoogle} className='mb-[20px] flex gap-[10px] items-center border-[#EAEAEA] border-[1px] rounded-[5px] w-full py-[10px] justify-center cursor-pointer'>
       <FaGoogle />
       <span>Login with Google</span>
-    </Button>
-    <Button className='mb-[20px] flex gap-[10px] items-center border-[#EAEAEA] border-[1px] rounded-[5px] w-full py-[10px] justify-center cursor-pointer'>
-      <FaFacebook />
-      <span>Login with Facebook</span>
     </Button>
   </Form>
   )

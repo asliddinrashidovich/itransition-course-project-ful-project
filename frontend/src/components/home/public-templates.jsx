@@ -45,16 +45,16 @@ function PublicTemplates() {
         setSearchParams(searchParams)
     }
   return (
-    <section className="py-[30px] bg-[#fff] px-5 md:px-10 ">
+    <section className="py-[30px] bg-[#fff] dark:bg-gray-900 px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400]">Public forms</h5>
+                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff]">Public forms</h5>
                 <div className="flex items-center gap-[30px]">
                     {cardsView == "card" && <Tooltip title="Table view">
-                        <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444]"/></button>
+                        <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444] dark:text-[#fff]"/></button>
                     </Tooltip>}
                     {cardsView == "table" && <Tooltip title="Card view">
-                        <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444]"/></button>
+                        <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444] dark:text-[#fff]"/></button>
                     </Tooltip>}
                 </div>
             </div>
@@ -69,11 +69,11 @@ function PublicTemplates() {
                                 {item.isPublished && <Tooltip title="published">
                                     <TbLivePhotoFilled className="text-[#2dee20] shrink-0"/>
                                 </Tooltip>}
-                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1">{item.title}</h4>
+                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1 dark:text-[#fff]">{item.title}</h4>
                             </div>
                         </div>
                         <div className="mx-[10px] mb-[10px]">
-                            <p className="text-[14px]">Creator: <span className="italic">{item.author.name}</span></p>
+                            <p className="text-[14px] dark:text-[#fff]">Creator: <span className="italic">{item.author.name}</span></p>
                         </div>
                     </div>
                 ))}

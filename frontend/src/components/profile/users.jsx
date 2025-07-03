@@ -80,13 +80,13 @@ function UsersManagment() {
                         <td className="w-[50px] min-w-[49px] text-center ">
                             <Checkbox  onChange={handleSelectAll} checked={selectAll} value={true}></Checkbox>
                         </td>
-                        <td className="text-[15px]  font-[700] min-w-[130px] py-[10px]">Name</td>
+                        <td className="text-[15px]  font-[700] min-w-[130px] py-[10px] dark:text-[#fff] ">Name</td>
                         <td className="flex gap-[7px] items-center min-w-[250px]  py-[10px]">
-                            <span className="text-[15px]  font-[700]">Email</span>
+                            <span className="text-[15px]  font-[700] dark:text-[#fff]">Email</span>
                         </td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px]">Status</td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px]">Role</td>
-                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px]">Created at</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]">Status</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]">Role</td>
+                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px] dark:text-[#fff]">Created at</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,12 +96,12 @@ function UsersManagment() {
                                 <Checkbox onChange={(e) => handleSelectUser(item.id, e.target.checked)} checked={selectedUsers.includes(item.id)}></Checkbox>
                             </td>
                             <td className="py-[10px] ">
-                                <p className={`text-[15px] font-[400]  ${!item.isBlocked ? 'text-[#000]' : 'text-[#999] line-through'}`}>{item.name}</p>
+                                <p className={`text-[15px] font-[400]  ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999] line-through'}`}>{item.name}</p>
                             </td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'}`}>{item.email}</td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'}`}>active</td>
-                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'}`}>{item.isAdmin ? "admin" : "user"}</td>
-                            <td className={`text-[15px]  font-[400]  py-[10px] ${!item.isBlocked ? 'text-[#000]' : 'text-[#999]'} `}>
+                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>{item.email}</td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>active</td>
+                            <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>{item.isAdmin ? "admin" : "user"}</td>
+                            <td className={`text-[15px]  font-[400]  py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'} `}>
                                 <Tooltip placement="bottom" className='cursor-pointer' title={moment(item.createdAt).format('MMMM D, YYYY HH:mm:ss')}  >
                                     {moment(item.createdAt).format('DD/MM/YYYY')}
                                 </Tooltip>
@@ -111,7 +111,7 @@ function UsersManagment() {
                     {!loading && Array.isArray(AllUsers) && !AllUsers.length &&  (
                         <tr>
                             <td colSpan={6} className="text-center">
-                                <h2 className="mt-[20px] text-[17px] font-[600]">No users</h2>
+                                <h2 className="mt-[20px] text-[17px] font-[600] dark:text-[#fff]">No users</h2>
                             </td>
                         </tr>
                     )}

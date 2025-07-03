@@ -36,7 +36,7 @@ function AllTemplates() {
     
     // get templates 
     const fetchLatestTempletes = async () => {
-        const res = await axios.get(`${API}/api/templates`);
+        const res = await axios.get(`${API}/api/templates`, {headers: {Authorization: `Bearer ${token}`}});
         const allItems = res.data    
         const allTemplates = allItems.filter(templateItem => {
             const titleMatch = templateItem.title.toLowerCase().includes(search.toLowerCase());
@@ -60,18 +60,19 @@ function AllTemplates() {
     });
 
   return (
-    <section className="py-[30px] bg-[#fff] px-5 md:px-10 ">
+    <section className="py-[30px] bg-transparent px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[20px] font-[600]">All Templates</h5>
+                <h5 className="text-[#000] text-[20px] font-[600] dark:text-[#fff]">All Templates</h5>
                 <div className="flex items-center gap-[30px]">
                     {myData?.isAdmin &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2>Sort by:</h2>
+                        <h2 className="dark:text-[#fff]">Sort by:</h2>
                         <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
                             <Select
                                 value={authorValue}
                                 onChange={(e) => updateSortBy(e.target.value)}
                                 displayEmpty
+                                className="dark:text-[#fff]"
                                 inputProps={{ 'aria-label': 'Without label' }}
                             >
                                 <MenuItem value={'anyone'}>Owned by anyone</MenuItem>

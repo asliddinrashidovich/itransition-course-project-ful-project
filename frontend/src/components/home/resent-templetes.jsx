@@ -82,18 +82,19 @@ function ResentTempletes() {
         setSearchParams(searchParams)
     }
   return (
-    <section className="py-[30px] bg-[#fff] px-5 md:px-10 ">
+    <section className="py-[30px] bg-[#fff] dark:bg-gray-800  px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400]">Recent forms</h5>
+                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff] ">Recent forms</h5>
                 <div className="flex items-center gap-[30px]">
                     {token &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2>Sort by:</h2>
+                        <h2 className="dark:text-[#fff] ">Sort by:</h2>
                         <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
                             <Select
                                 value={authorValue}
                                 onChange={(e) => updateSortBy(e.target.value)}
                                 displayEmpty
+                                className="dark:text-[#fff]"
                                 inputProps={{ 'aria-label': 'Without label' }}
                             >
                                 <MenuItem value={'anyone'}>Owned by anyone</MenuItem>
@@ -103,10 +104,10 @@ function ResentTempletes() {
                         </FormControl>
                     </div>}
                     {cardsView == "card" && <Tooltip title="Table view">
-                        <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444]"/></button>
+                        <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444] dark:text-[#fff] "/></button>
                     </Tooltip>}
                     {cardsView == "table" && <Tooltip title="Card view">
-                        <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444]"/></button>
+                        <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444] dark:text-[#fff] "/></button>
                     </Tooltip>}
                 </div>
             </div>
@@ -121,11 +122,11 @@ function ResentTempletes() {
                                 {item.isPublished && <Tooltip title="published">
                                     <TbLivePhotoFilled className="text-[#2dee20] shrink-0"/>
                                 </Tooltip>}
-                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1">{item.title}</h4>
+                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1 dark:text-[#fff] ">{item.title}</h4>
                             </div>
                         </div>
                         <div className="mx-[10px] mb-[10px]">
-                            <p className="text-[14px]">Creator: <span className="italic">{item.author.name}</span></p>
+                            <p className="text-[14px] dark:text-[#fff] ">Creator: <span className="italic">{item.author.name}</span></p>
                         </div>
                     </div>
                 ))}
