@@ -1,6 +1,7 @@
 import { Modal } from "antd"
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 ModalCompopnent.propTypes  = {
   isModalOpen: PropTypes.bool.isRequired,
@@ -13,6 +14,7 @@ const API = import.meta.env.VITE_API;
 
 function ModalCompopnent({isModalOpen, selectedUsers, methodMyself, setIsModalOpen, handleLogout}) {
     const token = localStorage.getItem('token')    
+    const {t} = useTranslation()
 
     const handleOk = async () => {
         setIsModalOpen(false);
@@ -26,15 +28,13 @@ function ModalCompopnent({isModalOpen, selectedUsers, methodMyself, setIsModalOp
   return (
     <>
         <Modal
-            title="❗Do you really want to include yourself in this method?"
+            title={t('doYouwantIncludeTitle')}
             closable={{ 'aria-label': 'Custom Close Button' }}
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
         >
-            <p className="mb-[10px]">If you delete yourself, your account will be permanently deleted, and you will have to create a new account.</p>
-            <p className="mb-[10px]">If you block yourself, you will not be able to log in again.</p>
-            <p>If you click the ok button, you will be logged out of your account.</p>
+            <p className="mb-[10px]">{t('doYouwantIncludeParagraph')}</p>
         </Modal> 
     </>
   )

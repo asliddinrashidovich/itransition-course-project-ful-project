@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Tooltip } from "antd"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 import { TbLivePhotoFilled } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
 
@@ -9,6 +10,7 @@ const API = import.meta.env.VITE_API
 
 function StartNewForm() {
     const navigate = useNavigate()
+    const {t} = useTranslation()
     const token = localStorage.getItem('token')
 
     async function handleCreateNew(path) {
@@ -41,14 +43,14 @@ function StartNewForm() {
     <section className="pb-[30px] bg-[#f1f3f4] dark:bg-gray-900 px-5 md:px-10 pt-[80px]">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px]">
-                <h5 className="text-[#000] dark:text-[#fff] text-[18px] font-[400]">Start a new form</h5>
+                <h5 className="text-[#000] dark:text-[#fff] text-[18px] font-[400]">{t('startNewForm')}</h5>
             </div>
             <div className="max-w-[1200px] mx-auto justify-between grid-cols-1 sm:grid-cols-3 md:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
                 <div className="w-[180px]" onClick={() => handleCreateNew("/templates")}>
                     <div className="w-full h-[150px] bg-[#fff] dark:bg-gray-200  rounded-[5px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer flex items-center justify-center">
                         <img src="/add-symbol.svg" alt="add button" className="w-[60px]"/>
                     </div>
-                    <h3 className="py-[10px] font-[600] dark:text-[#fff]">Blank form</h3>
+                    <h3 className="py-[10px] font-[600] dark:text-[#fff]">{t('blankForm')}</h3>
                 </div>
                 {PupularTemplates?.map(item => (
                     <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden w-[180px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">

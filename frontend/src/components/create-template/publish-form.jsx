@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { LuSlidersHorizontal } from "react-icons/lu";
 import { MdOutlineEditNote, MdPersonAddAlt1 } from "react-icons/md";
 import { FaUser } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 const API = import.meta.env.VITE_API
 
@@ -13,6 +14,7 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setR
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenOptions, setIsModalOpenOptions] = useState(false);
     const {id} = useParams()
+    const {t} = useTranslation()
     const token = localStorage.getItem('token')
 
     // publish 
@@ -65,10 +67,10 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setR
   return (
     <div>
         {!LatestTemplate?.isPublished && <button onClick={showModal} className="bg-[#7248b9] text-[#fff] px-[15px] cursor-pointer py-[5px] rounded-[6px]">
-            Publish
+            {t('Publish')}
         </button>}
         {LatestTemplate?.isPublished && <button onClick={showModalOptions} className="border-[#7248b9] border-[1px] text-[#7248b9] bg-[#fff] px-[15px] cursor-pointer py-[5px] rounded-[6px] flex items-center gap-[6px]">
-            Published
+            {t('PublishEd')}
             <LuSlidersHorizontal />
         </button>}
         <Modal
@@ -84,21 +86,21 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setR
                 <div className="flex items-start gap-[20px]">
                     <MdPersonAddAlt1  className="text-[30px] text-[#777]"/>
                     <div>
-                        <p className="text-[17px] font-[600] mb-[10px]">Responders</p>
+                        <p className="text-[17px] font-[600] mb-[10px]">{t('responders')}</p>
                         {LatestTemplate?.access == "public" &&  <div className="flex items-center gap-[10px]">
-                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">Public</p>
-                            <span>Anyone with the link</span>
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">{t('tablePublic')}</p>
+                            <span>{t('anyoneWithTheLink')}</span>
                         </div>}
                         {LatestTemplate?.access == "restricted" &&  <div className="flex items-center gap-[10px]">
-                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#ffe481]">Restricted</p>
-                            <span>Specific people</span>
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#ffe481]">{t('tableRestricted')}</p>
+                            <span>{t('specificPeople')}</span>
                         </div>}
                     </div>
                 </div>
-                <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">Manage</p>
+                <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">{t('manage')}</p>
             </div>
             <hr className="border-[#999] my-[20px]"/>
-            <p>Do you want to publish this form?</p>
+            <p>{t('doYouWant')}</p>
         </Modal>
         <Modal
             title="Published options"
@@ -113,18 +115,18 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setR
                 <div className="flex items-start gap-[20px]">
                     <MdPersonAddAlt1  className="text-[30px] text-[#777]"/>
                     <div>
-                        <p className="text-[17px] font-[600] mb-[10px]">Responders</p>
+                        <p className="text-[17px] font-[600] mb-[10px]">{t('responders')}</p>
                         {LatestTemplate?.access == "public" &&  <div className="flex items-center gap-[10px]">
-                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">Public</p>
-                            <span>Anyone with the link</span>
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#81ffd3]">{t('tablePublic')}</p>
+                            <span>{t('anyoneWithTheLink')}</span>
                         </div>}
                         {LatestTemplate?.access == "restricted" &&  <div className="flex items-center gap-[10px]">
-                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#ffe481]">Restricted</p>
-                            <span>Specific people</span>
+                            <p className="text-[#000] py-[3px] px-[10px] rounded-[15px] bg-[#ffe481]">{t('tableRestricted')}</p>
+                            <span>{t('specificPeople')}</span>
                         </div>}
                     </div>
                 </div>
-                <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">Manage</p>
+                <p onClick={() => handleManagePublic()} className="text-[blue] cursor-pointer">{t('manage')}</p>
             </div>
             <div className="flex  flex-col justify-between gap-[5px] mt-[30px]">
                 {LatestTemplate?.allowedUsers?.map((item, i) => (
@@ -137,7 +139,7 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setR
             <hr className="border-[#999] my-[20px]"/>
             <div className="flex items-center justify-between">
                 <a href={`${window.location.origin}/form/${id}`} target="_blank" className="text-[12px] text-[blue] cursor-pointer underline">{`${window.location.origin}/form/${id}`}</a>
-                <button onClick={() => handleCopy(`${window.location.origin}/form/${id}`)} className="py-[3px]  px-[10px] border-[1px] border-[#888] rounded-[7px] cursor-pointer text-[blue]">Copy link</button>
+                <button onClick={() => handleCopy(`${window.location.origin}/form/${id}`)} className="py-[3px]  px-[10px] border-[1px] border-[#888] rounded-[7px] cursor-pointer text-[blue]">{t('copyLink')}</button>
             </div>
             <hr className="border-[#999] my-[20px]"/>
         </Modal>

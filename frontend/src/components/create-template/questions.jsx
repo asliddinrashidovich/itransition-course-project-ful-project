@@ -10,6 +10,7 @@ import QuestionCardSkeleton from "../skeleton/question-card-skeleton";
 import { IoMdClose } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import { useTranslation } from "react-i18next";
 
 
 const API = import.meta.env.VITE_API
@@ -21,6 +22,7 @@ function AllQuestions({setStatusFormName}) {
     const [focusQuestion, setFocusQuestion] = useState("");
     const [loadingAdd, setLoadingAdd] = useState(false)
     const [QuestionLIst, setQuestionsList] = useState([])
+    const {t} = useTranslation('')
 
 
     // get template details
@@ -105,8 +107,6 @@ function AllQuestions({setStatusFormName}) {
             setOptionValues(optionMap);
         }
     }, [LatestTemplate]);
-
-
 
     // question type changer
     const handleChangeQuestionType = async (val, questionId) => {
@@ -242,16 +242,16 @@ function AllQuestions({setStatusFormName}) {
                                                 <div className={`${focusQuestion == item.id ? "flex" : "hidden"} items-center gap-[20px]`}>
                                                     <button onClick={() => handleDeleteQuestion(item.id)}><FaRegTrashAlt  className="text-[#999] text-[20px] cursor-pointer"/></button>
                                                     <select value={item.type} onChange={(e) => handleChangeQuestionType(e.target.value, item.id)} name="type_question" id="type_question" className="border-[1px] border-[#999] text-[#999] rounded-[4px] cursor-pointer px-[10px] py-[5px]">
-                                                        <option value="short_text">Short Text</option>
-                                                        <option value="paragraph">Paragraph</option>
-                                                        <option value="number">Number</option>
-                                                        <option value="checkbox">Checkboxes</option>
+                                                        <option value="short_text">{t('shortText')}</option>
+                                                        <option value="paragraph">{t('paragraph')}</option>
+                                                        <option value="number">{t('number')}</option>
+                                                        <option value="checkbox">{t('checkboxes')}</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            {item.type == 'short_text' && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]  w-[50%]`}>Short answer text</p>}
-                                            {item.type == "paragraph" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]   w-[65%]`}>Long answer text</p>}
-                                            {item.type == "number" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]   w-[25%]`}>Number answer</p>}
+                                            {item.type == 'short_text' && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]  w-[50%]`}>{t('shortAnswer')}</p>}
+                                            {item.type == "paragraph" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]   w-[65%]`}>{t('longAnswer')}</p>}
+                                            {item.type == "number" && <p className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px]   w-[25%]`}>{t('number')}</p>}
                                             {item.type == "checkbox" && <div className={`${focusQuestion == item.id ? "pt-[20px] border-[#999]" : "pt-[10px] border-transparent"} text-[#999] dark:text-[#fff] pb-[10px] border-b-[1px] flex flex-col gap-[15px] w-full`}>
                                                 {item.options.map((opt, index) => (
                                                     <div key={index} className="flex items-center justify-between w-full    ">
@@ -304,7 +304,7 @@ function AllQuestions({setStatusFormName}) {
                                                 ))}
                                                 <div onClick={() =>  addOption(item.id)} className="flex items-center gap-[10px]">
                                                     <div className="w-[15px] h-[15px] border-[1px] border-[#888] rounded-[3px]"></div>
-                                                    <p  className="border-b-[1px] border-[#999] ">Add option</p>
+                                                    <p  className="border-b-[1px] border-[#999] ">{t('addOption')}</p>
                                                 </div>
                                             </div>}
                                         </div>

@@ -13,6 +13,7 @@ function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
     const token = localStorage.getItem('token')
     const [accessType, setAccessType] = useState("public")
     const {id} = useParams()
+    const {t} = useParams('')
     const [selectedItems, setSelectedItems] = useState([]);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     
@@ -105,7 +106,7 @@ function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[10px]">
                     <FaLock  className="text-[15px] text-[#777]"/>
-                    <p className="text-[17px] font-[600]">Anyone with the link</p>
+                    <p className="text-[17px] font-[600]">{t('anyoneWithTheLink')}</p>
                 </div>
                 <Switch checked={accessType == "public"} onChange={onChangeAccess} />
             </div>
@@ -122,8 +123,8 @@ function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
             <div className="flex items-center justify-between mt-[20px]">
                 <div></div>
                 <div className="flex items-center">
-                    <button onClick={handleCancel} className="py-[5px] px-[15px] rounded-[20px] text-[#7248b9] cursor-pointer">Cancel</button>
-                    {!loadingSubmit && <button onClick={handleOk} className={`py-[5px] px-[15px] rounded-[20px] bg-[#482585] cursor-pointer  text-[#fff] `}>Share</button>}
+                    <button onClick={handleCancel} className="py-[5px] px-[15px] rounded-[20px] text-[#7248b9] cursor-pointer">{t('cancel')}</button>
+                    {!loadingSubmit && <button onClick={handleOk} className={`py-[5px] px-[15px] rounded-[20px] bg-[#482585] cursor-pointer  text-[#fff] `}>{t('share')}</button>}
                     {loadingSubmit && <button  className="py-[5px] px-[15px] rounded-[20px] bg-[#482585] cursor-pointer  text-[#fff]  w-[65px] ">
                         <ClipLoader size={20} color="#fff" className="text-[#fff]" />
                     </button>}

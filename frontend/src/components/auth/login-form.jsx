@@ -4,12 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { signInWithGoogle } from '../../../firebase';
+import { useTranslation } from 'react-i18next';
 
 const API = import.meta.env.VITE_API
 
 function LoginForm() {
   const navigate = useNavigate()
   const isFromUserId = localStorage.getItem('isFromUserId')
+  const {t} = useTranslation()
 
   // login
   const postLogin = async (values) => {
@@ -60,21 +62,21 @@ function LoginForm() {
         password: ""
     }}
   >
-    <h2 className='text-[25px] text-center leading-[16px] font-[600] mb-[19px] dark:text-[#fff]'>Login</h2>
+    <h2 className='text-[25px] text-center leading-[16px] font-[600] mb-[19px] dark:text-[#fff]'>{t('Login')}</h2>
 
     <Form.Item
       name="email"
       style={{width: '100%'}} 
       rules={[{ required: true, message: 'Please enter your email!'}]}
     >
-      <Input placeholder='Enter your email' type='email'/>
+      <Input placeholder={t('enterYourEmail')} type='email'/>
     </Form.Item>
 
     <Form.Item
       name="password"
       rules={[{ required: true, message: 'Please enter your password!' }]}
     >
-      <Input type={"password"}  placeholder='Enter your password'/>
+      <Input type={"password"}  placeholder={t('enterYourPassword')}/>
     </Form.Item>
 
     <Form.Item label={null}>
@@ -90,15 +92,15 @@ function LoginForm() {
           marginBottom: '27px'
         }}
       >
-        Login
+        {t('Login')}
       </Button>
     </Form.Item>
 
-    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] dark:text-[#fff] mb-[27px]'>Don't have an account, <Link to={"/register"} className='text-[#6b6bff] cursor-pointer'>register</Link></h2>
-    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] dark:text-[#fff] mb-[27px]'>Or login with</h2>
+    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] dark:text-[#fff] mb-[27px]'>{t('noAccount')}<Link to={"/register"} className='text-[#6b6bff] cursor-pointer lowercase'>{t('Register')}</Link></h2>
+    <h2 className='text-center text-[#3D3D3D] text-[13px] font-[400] leading-[16px] dark:text-[#fff] mb-[27px]'>{t('orLoginWith')}</h2>
     <Button onClick={handleLoginGoogle} className='mb-[20px] flex gap-[10px] items-center border-[#EAEAEA] border-[1px] rounded-[5px] w-full py-[10px] justify-center cursor-pointer'>
       <FaGoogle />
-      <span>Login with Google</span>
+      <span>{t('continueGoogle')}</span>
     </Button>
   </Form>
   )

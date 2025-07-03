@@ -5,11 +5,13 @@ import { FaTableCellsLarge, FaTableList } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import AnswersTableView from "./answers-table-view";
 import AnswerCardsSkeleton from "../skeleton/answer-cards-skeleton";
+import { useTranslation } from "react-i18next";
 
 const API = import.meta.env.VITE_API
 
 function AnswersPage() {
     const {id} = useParams()
+    const {t} = useTranslation()
     const token = localStorage.getItem('token')
     const [cardsView, setCardsView] = useState(false)
 
@@ -51,7 +53,7 @@ function AnswersPage() {
   return (
     <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px] pb-[100px]">
         <div className="w-full bg-[#fff] border-t-[10px] border-[#7248b9] flex items-center justify-between  rounded-[10px] py-[20px] px-[20px]">
-            <h2 className="text-[35px] font-[600] py-[10px]">{TemplateAnswers?.length} responses</h2>
+            <h2 className="text-[35px] font-[600] py-[10px]">{TemplateAnswers?.length} {t('responces')}</h2>
             <div>
                 {!cardsView && <button onClick={() => handleChangeButtonType(true)} className="cursor-pointer"><FaTableList  className="text-[20px]"/></button>}
                 {cardsView && <button onClick={() => handleChangeButtonType(false)} className="cursor-pointer"><FaTableCellsLarge className="text-[20px]"/></button>}
@@ -62,7 +64,7 @@ function AnswersPage() {
                 <div key={item.responderEmail} className="w-full bg-[#fff] rounded-[10px] py-[20px] px-[20px]">
                     <div className="flex items-center justify-between">
                         <h2 className="text-[22px] font-[600]">Responder Email: <span className="text-[18px] font-[300] ml-[10px]">{item.responderEmail}</span></h2>
-                        <p className="text-[12px] mb-[10px]">{item.answers.length} responses</p>
+                        <p className="text-[12px] mb-[10px]">{item.answers.length} {t('responces')}</p>
                     </div>
                     <hr className="mb-[20px] border-[#999]"/>
                     {item.answers.map(itemAnswer => (
@@ -83,7 +85,7 @@ function AnswersPage() {
         </div>}
         {!loading1 && Array.isArray(TemplateAnswers) && !TemplateAnswers?.length &&   (
             <div className="w-full bg-[#fff] rounded-[10px] py-[20px] px-[20px] text-center">
-                No responses. Publish your form to start accepting responses.
+                {t('noResponces')}
             </div>
         )}
         {loading1 && loading2 && ( 

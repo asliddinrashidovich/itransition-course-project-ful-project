@@ -10,6 +10,7 @@ import TemplatesCardsSskeleton from "../skeleton/templates-cards-skeleton";
 import { useState } from "react";
 import { FormControl, MenuItem, Select } from "@mui/material"
 import TemplatesTableView from "./templates-table-view";
+import { useTranslation } from "react-i18next";
 
 const API = import.meta.env.VITE_API
 
@@ -17,6 +18,7 @@ function ResentTempletes() {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     const [authorValue, setAuthorValue] = useState('anyone');
+    const {t} = useTranslation()
 
     const cardsView = searchParams.get("template-view") || "card"
     const search = searchParams.get("search") || ""
@@ -85,10 +87,10 @@ function ResentTempletes() {
     <section className="py-[30px] bg-[#fff] dark:bg-gray-800  px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff] ">Recent forms</h5>
+                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff] ">{t("resentForms")}</h5>
                 <div className="flex items-center gap-[30px]">
                     {token &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2 className="dark:text-[#fff] ">Sort by:</h2>
+                        <h2 className="dark:text-[#fff] ">{t('sortBy')}:</h2>
                         <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
                             <Select
                                 value={authorValue}
@@ -97,16 +99,16 @@ function ResentTempletes() {
                                 className="dark:text-[#fff]"
                                 inputProps={{ 'aria-label': 'Without label' }}
                             >
-                                <MenuItem value={'anyone'}>Owned by anyone</MenuItem>
-                                <MenuItem value={"me"}>Owned by me</MenuItem>
-                                <MenuItem value={"not-me"}>Not owned by me</MenuItem>
+                                <MenuItem value={'anyone'}>{t('ownedByAnyone')}</MenuItem>
+                                <MenuItem value={"me"}>{t('ownedByMe')}</MenuItem>
+                                <MenuItem value={"not-me"}>{t('notOwnedByMe')}</MenuItem>
                             </Select>
                         </FormControl>
                     </div>}
-                    {cardsView == "card" && <Tooltip title="Table view">
+                    {cardsView == "card" && <Tooltip title={t('tableView')}>
                         <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444] dark:text-[#fff] "/></button>
                     </Tooltip>}
-                    {cardsView == "table" && <Tooltip title="Card view">
+                    {cardsView == "table" && <Tooltip title={t('cardView')}>
                         <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444] dark:text-[#fff] "/></button>
                     </Tooltip>}
                 </div>

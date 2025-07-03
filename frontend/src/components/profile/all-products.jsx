@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { FormControl, MenuItem, Select } from "@mui/material"
 import TemplatesTableView from "../home/templates-table-view";
+import { useTranslation } from "react-i18next";
 
 const API = import.meta.env.VITE_API
 
@@ -11,6 +12,7 @@ function AllTemplates() {
     const [authorValue, setAuthorValue] = useState('anyone');
     const token = localStorage.getItem('token')
     const [searchParams, setSearchParams] = useSearchParams()
+    const {t} = useTranslation()
 
     // get my data
     const fetchMyData = async () => {
@@ -63,10 +65,10 @@ function AllTemplates() {
     <section className="py-[30px] bg-transparent px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[20px] font-[600] dark:text-[#fff]">All Templates</h5>
+                <h5 className="text-[#000] text-[20px] font-[600] dark:text-[#fff]">{t('allTemplates')}</h5>
                 <div className="flex items-center gap-[30px]">
                     {myData?.isAdmin &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2 className="dark:text-[#fff]">Sort by:</h2>
+                        <h2 className="dark:text-[#fff]">{t('sortBy')}:</h2>
                         <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
                             <Select
                                 value={authorValue}
@@ -75,9 +77,9 @@ function AllTemplates() {
                                 className="dark:text-[#fff]"
                                 inputProps={{ 'aria-label': 'Without label' }}
                             >
-                                <MenuItem value={'anyone'}>Owned by anyone</MenuItem>
-                                <MenuItem value={"me"}>Owned by me</MenuItem>
-                                <MenuItem value={"not-me"}>Not owned by me</MenuItem>
+                                <MenuItem value={'anyone'}>{t('ownedByAnyone')}</MenuItem>
+                                <MenuItem value={"me"}>{t('ownedByMe')}</MenuItem>
+                                <MenuItem value={"not-me"}>{t('notOwnedByMe')}</MenuItem>
                             </Select>
                         </FormControl>
                     </div>}

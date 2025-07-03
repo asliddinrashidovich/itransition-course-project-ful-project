@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { MdEdit } from "react-icons/md"
 import { IoIosLogOut } from "react-icons/io"
 import LanguageChanger from "../language/language-changer"
+import { useTranslation } from "react-i18next"
 
 function HeaderSidebar() {
     const [openSidebar, setOpenSideBar] = useState(false)
@@ -11,6 +12,7 @@ function HeaderSidebar() {
     const myData = JSON.parse(localStorage.getItem('user'))
     function handleOpen() {setOpenSideBar(true)}
     function handleClose() {setOpenSideBar(false)}
+    const {t} = useTranslation()
     const  navigate = useNavigate()
 
     function handleClick(path) {
@@ -43,16 +45,16 @@ function HeaderSidebar() {
 
             {!token && <div className="flex md:hidden lg:flex-row flex-col gap-[20px] px-[20px] py-[20px] bg-[#00000040]">
                 <button onClick={() => handleClick("/login")} className="border-[1px] w-full text-[12px] sm:text-[17px] lg:w-[50%] text-center border-[#461773] text-[#461773] rounded-[30px] cursor-pointer px-[20px] py-[5px]">
-                    Login
+                    {t('Login')}
                 </button>
                 <button onClick={() => handleClick("/register")} className=" bg-[#461773] w-full text-[12px] sm:text-[17px] lg:w-[50%] text-center text-[#fff] rounded-[30px] cursor-pointer px-[20px] py-[5px]">
-                    Register
+                    {t('Register')}
                 </button>
             </div>}
             <div className="p-[20px] md:hidden flex">
                 {token && <h3 onClick={() => handleLogout()}  className="cursor-pointer rounded-[6px] text-[red] hover:bg-[#999] hover:text-[#fff] w-[100%] text-[12px] md:text-[16px] flex gap-[7px] justify-start px-[5px] sm:px-[20px] py-[4px] md:py-[10px] items-center bg-[#EBEFF3] relative">
                     <IoIosLogOut  className="text-[red]"/>
-                    Log out
+                    {t('logOut')}
                 </h3>}
             </div>
             <div onClick={handleClick} className="p-[20px] flex md:hidden">

@@ -1,6 +1,7 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { FaRegTrashCan } from "react-icons/fa6"
 
 
@@ -8,6 +9,7 @@ const API = import.meta.env.VITE_API;
 
 function TableHeaderToolbar({selectedTemplates}) {
   const token = localStorage.getItem('token')
+  const {t} = useTranslation()
   const queryClient = useQueryClient();
   
     // DELETE TEMPLATES
@@ -32,7 +34,7 @@ function TableHeaderToolbar({selectedTemplates}) {
       <div className="flex gap-[7px] ">
         <button onClick={() => deleteTemplates.mutate()} className="active:opacity-[80%] active:bg-[#ffffffd0] flex items-center gap-[10px] border-[2px] border-[#ba5364] cursor-pointer rounded-[6px] px-[10px] py-[5px]"> 
             <FaRegTrashCan className="text-[#ba5364]"/>
-            <span className="text-[#ba5364] text-[15px] font-[600]">Delete</span>
+            <span className="text-[#ba5364] text-[15px] font-[600]">{t('delete')}</span>
         </button>
       </div>
     </div>

@@ -4,9 +4,11 @@ import moment from 'moment';
 import TableHeaderToolbar from './table-header-toolbar';
 import { useNavigate } from 'react-router-dom';
 import UsersSkeleton from '../skeleton/users-skeleton';
+import { useTranslation } from 'react-i18next';
 
 function TemplatesTableView({LatestTemplates, loading}) {
     const [selectAll, setSelectAll] = useState(false)
+    const {t} = useTranslation()
     const [selectedTemplates, setSelectedTemplates] = useState([])
     const navigate = useNavigate()
 
@@ -40,13 +42,13 @@ function TemplatesTableView({LatestTemplates, loading}) {
                         <td className="w-[50px] min-w-[49px] text-center ">
                             <Checkbox  onChange={handleSelectAll} className='' checked={selectAll} value={true}></Checkbox>
                         </td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]  ">Title</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]  ">{t('tableTitle')}</td>
                         <td className="flex gap-[7px] items-center min-w-[250px]  py-[10px] dark:text-[#fff] ">
-                            <span className="text-[15px]  font-[700]">Author</span>
+                            <span className="text-[15px]  font-[700]">{t('tableAuthor')}</span>
                         </td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff] ">Access</td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff] ">Is Published</td>
-                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px] dark:text-[#fff] ">Updated at</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff] ">{t('tableAccess')}</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff] ">{t('tableIsPublished')}</td>
+                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px] dark:text-[#fff] ">{t('tableIsUpdatedAt')}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,7 +73,7 @@ function TemplatesTableView({LatestTemplates, loading}) {
                     {!loading && Array.isArray(LatestTemplates) && !LatestTemplates.length &&  (
                         <tr>
                             <td colSpan={6} className="text-center">
-                                <h2 className="mt-[20px] text-[17px] font-[600]">No Templates</h2>
+                                <h2 className="mt-[20px] text-[17px] font-[600]">{t('noTemplates')}</h2>
                             </td>
                         </tr>
                     )}

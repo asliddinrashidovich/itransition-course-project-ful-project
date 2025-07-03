@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import { useEffect, useState } from "react";
 import HeaderSidebar from "./header-sidebar";
 import { IoMoon, IoSearch } from "react-icons/io5";
-import { MdClear } from "react-icons/md";
 import AuthComponent from "./auth-component";
 import { IoIosLogOut } from "react-icons/io";
 import { FaUser } from "react-icons/fa6";
@@ -25,7 +24,6 @@ function Header() {
       document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     }, []);
 
-    
     // Dark rejimni yoqish
     const handleDarkMode = () => {
       document.documentElement.classList.add('dark');
@@ -54,7 +52,7 @@ function Header() {
         const handleScroll = () => {setScrolled(window.scrollY > 50);};
         window.addEventListener("scroll", handleScroll);
         return () => {window.removeEventListener("scroll", handleScroll)};
-    }, []);
+    }, [])
 
     const handleLogout = () => {
       localStorage.clear()
@@ -100,11 +98,11 @@ function Header() {
             <div className="group-hover:flex right-[0px] hidden w-[120px] absolute p-[5px] bg-[#fff] rounded-[5px] flex-col z-999">
                 <button onClick={() => navigate("/profile")} className="rounded-[7px] p-[5px] cursor-pointer hover:bg-[#461773] flex items-center gap-[7px] hover:text-[#fff] transition-all duration-200 mb-[5px]">
                   <FaUser />
-                  <p>My Profile</p>
+                  <p>{t('myProfile')}</p>
                 </button>
                 <button onClick={handleLogout} className="rounded-[7px] p-[5px] cursor-pointer hover:bg-[#461773] flex items-center gap-[7px]">
                   <IoIosLogOut className="text-[red]"/>
-                  <p className="text-[red]">Log out</p>
+                  <p className="text-[red]">{t('logOut')}</p>
                 </button>
             </div>
           </div>}

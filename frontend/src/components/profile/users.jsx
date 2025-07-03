@@ -7,6 +7,7 @@ import HeaderToolbar from './toolbar';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import ModalCompopnent from './modal';
 import UsersSkeleton from '../skeleton/users-skeleton';
+import { useTranslation } from 'react-i18next';
 
 const API = import.meta.env.VITE_API;
 
@@ -15,6 +16,7 @@ function UsersManagment() {
     const [selectedUsers, setSelectedUsers] = useState([])
     const [searchParams] = useSearchParams()
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const {t} = useTranslation()
     const [methodMyself, setMethodMyself] = useState('block')
 
     const token = localStorage.getItem('token')
@@ -80,13 +82,13 @@ function UsersManagment() {
                         <td className="w-[50px] min-w-[49px] text-center ">
                             <Checkbox  onChange={handleSelectAll} checked={selectAll} value={true}></Checkbox>
                         </td>
-                        <td className="text-[15px]  font-[700] min-w-[130px] py-[10px] dark:text-[#fff] ">Name</td>
+                        <td className="text-[15px]  font-[700] min-w-[130px] py-[10px] dark:text-[#fff] ">{t('name')}</td>
                         <td className="flex gap-[7px] items-center min-w-[250px]  py-[10px]">
-                            <span className="text-[15px]  font-[700] dark:text-[#fff]">Email</span>
+                            <span className="text-[15px]  font-[700] dark:text-[#fff]">{t('email')}</span>
                         </td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]">Status</td>
-                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]">Role</td>
-                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px] dark:text-[#fff]">Created at</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]">{t('status')}</td>
+                        <td className="text-[15px]  font-[700] min-w-[100px] py-[10px] dark:text-[#fff]">{t('role')}</td>
+                        <td className="text-[15px]  font-[700] min-w-[150px] py-[10px] dark:text-[#fff]">{t('createdAt')}</td>
                     </tr>
                 </thead>
                 <tbody>

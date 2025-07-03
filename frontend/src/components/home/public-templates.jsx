@@ -9,11 +9,13 @@ import NoData from "../no-data/no-data";
 import TemplatesCardsSskeleton from "../skeleton/templates-cards-skeleton";
 import TemplatesTableView from "./templates-table-view";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const API = import.meta.env.VITE_API
 
 function PublicTemplates() {
     const [searchParams, setSearchParams] = useSearchParams()
+    const {t} = useTranslation()
 
     const cardsView = searchParams.get("template-view") || "card"
     const search = searchParams.get("search") || ""
@@ -48,12 +50,12 @@ function PublicTemplates() {
     <section className="py-[30px] bg-[#fff] dark:bg-gray-900 px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff]">Public forms</h5>
+                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff]">{t('publicForms')}</h5>
                 <div className="flex items-center gap-[30px]">
-                    {cardsView == "card" && <Tooltip title="Table view">
+                    {cardsView == "card" && <Tooltip title={t('tableView')}>
                         <button onClick={() => handleChangeButtonType("table")} className="cursor-pointer"><FaTableList  className="text-[20px] text-[#444] dark:text-[#fff]"/></button>
                     </Tooltip>}
-                    {cardsView == "table" && <Tooltip title="Card view">
+                    {cardsView == "table" && <Tooltip title={t('cardView')}>
                         <button onClick={() => handleChangeButtonType("card")} className="cursor-pointer"><FaTableCellsLarge className="text-[20px] text-[#444] dark:text-[#fff]"/></button>
                     </Tooltip>}
                 </div>
@@ -79,7 +81,7 @@ function PublicTemplates() {
                 ))}
                 {!loading && Array.isArray(LatestTemplates) && !LatestTemplates.length && (
                     <div className="col-span-1 md:col-span-3 lg:col-span-5 ">
-                        <NoData>No templates</NoData>
+                        <NoData>{t('noTemplates')}</NoData>
                     </div>
                 )}
                 {loading && ( 
