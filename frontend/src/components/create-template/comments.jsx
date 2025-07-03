@@ -60,7 +60,7 @@ function Comments() {
     <div className="">
         {!openComments && <button onClick={() => setOpenComments(true)} className="border-[1px] hover:bg-[#7248b9] transition-all duration-200  rounded-[5px] p-[10px] border-[#888] bg-[#fff] cursor-pointer"><FaComments className="text-[30px]"/></button>}
         {openComments && (
-            <div className="bg-[#fff] dark:bg-gray-400 p-[10px] relative h-[400px] w-[300px] shadow-2xl rounded-[10px] z-[400] ">
+            <div className="bg-[#fff] dark:bg-gray-400 p-[10px] relative h-[400px] w-[250px] sm:w-[300px] shadow-2xl rounded-[10px] z-[400] ">
                 <div className="flex items-center justify-between">
                     <h5>{t('comments')}</h5>
                     <button className="cursor-pointer" onClick={() => setOpenComments(false)}><MdOutlineClose/></button>
@@ -93,9 +93,10 @@ function Comments() {
                     )}
                 </div>
                 <form onSubmit={handleAddComment} className="absolute bottom-[10px] left-[10px] right-[10px] rounded-[40px] p-[10px] bg-[#ededed] border-[1px] border-[#999] flex items-center justify-between">
-                    <input value={commentText} onChange={(e) => setCommentText(e.target.value)} type="text" className="outline-none bg-transparent" placeholder="Comment"/>
-                    {!loadingAdd && <button type="submit" disabled={commentText.length == 0} className={`text-[12px] w-[100px]  py-[5px]  rounded-[30px] ${commentText.length > 0 ? "cursor-pointer bg-[#7248b9] text-[#fff]" : "cursor-not-allowed bg-[#fff] text-[#000] border-[1px] border-[#999]"}`}>{t('comment')}</button>}
-                    {loadingAdd && <button type="button" className="text-[12px] w-[100px]   cursor-pointer py-[5px] bg-[#7248b9] text-[#fff] rounded-[30px]"><ClipLoader size={15} /></button>}
+                    <input value={commentText} onChange={(e) => setCommentText(e.target.value)} type="text" className="outline-none w-[100px] sm:w-full bg-transparent" placeholder="Comment"/>
+                    {!loadingAdd && <button type="submit" disabled={commentText.length == 0} className={`text-[12px]  w-[100px]  py-[5px]  rounded-[30px] ${commentText.length > 0 ? "cursor-pointer bg-[#7248b9] text-[#fff]" : "cursor-not-allowed bg-[#fff] text-[#000] border-[1px] border-[#999]"}`}>{t('comment')}</button>}
+
+                    {loadingAdd && <button type="button" className="text-[12px] sm:w-[100px]   cursor-pointer py-[5px] bg-[#7248b9] text-[#fff] rounded-[30px]"><ClipLoader size={15} /></button>}
                 </form>
             </div>
         )}

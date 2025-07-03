@@ -9,8 +9,9 @@ import AnswersPage from "./answers-page";
 import ShareTemplate from "./share-template";
 import Comments from "./comments";
 import toast from "react-hot-toast";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaQuestionCircle, FaRegHeart } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { MdQuestionAnswer } from "react-icons/md";
 
 const API = import.meta.env.VITE_API
 
@@ -165,40 +166,53 @@ function CreateNewForm() {
         <div className="fixed bottom-[30px] left-[30px] z-[101]">
             <Comments/>
         </div>
-        <div className="w-full py-[10px] px-5 md:px-10 bg-[#e1e1e1] dark:bg-gray-900 flex fixed z-[200] items-center gap-[50px]">
+        <div className="w-full py-[10px] px-5 md:px-10 bg-[#e1e1e1] dark:bg-gray-900 flex fixed z-[202] items-center gap-[10px] md:gap-[50px] ">
             <div className="relative inline-block">
                 <span ref={spanRefFormName} className="absolute top-0 left-0 text-[20px] font-[600] invisible whitespace-pre px-1 border-none">
                     {displayValue || ""}
                 </span>
-                <input ref={inputRefFormName} type="text" value={displayValue} onChange={(e) => handleChangeFormName(e.target.value)} className="outline-none text-[20px] dark:text-[#fff] font-[600] bg-transparent"/>
+                <input ref={inputRefFormName} type="text" value={displayValue} onChange={(e) => handleChangeFormName(e.target.value)} className="outline-none text-[15px] sm:text-[20px] dark:text-[#fff] font-[600] bg-transparent"/>
             </div>
-            <ul className="flex items-center gap-[20px]">
-                <li onClick={() => handleTabPage("questions")} className={`dark:text-[#fff] cursor-pointer border-b-[3px] ${(formPage == "questions" || formPage == "") ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>{t('questions')}</li>
-                <li onClick={() => handleTabPage("responses")} className={`dark:text-[#fff] cursor-pointer border-b-[3px] ${formPage == "responses"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>{t('responces')} {TemplateAnswers?.length}</li>
-            </ul>
-            <div className="text-xs text-gray-500 dark:text-[#fff] italic mt-1">{statusFormName === 'Saving...' ? t('SavingChanges') : statusFormName === 'Saved' ? t('AllChangesSaved') : t('ErrorSaving')}</div>
-            <div>
+            <div className="sm:mr-[20px] flex items-center">
                 {!isLiked?.isLiked && <button className="cursor-pointer" onClick={() => handleLike()}><FaRegHeart className="text-[20px] text-[#ff5959]"/></button>}
                 {isLiked?.isLiked && <button className="cursor-pointer" onClick={() => handleUnLike()}><FaHeart className="text-[20px] text-[#ff5959]"/></button>}
             </div>
-            <div className="flex items-center gap-[20px] ml-auto">
+            <ul className="hidden md:flex items-center gap-[20px]">
+                <li onClick={() => handleTabPage("questions")} className={`dark:text-[#fff] cursor-pointer border-b-[3px] ${(formPage == "questions" || formPage == "") ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>{t('questions')}</li>
+                <li onClick={() => handleTabPage("responses")} className={`flex items-center gap-[5px] dark:text-[#fff] cursor-pointer border-b-[3px] ${formPage == "responses"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>{t('responces')} {TemplateAnswers?.length}</li>
+            </ul>
+            <div className="text-xs text-nowrap text-gray-500 dark:text-[#fff] italic mt-1">{statusFormName === 'Saving...' ? t('SavingChanges') : statusFormName === 'Saved' ? t('AllChangesSaved') : t('ErrorSaving')}</div>
+            <div className="hidden md:flex items-center gap-[20px] ml-auto">
                 <ShareTemplate setRefreshTemplate={setRefreshTemplate} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
                 <PublishForm setRefreshTemplate={setRefreshTemplate} LatestTemplate={LatestTemplate} setIsModalOpen={setIsModalOpen}/>
             </div>
         </div>
-        {(formPage == "questions" || formPage == "") && <div className="max-w-[800px] mx-auto mt-[70px] flex flex-col gap-[20px]">
-            <div className="w-full bg-[#fff] dark:bg-gray-700 border-t-[10px] border-[#7248b9] rounded-[10px] py-[30px] px-[20px]">
+        <div className="w-full py-[10px] px-5 md:px-10 bg-[#e1e1e1] dark:bg-gray-900 flex fixed z-[200] items-center gap-[10px] md:gap-[50px] pt-[50px] md:hidden">
+            <ul className="md:hidden flex items-center gap-[20px]">
+                <li onClick={() => handleTabPage("questions")} className={`dark:text-[#fff] cursor-pointer border-b-[3px] ${(formPage == "questions" || formPage == "") ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>
+                    <FaQuestionCircle />
+                </li>
+                <li onClick={() => handleTabPage("responses")} className={`dark:text-[#fff] cursor-pointer border-b-[3px] flex items-center gap-[5px] ${formPage == "responses"  ? "text-[#7248b9] border-[#7248b9]" : "text-[#000] border-transparent"}`}>
+                    <MdQuestionAnswer /> {TemplateAnswers?.length}</li>
+            </ul>
+            <div className="md:hidden flex items-center gap-[20px] ml-auto">
+                <ShareTemplate setRefreshTemplate={setRefreshTemplate} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <PublishForm setRefreshTemplate={setRefreshTemplate} LatestTemplate={LatestTemplate} setIsModalOpen={setIsModalOpen}/>
+            </div>
+        </div>
+        {(formPage == "questions" || formPage == "") && <div className="max-w-[800px] mx-auto mt-[130px] md:mt-[70px] flex flex-col gap-[20px] px-[20px]">
+            <div className="w-full bg-[#fff] dark:bg-gray-700 border-t-[10px] border-[#7248b9] rounded-[10px] py-[30px] px-[20px] flex flex-col">
                 <div className="relative inline-block">
                     <span ref={spanRefFormTitle} className="absolute top-0 left-0 text-[35px] font-[600] invisible whitespace-pre px-1 border-none">
                         {displayValueTitle || ""}
                     </span>
-                    <input ref={inputRefFormTitle} type="text" value={displayValueTitle} onChange={(e) => handleChangeFormTitle(e.target.value)} className="outline-none text-[35px] dark:text-[#fff] bg-transparent font-[600] "/>
+                    <input ref={inputRefFormTitle} type="text" value={displayValueTitle} onChange={(e) => handleChangeFormTitle(e.target.value)} className="outline-none text-[35px] dark:text-[#fff] bg-transparent max-w-[100%] font-[600] "/>
                 </div>
-                <div className="relative inline-block w-full">
+                <div className="relative inline-block">
                     <span ref={spanRefFormDec} className="absolute top-0 left-0 w-full text-[20px] font-[600] invisible whitespace-pre px-1 border-none">
                         {displayValueDec || ""}
                     </span>
-                    <input ref={inputRefFormDec} type="text" value={displayValueDec} onChange={(e) => handleChangeFormDec(e.target.value)} className="outline-none text-[17px] mt-[20px] bg-transparent mb-[10px] w-[600px] text-[#999] dark:text-[#fff]" placeholder="Form description "/>
+                    <input ref={inputRefFormDec} type="text" value={displayValueDec} onChange={(e) => handleChangeFormDec(e.target.value)} className="width-input outline-none text-[17px] mt-[20px] bg-transparent mb-[10px] text-[#999] dark:text-[#fff]" placeholder="Form description "/>
                 </div>
                 <hr />
             </div>

@@ -45,16 +45,16 @@ function StartNewForm() {
             <div className="flex justify-between items-center py-[20px]">
                 <h5 className="text-[#000] dark:text-[#fff] text-[18px] font-[400]">{t('startNewForm')}</h5>
             </div>
-            <div className="max-w-[1200px] mx-auto justify-between grid-cols-1 sm:grid-cols-3 md:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
-                <div className="w-[180px]" onClick={() => handleCreateNew("/templates")}>
+            <div className="max-w-[1200px] mx-auto justify-between grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
+                <div className="" onClick={() => handleCreateNew("/templates")}>
                     <div className="w-full h-[150px] bg-[#fff] dark:bg-gray-200  rounded-[5px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer flex items-center justify-center">
                         <img src="/add-symbol.svg" alt="add button" className="w-[60px]"/>
                     </div>
                     <h3 className="py-[10px] font-[600] dark:text-[#fff]">{t('blankForm')}</h3>
                 </div>
                 {PupularTemplates?.map(item => (
-                    <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden w-[180px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
-                        <div className="w-full h-[150px]">
+                    <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
+                        <div className="w-full h-[75px] sm:h-[100px] md:h-[150px]">
                             <img src="https://images.ctfassets.net/lzny33ho1g45/4ODoWVyzgicvbcb6J9ZZZ5/c0333ef44af8588fee18c1e6ed403fc7/Group_12549.jpg?w=1520&fm=jpg&q=31&fit=thumb&h=760" alt="add button" className="w-full h-full object-cover"/>
                         </div>
                         <div className="flex items-center justify-between px-[5px]">

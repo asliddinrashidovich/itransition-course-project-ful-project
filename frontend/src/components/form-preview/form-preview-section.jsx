@@ -114,7 +114,7 @@ function FormPreviewSection() {
   }
 
   return (
-    <div className="bg-[#f0ebf8] dark:bg-gray-900 min-h-[100vh] pt-[60px]"> 
+    <div className="bg-[#f0ebf8] dark:bg-gray-900 min-h-[100vh] pt-[60px] px-[20px]"> 
       {!isSubmitted && <form onSubmit={handleSubmit} className="max-w-[700px] mx-auto flex flex-col gap-[20px]">
         <div className="w-full bg-[#fff] border-t-[10px] border-[#7248b9] rounded-[10px] py-[20px] px-[20px]">
             {token && <div>

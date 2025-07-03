@@ -50,34 +50,34 @@ function ProfileSection() {
     });
   return (
     <div className="max-w-[1400px] mx-auto flex pt-[100px] pb-[40px] gap-[30px] px-[20px]">
-        <div className="md:block hidden w-[20%] p-[18px]">
-            <h2 className="font-[700] text-[18px] leading-[16px] mb-[17px] dark:text-[#fff]">{t('myAccount')} <span className="font-[300] ml-[10px]">|</span> {myData?.isAdmin 
+        <div className="md:block w-[10%]  md:w-[25%] p-[18px]">
+            <h2 className="font-[700] text-[18px] leading-[16px] mb-[17px] hidden sm:flex text-nowrap dark:text-[#fff]">{t('myAccount')} <span className="font-[300] ml-[10px]">|</span> {myData?.isAdmin 
                 ? <span className="text-[12px] ml-[10px] font-[500] text-[green]">{t('admin')}</span> 
                 : <span className="text-[12px] ml-[10px] font-[500] text-[blue]">{t('user')}</span>}</h2>
             <div>
-                <div onClick={() => handleTab('Account Details')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer  ${activeFilter == 'account-details' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
-                    <FaRegUser className="dark:text-[#fff]"/>
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'account-details' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>{t('accountDetails')}</p>
+                <div onClick={() => handleTab('Account Details')} className={`flex gap-[11px] items-center border-l-[5px] h-[40px] pl-[10px] md:pl-[20px] cursor-pointer  mb-[15px] ${activeFilter == 'account-details' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
+                    <FaRegUser className="dark:text-[#fff] shrink-0 flex items-center min-w-[18px] min-h-[18px]  md:mb-0 mb-[10px]"/>
+                    <p className={`font-[700] text-nowrap text-[15px] hidden sm:flex leading-[45px] ${activeFilter == 'account-details' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>{t('accountDetails')}</p>
                 </div>
-                <div onClick={() => handleTab('All Templates')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-templates' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
-                    <SiGoogleforms className="dark:text-[#fff]"/>
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-templates' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>{t('templates')}</p>
+                <div onClick={() => handleTab('All Templates')} className={`flex mb-[15px] gap-[11px] items-center border-l-[5px] pl-[10px] md:pl-[20px] cursor-pointer  ${activeFilter == 'all-templates' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
+                    <SiGoogleforms className="shrink-0 dark:text-[#fff] min-w-[18px] min-h-[18px]  md:mb-0 mb-[10px]"/>
+                    <p className={`font-[700] text-[15px] hidden sm:flex leading-[45px] ${activeFilter == 'all-templates' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>{t('templates')}</p>
                 </div>
-                {myData?.isAdmin && <div onClick={() => handleTab('All Users')} className={`flex gap-[11px] items-center border-l-[5px] pl-[20px] cursor-pointer ${activeFilter == 'all-users' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
-                    <FaUsers className="dark:text-[#fff]"/>
-                    <p className={`font-[700] text-[15px] leading-[45px] ${activeFilter == 'all-users' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>{t('users')}</p>
+                {myData?.isAdmin && <div onClick={() => handleTab('All Users')} className={`flex gap-[11px] mb-[15px] items-center border-l-[5px] pl-[10px] md:pl-[20px] cursor-pointer ${activeFilter == 'all-users' ? 'border-[#134e9b]' : 'border-transparent'}`}> 
+                    <FaUsers className="shrink-0 dark:text-[#fff] min-w-[18px] min-h-[18px]  md:mb-0 mb-[10px]"/>
+                    <p className={`font-[700] text-[15px] hidden sm:flex leading-[45px] ${activeFilter == 'all-users' ? 'text-[#134e9b]' : 'text-[#727272] dark:text-[#fff]'}`}>{t('users')}</p>
                 </div>}
             </div>
-            <hr className="border-[0.5px] border-[#134e9b] my-[30px]"/>
-            <button  onClick={showModal} className="flex gap-[11px] text-[#e04242] items-center  pl-[20px] cursor-pointer"> 
+            <hr className="hidden sm:flex border-[0.5px] border-[#134e9b] my-[30px]"/>
+            <button  onClick={showModal} className="flex gap-[11px] text-[#e04242] items-center pl-[15px] md:pl-[20px] cursor-pointer"> 
                 <IoLogOutOutline />
-                <p className="font-[700] text-[15px] text-inherit leading-[45px]">{t('logOut')}</p>
+                <p className="hidden sm:flex font-[700] text-[15px] text-inherit text-nowrap leading-[45px]">{t('logOut')}</p>
             </button>
             <Modal title="Logout" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p className="text-[15px] font-[500]">❗Do you want to logout?</p>
             </Modal>
         </div>
-        <div className="w-full md:w-[75%]">
+        <div className="w-[90%] md:w-[75%]">
             <Outlet/>
         </div>
     </div>

@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaBarsStaggered } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { MdEdit } from "react-icons/md"
 import { IoIosLogOut } from "react-icons/io"
 import LanguageChanger from "../language/language-changer"
 import { useTranslation } from "react-i18next"
+import { IoMoon } from "react-icons/io5"
+import { LuSunMedium } from "react-icons/lu"
 
 function HeaderSidebar() {
     const [openSidebar, setOpenSideBar] = useState(false)
@@ -14,6 +16,28 @@ function HeaderSidebar() {
     function handleClose() {setOpenSideBar(false)}
     const {t} = useTranslation()
     const  navigate = useNavigate()
+    const [theme, setTheme] = useState('light');
+    
+    // LocalStorage'dan theme-ni o'qish
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    }, []);
+    
+    // Dark rejimni yoqish
+    const handleDarkMode = () => {
+        document.documentElement.classList.add('dark');
+        setTheme('dark');
+        localStorage.setItem('theme', 'dark');
+    };
+
+    // Light rejimni yoqish
+    const handleLightMode = () => {
+        document.documentElement.classList.remove('dark');
+        setTheme('light');
+        localStorage.setItem('theme', 'light');
+    };
 
     function handleClick(path) {
         navigate(path)
@@ -27,14 +51,14 @@ function HeaderSidebar() {
   return (
     <div className="lg:hidden flex">
         <button onClick={handleOpen} className="md:hidden flex cursor-pointer">
-            <FaBarsStaggered className="text-[#000] text-[25px]"/>
+            <FaBarsStaggered className="text-[#000] dark:text-[#fff] text-[25px]"/>
         </button>
         {<div className={`fixed top-0 ${openSidebar ? "translate-x-0" : "translate-x-[100%]"} transition-liniar duration-200  right-0 bottom-0 bg-[#fff] w-[40%] z-30 `}>
             {token && <div className="w-full relative h-[200px] justify-center sm:h-[120px] bg-[#00000040] flex-col sm:flex-row flex md:hidden items-center gap-[20px] px-[20px]">
                 <div className="max-w-[80px] max-h-[80px] rounded-full bg-[#fff]">
                     <img src="https://openclipart.org/image/2000px/247319" alt="logo" />
                 </div>
-                <div  >
+                <div >
                     <h3 className="text-[#461773] font-[600]">{myData.name}</h3>
                     <p className="text-[10px] text-[#888]">{myData.email}</p>
                 </div>
@@ -57,6 +81,18 @@ function HeaderSidebar() {
                     {t('logOut')}
                 </h3>}
             </div>
+            <div className="mr-[10px] flex md:hidden px-[20px]">
+                {theme == 'light' && (
+                    <button onClick={handleDarkMode} title="Enable dark mode">
+                    <IoMoon className="text-[22px]" />
+                    </button>
+                )}
+                {theme == 'dark' && (
+                    <button onClick={handleLightMode} title="Enable light mode">
+                    <LuSunMedium className="text-[22px] text-[#000]" />
+                    </button>
+                )}
+                </div>
             <div onClick={handleClick} className="p-[20px] flex md:hidden">
                 <LanguageChanger/>
             </div>

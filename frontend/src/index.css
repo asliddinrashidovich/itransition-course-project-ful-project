@@ -30,3 +30,7 @@
 .ant-checkbox-wrapper {
   z-index: 10 !important;
 }
+
+.width-input {
+  width: 70% !important;
+}

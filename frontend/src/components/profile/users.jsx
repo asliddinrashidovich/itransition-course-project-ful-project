@@ -103,7 +103,7 @@ function UsersManagment() {
                             <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>{item.email}</td>
                             <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>active</td>
                             <td className={`text-[15px]  font-[400]   py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>{item.isAdmin ? "admin" : "user"}</td>
-                            <td className={`text-[15px]  font-[400]  py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'} `}>
+                            <td className={`text-[15px]  font-[400]  py-[10px] ${!item.isBlocked ? 'text-[#000] dark:text-[#fff]' : 'text-[#999]'}`}>
                                 <Tooltip placement="bottom" className='cursor-pointer' title={moment(item.createdAt).format('MMMM D, YYYY HH:mm:ss')}  >
                                     {moment(item.createdAt).format('DD/MM/YYYY')}
                                 </Tooltip>

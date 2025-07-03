@@ -84,14 +84,14 @@ function ResentTempletes() {
         setSearchParams(searchParams)
     }
   return (
-    <section className="py-[30px] bg-[#fff] dark:bg-gray-800  px-5 md:px-10 ">
+    <section className="py-[30px] bg-[#fff] dark:bg-gray-800  px-[10px] sm:px-5 md:px-10 ">
         <div className="max-w-[1000px] mx-auto">
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
-                <h5 className="text-[#000] text-[18px] font-[400] dark:text-[#fff] ">{t("resentForms")}</h5>
+                <h5 className="text-[#000] text-[15px] sm:text-[18px] font-[500] dark:text-[#fff] ">{t("resentForms")}</h5>
                 <div className="flex items-center gap-[30px]">
-                    {token &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2 className="dark:text-[#fff] ">{t('sortBy')}:</h2>
-                        <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
+                    {token &&  <div className="flex gap-[5px] items-center">
+                        <h2 className="hidden md:flex dark:text-[#fff] ">{t('sortBy')}:</h2>
+                        <FormControl sx={{ marginLeft: 1, minWidth: 120}} className="w-[30px] sm:w-full">
                             <Select
                                 value={authorValue}
                                 onChange={(e) => updateSortBy(e.target.value)}
@@ -113,10 +113,10 @@ function ResentTempletes() {
                     </Tooltip>}
                 </div>
             </div>
-            {cardsView == "card" && <div className="max-w-[1200px] mx-auto grid-cols-1 sm:grid-cols-3 md:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
+            {cardsView == "card" && <div className="max-w-[1200px] mx-auto grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid gap-y-[30px] gap-x-[30px]">
                 {LatestTemplates?.map(item => (
-                    <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden w-[180px] border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
-                        <div className="w-full h-[150px]">
+                    <div onClick={() => handleClick(item.id)} key={item.id} className="rounded-[5px] overflow-hidden border-[1px] border-[#999] hover:border-[#7248b9] transition-all duration-200 cursor-pointer">
+                        <div className="w-full h-[75px] sm:h-[150px]">
                             <img src="https://images.ctfassets.net/lzny33ho1g45/4ODoWVyzgicvbcb6J9ZZZ5/c0333ef44af8588fee18c1e6ed403fc7/Group_12549.jpg?w=1520&fm=jpg&q=31&fit=thumb&h=760" alt="add button" className="w-full h-full object-cover"/>
                         </div>
                         <div className="flex items-center justify-between px-[5px]">
@@ -124,11 +124,11 @@ function ResentTempletes() {
                                 {item.isPublished && <Tooltip title="published">
                                     <TbLivePhotoFilled className="text-[#2dee20] shrink-0"/>
                                 </Tooltip>}
-                                <h4 className="px-[5px] my-[5px] font-[600] line-clamp-1 dark:text-[#fff] ">{item.title}</h4>
+                                <h4 className="px-[5px] my-[5px] font-[600] text-[12px] md:text-[15px] line-clamp-1 dark:text-[#fff] ">{item.title}</h4>
                             </div>
                         </div>
                         <div className="mx-[10px] mb-[10px]">
-                            <p className="text-[14px] dark:text-[#fff] ">Creator: <span className="italic">{item.author.name}</span></p>
+                            <p className="text-[10px] md:text-[14px] dark:text-[#fff] ">Creator: <span className="italic">{item.author.name}</span></p>
                         </div>
                     </div>
                 ))}

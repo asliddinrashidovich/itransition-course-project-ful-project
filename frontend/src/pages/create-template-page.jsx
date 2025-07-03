@@ -3,7 +3,7 @@ import { CreateNewForm } from "../components"
 function CreateTemplatePage() {
   return (
     <>
-        <CreateNewForm/>
+      <CreateNewForm/>
     </>
   )
 }

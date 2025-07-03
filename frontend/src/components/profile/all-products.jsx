@@ -67,9 +67,9 @@ function AllTemplates() {
             <div className="flex justify-between items-center py-[20px] mb-[20px]">
                 <h5 className="text-[#000] text-[20px] font-[600] dark:text-[#fff]">{t('allTemplates')}</h5>
                 <div className="flex items-center gap-[30px]">
-                    {myData?.isAdmin &&  <div className="lg:flex gap-[5px] hidden items-center">
-                        <h2 className="dark:text-[#fff]">{t('sortBy')}:</h2>
-                        <FormControl sx={{ marginLeft: 1, minWidth: 120,  }}>
+                    {myData?.isAdmin &&  <div className="flex gap-[5px] items-center">
+                        <h2 className="dark:text-[#fff] text-nowrap">{t('sortBy')}:</h2>
+                        <FormControl sx={{ marginLeft: 1, minWidth: 120, }} className="w-[30px] sm:w-full">
                             <Select
                                 value={authorValue}
                                 onChange={(e) => updateSortBy(e.target.value)}

@@ -3,6 +3,7 @@ import { Modal, Select, Switch, Tooltip } from "antd"
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { FaLock, FaUser, FaUserPlus } from "react-icons/fa6"
 import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -13,7 +14,7 @@ function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
     const token = localStorage.getItem('token')
     const [accessType, setAccessType] = useState("public")
     const {id} = useParams()
-    const {t} = useParams('')
+    const {t} = useTranslation()
     const [selectedItems, setSelectedItems] = useState([]);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     

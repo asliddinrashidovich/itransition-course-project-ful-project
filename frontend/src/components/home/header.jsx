@@ -72,7 +72,7 @@ function Header() {
             <input onChange={(e) => handleSearch(e.target.value)} type="text" className="w-full md:w-[230px] bg-transparent lg:w-[450px]  outline-none h-[40px]" placeholder={t('search')}/>
         </form>}
         <div className="flex gap-[10px] items-center">
-          <div className="mr-[10px]">
+          <div className="mr-[10px] hidden md:flex">
             {theme == 'light' && (
               <button onClick={handleDarkMode} title="Enable dark mode">
                 <IoMoon className="text-[22px]" />
