@@ -196,7 +196,6 @@ function AllQuestions({setStatusFormName}) {
         });
     }, [questionTitles, LatestTemplate]);
 
-    
     // drag and drop questions
 
     const handleDragEnd = (result) => {

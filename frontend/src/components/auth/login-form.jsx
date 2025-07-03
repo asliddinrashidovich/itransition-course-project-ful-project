@@ -3,6 +3,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { signInWithGoogle } from '../../../firebase';
 
 const API = import.meta.env.VITE_API
 
@@ -26,11 +27,28 @@ function LoginForm() {
       }).catch((err) => {
         toast.error(err.response?.data?.message || "Something went wrong");
       })
+    };
+    
+    const handleLoginGoogle = async () => {
+      try {
+        const res = await signInWithGoogle();
+        const idToken = await res.user.getIdToken(); 
+        
+        const response = await axios.post(`${API}/api/auth/google`, { idToken });
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        if(isFromUserId) {
+          navigate(`/form/${isFromUserId}`)
+          localStorage.removeItem('isFromUserId')
+        } else {
+          navigate("/")
+          window.location.reload()
+        }
+      } catch (err) {
+        toast.error(err.response?.data?.message || "Something went wrong");
+      }
   };
 
-  const handleLoginGoogle = async () => {
-  }
-  
   return (
   <Form
     name="basic"
