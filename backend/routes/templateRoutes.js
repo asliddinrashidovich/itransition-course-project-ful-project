@@ -11,6 +11,7 @@ const {
   likeTemplate,
   unlikeTemplate,
   isTemplateLiked,
+  getTemplateForPublic,
 } = require('../controllers/templateController')
 const { protect } = require('../middlewares/authMiddleware')
 const {
@@ -26,14 +27,16 @@ const {
 const { getCommentsForTemplate, addComment, deleteComment } = require('../controllers/commentController')
 const checkTemplateOwner = require('../middlewares/checkTemplateOwner')
 const checkQuestionOwner = require('../middlewares/checkQuestionOwner')
+const checkBulkTemplateOwner = require('../middlewares/checkBulkTemplates')
 
 const router = express.Router()
 
 // template routes
-router.get('/', getTemplates)
+router.get('/', protect, getTemplates)
+router.get('/public', getTemplateForPublic); 
 router.get('/:id', protect, getTemplateById)
 router.post('/', protect, createTemplate)
-router.delete('/bulk', protect, checkTemplateOwner, deleteTemplates);
+router.delete('/bulk', protect, checkBulkTemplateOwner, deleteTemplates);
 router.delete('/:id', protect, checkTemplateOwner, deleteTemplate)
 router.put('/:id', protect, checkTemplateOwner, updateTemplate)
 router.patch('/:id/access', protect, checkTemplateOwner, updateTemplateAccess);

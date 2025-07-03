@@ -20,7 +20,7 @@ function PublicTemplates() {
 
     // get templates 
     const fetchLatestTempletes = async () => {
-        const res = await axios.get(`${API}/api/templates`);
+        const res = await axios.get(`${API}/api/templates/public`);
         const allItems = res.data    
         const allTemplates = allItems.filter(templateItem => {
             const titleMatch = templateItem.title.toLowerCase().includes(search.toLowerCase());

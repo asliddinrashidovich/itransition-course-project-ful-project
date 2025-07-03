@@ -47,8 +47,9 @@ function ResentTempletes() {
     
     // get templates 
     const fetchLatestTempletes = async () => {
-        const res = await axios.get(`${API}/api/templates`);
+        const res = await axios.get(`${API}/api/templates`, {headers: {Authorization: `Bearer ${token}`}});
         const allItems = res.data    
+        console.log(allItems)
         const allTemplates = allItems.filter(templateItem => {
             const titleMatch = templateItem.title.toLowerCase().includes(search.toLowerCase());
             const authorMatch = templateItem.author.name.toLowerCase().includes(search.toLowerCase());
@@ -56,6 +57,7 @@ function ResentTempletes() {
             const descriptionMatch = templateItem.description.toLowerCase().includes(search.toLowerCase());
             return titleMatch || authorMatch || formTitleMatch || descriptionMatch
         });
+        console.log(allTemplates)
         if(sortByCreators == "anyone") return allTemplates
         else if(sortByCreators == "not-me") {
             const filtered = allTemplates.filter(temp => temp.author.id != myData.id)
