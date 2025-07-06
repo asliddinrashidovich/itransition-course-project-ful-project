@@ -26,17 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
   });
 
-  // ✅ Bu juda muhim!
   Answer.associate = (models) => {
-    Answer.belongsTo(models.Template, {
-      foreignKey: 'templateId',
-      onDelete: 'CASCADE',
-    });
-
-    Answer.belongsTo(models.Question, {
-      foreignKey: 'questionId',
-      onDelete: 'CASCADE',
-    });
+    Answer.belongsTo(models.Template, {foreignKey: 'templateId', onDelete: 'CASCADE'});
+    Answer.belongsTo(models.Question, {foreignKey: 'questionId', onDelete: 'CASCADE'});
   };
 
   return Answer;

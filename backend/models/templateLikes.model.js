@@ -14,12 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
-    indexes: [
-      {
-        unique: true,
-        fields: ['userId', 'templateId']
-      }
-    ]
+    indexes: [{ unique: true, fields: ['userId', 'templateId']}]
   });
 
   return TemplateLike;

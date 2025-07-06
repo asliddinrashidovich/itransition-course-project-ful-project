@@ -25,9 +25,9 @@ async function runFix() {
   try {
     await client.connect();
     await client.query(fixEnumQuery);
-    console.log('✅ ENUM type created and column converted successfully!');
+    console.log('ENUM type created and column converted successfully!');
   } catch (err) {
-    console.error('❌ Error running fixEnumQuery:', err);
+    console.error('Error running fixEnumQuery:', err);
   } finally {
     await client.end();
   }

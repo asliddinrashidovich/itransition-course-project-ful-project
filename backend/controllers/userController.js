@@ -1,12 +1,8 @@
 const { User } = require("../models");
 
-// [GET] /api/users/all – barcha ro‘yxat ko‘rishi mumkin
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: ['id', 'name', 'email', 'isAdmin', 'isBlocked', 'createdAt'],
-      order: [['createdAt', 'DESC']],
-    });
+    const users = await User.findAll({attributes: ['id', 'name', 'email', 'isAdmin', 'isBlocked', 'createdAt'], order: [['createdAt', 'DESC']]});
 
     res.json(users);
   } catch (err) {
@@ -15,7 +11,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// [GET] /api/users/me – O‘zini ko‘rish
 exports.getMe = async (req, res) => {
   try {
     const { id, name, email, isAdmin } = req.user;
@@ -26,7 +21,6 @@ exports.getMe = async (req, res) => {
   }
 };
 
-// [PATCH] /api/users/status – Block/Unblock foydalanuvchilar
 exports.updateUsersStatus = async (req, res) => {
   const { userIds, status } = req.body;
 
@@ -35,10 +29,7 @@ exports.updateUsersStatus = async (req, res) => {
   }
 
   try {
-    await User.update(
-      { isBlocked: status === 'block' },
-      { where: { id: userIds } }
-    );
+    await User.update({isBlocked: status == 'block'}, {where: {id: userIds}});
     res.json({ message: `Users successfully ${status}ed.` });
   } catch (err) {
     console.error(err);
@@ -46,7 +37,6 @@ exports.updateUsersStatus = async (req, res) => {
   }
 };
 
-// [PATCH] /api/users/role – Admin/User qilish
 exports.updateUsersRole = async (req, res) => {
   const { userIds, role } = req.body;
 
@@ -55,10 +45,7 @@ exports.updateUsersRole = async (req, res) => {
   }
 
   try {
-    await User.update(
-      { isAdmin: role === 'admin' },
-      { where: { id: userIds } }
-    );
+    await User.update( {isAdmin: role == 'admin'}, {where: {id: userIds}});
     res.json({ message: `Users updated to role: ${role}` });
   } catch (err) {
     console.error(err);
@@ -66,11 +53,10 @@ exports.updateUsersRole = async (req, res) => {
   }
 };
 
-// [DELETE] /api/users – Foydalanuvchilarni o‘chirish
 exports.deleteUsers = async (req, res) => {
   const { userIds } = req.body;
   try {
-    await User.destroy({ where: { id: userIds } });
+    await User.destroy({where: { id: userIds}});
     res.json({ message: 'Users deleted successfully' });
   } catch (err) {
     console.error(err);

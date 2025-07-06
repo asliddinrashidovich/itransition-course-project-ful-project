@@ -1,4 +1,3 @@
-// 📁 models/comment.model.js
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     id: {
@@ -13,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Comment.associate = (models) => {
-    Comment.belongsTo(models.User, { foreignKey: 'userId', as: 'author' });
-    Comment.belongsTo(models.Template, { foreignKey: 'templateId' });
+    Comment.belongsTo(models.User, {foreignKey: 'userId', as: 'author'});
+    Comment.belongsTo(models.Template, {foreignKey: 'templateId'});
   };
 
   return Comment;

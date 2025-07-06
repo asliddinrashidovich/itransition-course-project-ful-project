@@ -15,14 +15,8 @@ function AnswersPage() {
     const token = localStorage.getItem('token')
     const [cardsView, setCardsView] = useState(false)
 
-
-    // get questions
     const fetchFormTemplete = async () => {
-        const res = await axios.get(`${API}/api/templates/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await axios.get(`${API}/api/templates/${id}`, {headers: {Authorization: `Bearer ${token}`}});
         return res.data.questions
     };
     const { data: FormTemplateQuestions, isLoading: loading1} = useQuery({
@@ -30,13 +24,8 @@ function AnswersPage() {
         queryFn: fetchFormTemplete,
     });
 
-    // get template answers
     const fetchAnswersTemplete = async () => {
-        const res = await axios.get(`${API}/api/answers/template/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await axios.get(`${API}/api/answers/template/${id}`, {headers: {Authorization: `Bearer ${token}`}});
         return res.data
     };
     const { data: TemplateAnswers, isLoading: loading2} = useQuery({
@@ -44,9 +33,6 @@ function AnswersPage() {
         queryFn: fetchAnswersTemplete,
     });
 
-    console.log(TemplateAnswers)
-
-    // handle change answer type
     function handleChangeButtonType(caseView) {
         setCardsView(caseView)
     }

@@ -1,5 +1,3 @@
-// middlewares/checkTemplateViewPermission.js
-
 const { Template } = require('../models');
 
 const checkTemplateViewPermission = async (req, res, next) => {
@@ -16,21 +14,18 @@ const checkTemplateViewPermission = async (req, res, next) => {
       return res.status(404).json({ message: 'Template not found' });
     }
 
-    // Public bo‘lsa hammaga ko‘rinadi
-    if (template.access === 'public') {
+    if (template.access == 'public') {
       req.template = template;
       return next();
     }
 
     const currentUser = req.user;
-
-    // Agar user login qilmagan bo‘lsa restricted template ko‘ra olmaydi
     if (!currentUser) {
       return res.status(401).json({ message: 'Login required to access this template' });
     }
 
-    const isOwner = template.authorId === currentUser.id;
-    const isAdmin = currentUser.isAdmin === true;
+    const isOwner = template.authorId == currentUser.id;
+    const isAdmin = currentUser.isAdmin == true;
 
     if (isOwner || isAdmin) {
       req.template = template;

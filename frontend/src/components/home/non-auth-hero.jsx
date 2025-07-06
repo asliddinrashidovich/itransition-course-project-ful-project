@@ -8,12 +8,8 @@ import { useTranslation } from "react-i18next";
 function NonAuthHero() {
   const {t} = useTranslation()
   useEffect(() => {
-    AOS.init({
-      duration: 1000,  
-      once: true,  
-    });
+    AOS.init({ duration: 1000, once: true,});
   }, []);
-  
 
   return (
     <section className="nonauth_about overflow-hidden relative justify-between flex items-center h-[70vh]">

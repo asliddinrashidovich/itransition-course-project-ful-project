@@ -24,12 +24,9 @@ function AllQuestions({setStatusFormName}) {
     const [QuestionLIst, setQuestionsList] = useState([])
     const {t} = useTranslation('')
 
-
     // get template details
     const fetchLatestTemplete = async () => {
-        const res = await axios.get(`${API}/api/templates/${id}`, {
-            headers: {  Authorization: `Bearer ${token}`}
-        });
+        const res = await axios.get(`${API}/api/templates/${id}`, { headers: {  Authorization: `Bearer ${token}`}});
         const questions = res?.data?.questions
         setQuestionsList(questions)
         return res.data
@@ -43,13 +40,9 @@ function AllQuestions({setStatusFormName}) {
     const addOption = async (quesId) => {
         const nextNumber = (QuestionLIst?.find(q => q.id === quesId)?.options?.length || 0) + 1;
         try {
-            await axios.patch(`${API}/api/templates/questions/${quesId}/options`, {
-                newOption: `Option ${nextNumber}`
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await axios.patch(`${API}/api/templates/questions/${quesId}/options`, {newOption: `Option ${nextNumber}`}, {headers: { Authorization: `Bearer ${token}`}});
             setStatusFormName("Saved");
-            setRefreshQuestions(prev => !prev); // 🔁 UI yangilash uchun
+            setRefreshQuestions(prev => !prev);
         } catch (err) {
             toast.error(err.response?.data?.message || "Add option save failed");
             setStatusFormName("Error");
@@ -59,9 +52,7 @@ function AllQuestions({setStatusFormName}) {
     // delete options
     const handleDeleteOption = async (questionId, optionId) => {
         try {
-            await axios.patch(`${API}/api/templates/questions/${questionId}/options/delete`, {optionId}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await axios.patch(`${API}/api/templates/questions/${questionId}/options/delete`, {optionId}, {headers: { Authorization: `Bearer ${token}` }});
             setStatusFormName("Saved");
             setRefreshQuestions(prev => !prev);
         } catch (err) {
@@ -71,20 +62,14 @@ function AllQuestions({setStatusFormName}) {
     };
 
     // edit question options title
-    const [optionValues, setOptionValues] = useState({});   // { [questionId]: { [index]: "text" } }
+    const [optionValues, setOptionValues] = useState({}); 
     const optionInputRefs = useRef({});
     const optionSpanRefs = useRef({});
-
-
         
-   const saveOptionTitle = debounce(async (questionId, optionId, newText) => {
+    const saveOptionTitle = debounce(async (questionId, optionId, newText) => {
         if (!newText?.trim()) return;
         try {
-            await axios.patch(`${API}/api/templates/questions/${questionId}/options/update`, {
-            optionId,
-            newText,
-            }, { headers: { Authorization: `Bearer ${token}` } });
-
+            await axios.patch(`${API}/api/templates/questions/${questionId}/options/update`, {optionId, newText,}, { headers: { Authorization: `Bearer ${token}` } });
             setStatusFormName("Saved");
         } catch (err) {
             toast.error(err.response?.data?.message || "Option title update failed");
@@ -92,15 +77,14 @@ function AllQuestions({setStatusFormName}) {
         }
     }, 1000);
 
-
     useEffect(() => {
         if (QuestionLIst) {
             const optionMap = {};
             QuestionLIst.forEach((q) => {
-                if (q.type === "checkbox") {
+                if (q.type == "checkbox") {
                     optionMap[q.id] = {};
                     q.options.forEach((opt, idx) => {
-                        optionMap[q.id][idx] = typeof opt === "object" ? opt.text : opt;
+                        optionMap[q.id][idx] = typeof opt == "object" ? opt.text : opt;
                     });
                 }
             });
@@ -111,10 +95,7 @@ function AllQuestions({setStatusFormName}) {
     // question type changer
     const handleChangeQuestionType = async (val, questionId) => {
         console.log(val, questionId)
-        await axios.patch(`${API}/api/templates/questions/${questionId}/type`, {type: val}, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        await axios.patch(`${API}/api/templates/questions/${questionId}/type`, {type: val}, {headers: { Authorization: `Bearer ${token}`}
         }).then((res) => {
             console.log(res)
             setRefreshQuestions(prev => prev ? false : true)
@@ -123,14 +104,10 @@ function AllQuestions({setStatusFormName}) {
         })
     };
 
-
     // add qaestion
     async function handleAddQuestion() {
         setLoadingAdd(true)
-        await axios.post(`${API}/api/templates/${id}/questions`, {}, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        await axios.post(`${API}/api/templates/${id}/questions`, {}, {headers: { Authorization: `Bearer ${token}`}
         }).then(() => {
             setLoadingAdd(false)
             setRefreshQuestions(prev => prev ? false : true)
@@ -155,8 +132,7 @@ function AllQuestions({setStatusFormName}) {
 
     const saveQuestionTitle = debounce(async (questionId, title) => {
         try {
-            await axios.put(`${API}/api/templates/questions/${questionId}/title`, { title }, {
-                headers: { Authorization: `Bearer ${token}` }
+            await axios.put(`${API}/api/templates/questions/${questionId}/title`, { title }, {headers: { Authorization: `Bearer ${token}`}
             });
             setStatusFormName("Saved");
         } catch (err) {
@@ -181,7 +157,6 @@ function AllQuestions({setStatusFormName}) {
         saveQuestionTitle(idTitle, val);  
     };
 
-
     const titleInputRefs = useRef({});
     const titleSpanRefs = useRef({});
 
@@ -197,14 +172,11 @@ function AllQuestions({setStatusFormName}) {
     }, [questionTitles, LatestTemplate]);
 
     // drag and drop questions
-
     const handleDragEnd = (result) => {
         if (!result.destination) return;
-
         const items = Array.from(QuestionLIst);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
-
         setQuestionsList(items);
     };
 
@@ -278,24 +250,13 @@ function AllQuestions({setStatusFormName}) {
                                                                     onChange={(e) => {
                                                                     const val = e.target.value;
 
-                                                                    // Frontendni yangilash
-                                                                    setOptionValues((prev) => ({
-                                                                        ...prev,
-                                                                        [item.id]: {
-                                                                        ...prev[item.id],
-                                                                        [index]: val,
-                                                                        },
-                                                                    }));
-
+                                                                    setOptionValues((prev) => ({...prev,[item.id]: {...prev[item.id], [index]: val}}));
                                                                     setStatusFormName("Saving...");
-
-                                                                    // ✅ id va yangi text bilan yuboramiz
                                                                     saveOptionTitle(item.id, opt.id, val);
                                                                     }}
                                                                     className="outline-none text-[16px] w-[400px] font-medium border-b border-[#aaa] bg-transparent"
                                                                 />
-                                                                </div>
-
+                                                            </div>
                                                         </div>
                                                         <button onClick={() => handleDeleteOption(item.id, opt.id)} className="cursor-pointer">
                                                             <IoMdClose  className="text-[20px]"/>
@@ -311,7 +272,6 @@ function AllQuestions({setStatusFormName}) {
                                     )}
                                 </Draggable>
                             ))}
-
                             {provided.placeholder}
                         </div>
                     )}

@@ -11,7 +11,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     await sequelize.authenticate();
     console.log('🔗 Connected to DB');
 
-    // 1) TemplateId fkey
     await sequelize.query(`
       ALTER TABLE answers
       DROP CONSTRAINT IF EXISTS "Answers_templateId_fkey",
@@ -19,7 +18,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
       FOREIGN KEY ("templateId") REFERENCES "Templates"("id") ON DELETE CASCADE;
     `);
 
-    // 2) QuestionId fkey
     await sequelize.query(`
       ALTER TABLE answers
       DROP CONSTRAINT IF EXISTS "answers_questionId_fkey",
@@ -27,9 +25,9 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
       FOREIGN KEY ("questionId") REFERENCES "Questions"("id") ON DELETE CASCADE;
     `);
 
-    console.log('✅ Both answers FKs now ON DELETE CASCADE');
+    console.log('Both answers FKs now ON DELETE CASCADE');
   } catch (err) {
-    console.error('❌ Error updating constraints:', err);
+    console.error('Error updating constraints:', err);
   } finally {
     await sequelize.close();
   }

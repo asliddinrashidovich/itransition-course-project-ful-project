@@ -24,9 +24,9 @@ async function runFix() {
   try {
     await client.connect();
     await client.query(addColumnQuery);
-    console.log('✅ "isPublished" column added to Templates table!');
+    console.log('"isPublished" column added to Templates table!');
   } catch (err) {
-    console.error('❌ Error adding isPublished column:', err);
+    console.error('Error adding isPublished column:', err);
   } finally {
     await client.end();
   }

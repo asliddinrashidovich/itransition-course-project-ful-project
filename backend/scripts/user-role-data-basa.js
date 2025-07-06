@@ -28,9 +28,9 @@ async function run() {
   try {
     await client.connect();
     await client.query(fixSchemaQuery);
-    console.log("✅ Schema updated successfully.");
+    console.log("Schema updated successfully.");
   } catch (err) {
-    console.error("❌ Error while updating schema:", err.message);
+    console.error("Error while updating schema:", err.message);
   } finally {
     await client.end();
   }

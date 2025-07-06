@@ -10,10 +10,10 @@ const { protect } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-router.get('/all', getAllUsers);         // Barcha foydalanuvchilarni olish
-router.get('/me', protect, getMe);                // Foydalanuvchi o‘zini ko‘radi
-router.patch('/status', protect, updateUsersStatus); // Block/unblock
-router.patch('/role', protect, updateUsersRole);     // Admin qilish / olib tashlash
-router.delete('/', protect, deleteUsers);            // Foydalanuvchini o‘chirish
+router.get('/all', getAllUsers);       
+router.get('/me', protect, getMe);             
+router.patch('/status', protect, updateUsersStatus) 
+router.patch('/role', protect, updateUsersRole);     
+router.delete('/', protect, deleteUsers);
 
 module.exports = router;

@@ -23,10 +23,7 @@ function PublishForm({LatestTemplate, setIsModalOpen: setIsModalOpenPublic, setR
     };
     const handleOk = async () => {
         setIsModalOpen(false)
-        await axios.patch(`${API}/api/templates/${id}/publish`, {}, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        await axios.patch(`${API}/api/templates/${id}/publish`, {}, { headers: { Authorization: `Bearer ${token}`}
         }).then((res) => {
             setRefreshTemplate(prev => !prev)
             toast.success(res.response?.data?.message || "Successfully Published");

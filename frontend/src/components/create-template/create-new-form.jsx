@@ -88,8 +88,7 @@ function CreateNewForm() {
     function handleChangeFormDec(val) {
         setFormDec(val)
     }
-
-
+    
     function handleTabPage(path)  {
         searchParams.set("form-page", path)
         setSearchParams(searchParams)
@@ -97,11 +96,7 @@ function CreateNewForm() {
 
     // get template details
     const fetchLatestTemplete = async () => {
-        const res = await axios.get(`${API}/api/templates/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await axios.get(`${API}/api/templates/${id}`, {headers: {Authorization: `Bearer ${token}`}});
         setTitle(res?.data?.title || "Untitled Form")
         setFormTitle(res?.data?.formTitle)
         setFormDec(res?.data?.description)
@@ -116,9 +111,7 @@ function CreateNewForm() {
 
     // get template answers
     const fetchAnswersTemplete = async () => {
-        const res = await axios.get(`${API}/api/answers/template/${id}`, {
-            headers: {Authorization: `Bearer ${token}`}
-        });
+        const res = await axios.get(`${API}/api/answers/template/${id}`, {headers: {Authorization: `Bearer ${token}`}});
         return res.data
     };
     const { data: TemplateAnswers} = useQuery({
@@ -128,9 +121,7 @@ function CreateNewForm() {
 
     // know template is liked
     const fetchLikedTemplate = async () => {
-        const res = await axios.get(`${API}/api/templates/${id}/is-liked`, {
-            headers: {Authorization: `Bearer ${token}`}
-        });
+        const res = await axios.get(`${API}/api/templates/${id}/is-liked`, {headers: {Authorization: `Bearer ${token}`}});
         return res.data
     };
     const { data: isLiked} = useQuery({

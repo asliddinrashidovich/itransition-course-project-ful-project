@@ -63,7 +63,6 @@ function ShareTemplate({setIsModalOpen, isModalOpen, setRefreshTemplate}) {
 
     console.log(LatestTemplate)
 
-    
     // change public or restricted
     const handleOk = async () => {
         setLoadingSubmit(true)

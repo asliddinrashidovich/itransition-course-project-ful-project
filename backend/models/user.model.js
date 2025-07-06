@@ -37,10 +37,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (models) => {
-    User.hasMany(models.Template, {
-      foreignKey: 'authorId',
-      as: 'templates',
-    });
+    User.hasMany(models.Template, { foreignKey: 'authorId', as: 'templates'});
   };
 
   return User;

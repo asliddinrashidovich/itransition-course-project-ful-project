@@ -23,8 +23,6 @@ function FormPreviewSection() {
   const [isModalOpen, setIsModalOpen] = useState(token ? false : true);
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   
-
-
   const handleCancel = () => {
       setIsModalOpen(false);
   };
@@ -34,11 +32,7 @@ function FormPreviewSection() {
 
   // get questions
   const fetchFormTemplete = async () => {
-      const res = await axios.get(`${API}/api/templates/${id}`, {
-          headers: {
-              Authorization: `Bearer ${token}`
-          }
-      });
+      const res = await axios.get(`${API}/api/templates/${id}`, {headers: { Authorization: `Bearer ${token}`}});
       return res.data
   };
   const { data: FormTemplate, isLoading: loading} = useQuery({
@@ -46,13 +40,10 @@ function FormPreviewSection() {
       queryFn: fetchFormTemplete,
   });
 
-
   // get template answers
   const fetchAnswersTemplete = async () => {
     try {
-      const res = await axios.get(`${API}/api/answers/template/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-      })
+      const res = await axios.get(`${API}/api/answers/template/${id}`, {headers: { Authorization: `Bearer ${token}`}})
       const allResponces = res.data
       const myAnswer = allResponces.filter(respon => respon.responderEmail == user?.email)
       return myAnswer
@@ -67,11 +58,7 @@ function FormPreviewSection() {
   });
 
     const fetchFormTempleteQuestions = async () => {
-        const res = await axios.get(`${API}/api/templates/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await axios.get(`${API}/api/templates/${id}`, {headers: {Authorization: `Bearer ${token}`}});
         return res.data.questions
     };
     const { data: FormTemplateQuestions} = useQuery({
@@ -84,10 +71,7 @@ function FormPreviewSection() {
     e.preventDefault()
     setLoadingSubmit(true)
 
-    const formattedAnswers = Object.entries(answers).map(([questionId, value]) => ({
-      questionId,
-      value,
-    }));
+    const formattedAnswers = Object.entries(answers).map(([questionId, value]) => ({questionId,value,}));
 
     try {
       await axios.post(`${API}/api/answers`, {

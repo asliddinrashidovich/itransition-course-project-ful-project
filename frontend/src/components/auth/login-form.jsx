@@ -13,7 +13,6 @@ function LoginForm() {
   const isFromUserId = localStorage.getItem('isFromUserId')
   const {t} = useTranslation()
 
-  // login
   const postLogin = async (values) => {
     const {email, password} = values
     await axios.post(`${API}/api/auth/login`, {password, email}).then((res) => {
