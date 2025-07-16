@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import SalesforceIntegration from "./salesforceIntegration";
 
 const API = import.meta.env.VITE_API
 
@@ -29,6 +30,7 @@ function AccountDetails() {
         <h4 className="text-[20px] font-[500] mt-[10px] dark:text-[#fff]">{t('email')}: <span className="font-[300] ml-[20px]">{myData?.email}</span></h4>
         <h4 className="text-[20px] font-[500] dark:text-[#fff]">{t('userRole')}: <span className="font-[300] ml-[20px]">{myData?.isAdmin ? "admin" : "user"}</span></h4>
       </div>
+      <SalesforceIntegration/>
     </div>
   )
 }

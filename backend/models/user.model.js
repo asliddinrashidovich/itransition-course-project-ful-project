@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
     avatar: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    api_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
     }
   });
 

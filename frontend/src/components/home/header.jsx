@@ -56,6 +56,7 @@ function Header() {
 
     const handleLogout = () => {
       localStorage.clear()
+      navigate('/')
       window.location.reload()
     }
     

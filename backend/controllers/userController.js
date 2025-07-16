@@ -1,5 +1,23 @@
 const { User } = require("../models");
+const crypto = require('crypto');
 
+const generateApiToken = () => {
+  return crypto.randomBytes(32).toString('hex');
+};
+
+exports.getOrCreateApiToken = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user.api_token) {
+      user.api_token = generateApiToken();
+      await user.save();
+    }
+    res.json({ api_token: user.api_token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({attributes: ['id', 'name', 'email', 'isAdmin', 'isBlocked', 'createdAt'], order: [['createdAt', 'DESC']]});
@@ -63,3 +81,4 @@ exports.deleteUsers = async (req, res) => {
     res.status(500).json({ message: 'Error deleting users' });
   }
 };
+

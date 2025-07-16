@@ -60,7 +60,7 @@ function TemplatesTableView({LatestTemplates, loading}) {
                             <td onClick={() => handleClick(item.id)} className="py-[10px] ">
                                 <p className={`text-[12px] md:text-[15px] font-[400] text-[#000] cursor-pointer dark:text-[#fff] `}>{item.title}</p>
                             </td>
-                            <td onClick={() => handleClick(item.id)} className={`text-[12px] md:text-[15px] dark:text-[#fff]   cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item.author.name}</td>
+                            <td onClick={() => handleClick(item.id)} className={`text-[12px] md:text-[15px] dark:text-[#fff]   cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item?.author?.name}</td>
                             <td onClick={() => handleClick(item.id)} className={`text-[12px] md:text-[15px] dark:text-[#fff]   cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item.access}</td>
                             <td onClick={() => handleClick(item.id)} className={`text-[12px] md:text-[15px] dark:text-[#fff]   cursor-pointer font-[400]   py-[10px] text-[#000]`}>{item.isPublished ? "Published" : "Not Published"}</td>
                             <td onClick={() => handleClick(item.id)} className={`text-[12px] md:text-[15px] dark:text-[#fff]   font-[400]  py-[10px] text-[#000] `}>

@@ -37,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Question.associate = (models) => {
     Question.belongsTo(models.Template, {foreignKey: 'templateId'});
+    Question.hasMany(models.Answer, {
+      foreignKey: 'questionId',
+      as: 'answers',
+      onDelete: 'CASCADE',
+    });
   };
 
   Question.beforeCreate((question, options) => {

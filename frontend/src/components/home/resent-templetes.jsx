@@ -19,25 +19,26 @@ function ResentTempletes() {
     const navigate = useNavigate()
     const [authorValue, setAuthorValue] = useState('anyone');
     const {t} = useTranslation()
+    const myData = JSON.parse(localStorage.getItem('user'))
 
     const cardsView = searchParams.get("template-view") || "card"
     const search = searchParams.get("search") || ""
     const token = localStorage.getItem('token')
 
-    // get my data
-    const fetchMyData = async () => {
-        const res = await axios.get(`${API}/api/users/me`, {
-            headers: {Authorization: `Bearer ${token}`}
-        });
-        return res.data
-    };
-    const { data: myData} = useQuery({
-        queryKey: ["my-data-3"],
-        queryFn: fetchMyData,
-    });
+    // // get my data
+    // const fetchMyData = async () => {
+    //     const res = await axios.get(`${API}/api/users/me`, {
+    //         headers: {Authorization: `Bearer ${token}`}
+    //     });
+    //     return res.data
+    // };
+    // const { data: myData} = useQuery({
+    //     queryKey: ["my-data-3"],
+    //     queryFn: fetchMyData,
+    // });
 
       // sort by sort
-    const sortByCreators  = searchParams.get('sort-creatort') || 'anyone'
+    const sortByCreators = searchParams.get('sort-creatort') || 'anyone'
     
     const updateSortBy = (sort) => {
         setAuthorValue(sort);
@@ -50,8 +51,8 @@ function ResentTempletes() {
     // get templates 
     const fetchLatestTempletes = async () => {
         const res = await axios.get(`${API}/api/templates`, {headers: {Authorization: `Bearer ${token}`}});
-        const allItems = res.data    
-        console.log(allItems)
+        const allItems = res?.data 
+    
         const allTemplates = allItems.filter(templateItem => {
             const titleMatch = templateItem.title.toLowerCase().includes(search.toLowerCase());
             const authorMatch = templateItem.author.name.toLowerCase().includes(search.toLowerCase());
@@ -59,21 +60,23 @@ function ResentTempletes() {
             const descriptionMatch = templateItem.description.toLowerCase().includes(search.toLowerCase());
             return titleMatch || authorMatch || formTitleMatch || descriptionMatch
         });
-        console.log(allTemplates)
-        if(sortByCreators == "anyone") return allTemplates
-        else if(sortByCreators == "not-me") {
-            const filtered = allTemplates.filter(temp => temp.author.id != myData.id)
+
+        if(sortByCreators == "anyone") {
+            return allTemplates
+        } else if(sortByCreators == "not-me") {
+            const filtered = allTemplates.filter(temp => temp.author.id != myData?.id)
             return filtered
         } else {
-            const filtered = allTemplates.filter(temp => temp.author.id == myData.id)
+            const filtered = allTemplates.filter(temp => temp.author.id == myData?.id)
             return filtered
         }
     };
     const { data: LatestTemplates, isLoading: loading} = useQuery({
-        queryKey: ["latest-templates", sortByCreators, cardsView, search],
+        queryKey: ["latest-templates1", sortByCreators, cardsView, search],
         queryFn: fetchLatestTempletes,
+        enabled: !!myData
     });
-    console.log(LatestTemplates)
+    console.log(LatestTemplates, loading)
 
     function handleClick(id) {
         navigate(`/templates/${id}`)
@@ -90,7 +93,7 @@ function ResentTempletes() {
                 <h5 className="text-[#000] text-[15px] sm:text-[18px] font-[500] dark:text-[#fff] ">{t("resentForms")}</h5>
                 <div className="flex items-center gap-[30px]">
                     {token &&  <div className="flex gap-[5px] items-center">
-                        <h2 className="hidden md:flex dark:text-[#fff] ">{t('sortBy')}:</h2>
+                        <h2 className="hidden md:flex dark:text-[#fff] text-nowrap">{t('sortBy')}:</h2>
                         <FormControl sx={{ marginLeft: 1, minWidth: 120}} className="w-[30px] sm:w-full">
                             <Select
                                 value={authorValue}
@@ -128,7 +131,7 @@ function ResentTempletes() {
                             </div>
                         </div>
                         <div className="mx-[10px] mb-[10px]">
-                            <p className="text-[10px] md:text-[14px] dark:text-[#fff] ">Creator: <span className="italic">{item.author.name}</span></p>
+                            <p className="text-[10px] md:text-[14px] dark:text-[#fff] ">Creator: <span className="italic">{item?.author?.name}</span></p>
                         </div>
                     </div>
                 ))}

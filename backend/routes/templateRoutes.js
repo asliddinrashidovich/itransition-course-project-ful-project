@@ -28,6 +28,7 @@ const { getCommentsForTemplate, addComment, deleteComment } = require('../contro
 const checkTemplateOwner = require('../middlewares/checkTemplateOwner')
 const checkQuestionOwner = require('../middlewares/checkQuestionOwner')
 const checkBulkTemplateOwner = require('../middlewares/checkBulkTemplates')
+const { createSupportTicket } = require('../controllers/supportController')
 
 const router = express.Router()
 
@@ -62,5 +63,7 @@ router.get('/:id/comments', getCommentsForTemplate);
 router.post('/:id/comments', protect, addComment);
 router.delete('/comments/:commentId', protect, deleteComment);
 
+// intergation
+router.post('/support-ticket', protect, createSupportTicket);
 
 module.exports = router

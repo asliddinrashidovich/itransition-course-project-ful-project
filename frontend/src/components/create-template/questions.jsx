@@ -12,7 +12,6 @@ import { ClipLoader } from "react-spinners";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { useTranslation } from "react-i18next";
 
-
 const API = import.meta.env.VITE_API
 
 function AllQuestions({setStatusFormName}) {

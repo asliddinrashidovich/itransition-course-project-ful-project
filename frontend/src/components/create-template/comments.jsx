@@ -30,8 +30,7 @@ function Comments() {
         queryKey: ["all-comments", refreshComments],
         queryFn: fetchTemplateComments,
     });
-
-
+    
     // add comment
     async function handleAddComment(e) {
         e.preventDefault()

@@ -1,0 +1,20 @@
+{
+  "id": "35fb6392-500a-455c-b8fd-861ce15a8db4",
+  "title": "This is the new one",
+  "authorId": "a68ad1a4-85ca-45d9-86a8-a302ea13ed41",
+  "createdAt": "2025-07-07T18:05:45.112Z",
+  "questions": [
+    {
+      "id": "70f77d82-2576-446f-9dc9-b65c5da4a263",
+      "title": "12345",
+      "type": "number",
+      "options": []
+    },
+    {
+      "id": "2739eee4-36f4-4ede-bccb-96208e5e0a22",
+      "title": "test",
+      "type": "short_text",
+      "options": []
+    }
+  ]
+}

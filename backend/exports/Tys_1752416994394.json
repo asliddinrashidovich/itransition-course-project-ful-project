@@ -1,0 +1,14 @@
+{
+  "id": "374acfdd-b3f3-4c36-9a9b-dfc33b4eebbe",
+  "title": "Tys",
+  "authorId": "49266432-e14f-47fa-bb86-efb37bb79bcd",
+  "createdAt": "2025-07-13T14:29:22.054Z",
+  "questions": [
+    {
+      "id": "bfe5b587-989a-4091-9d9f-5af26ca549b4",
+      "title": "Untitled question",
+      "type": "short_text",
+      "options": []
+    }
+  ]
+}

@@ -164,7 +164,7 @@ function CreateNewForm() {
                 </span>
                 <input ref={inputRefFormName} type="text" value={displayValue} onChange={(e) => handleChangeFormName(e.target.value)} className="outline-none text-[15px] sm:text-[20px] dark:text-[#fff] font-[600] bg-transparent"/>
             </div>
-            <div className="sm:mr-[20px] flex items-center">
+            <div className=" flex items-center">
                 {!isLiked?.isLiked && <button className="cursor-pointer" onClick={() => handleLike()}><FaRegHeart className="text-[20px] text-[#ff5959]"/></button>}
                 {isLiked?.isLiked && <button className="cursor-pointer" onClick={() => handleUnLike()}><FaHeart className="text-[20px] text-[#ff5959]"/></button>}
             </div>
